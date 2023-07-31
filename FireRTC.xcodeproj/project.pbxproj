@@ -1,0 +1,545 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		59CBEDDA5FCD2FAE3A6A467F /* Pods_FireRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D50CF2385D81ADD859B4AE4A /* Pods_FireRTC.framework */; };
+		6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */; };
+		6FE0FAA42A64E1BB0038CA5D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */; };
+		6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA52A64E1BB0038CA5D /* ViewController.swift */; };
+		6FE0FAA92A64E1BB0038CA5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA72A64E1BB0038CA5D /* Main.storyboard */; };
+		6FE0FAAB2A64E1BD0038CA5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FE0FAAA2A64E1BD0038CA5D /* Assets.xcassets */; };
+		6FE0FAAE2A64E1BD0038CA5D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6FE0FAAC2A64E1BD0038CA5D /* LaunchScreen.storyboard */; };
+		6FE0FAB72A661D510038CA5D /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAB62A661D510038CA5D /* HomeController.swift */; };
+		6FE0FAB92A661E740038CA5D /* AddContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAB82A661E740038CA5D /* AddContactController.swift */; };
+		6FE0FABB2A661F060038CA5D /* SignController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FABA2A661F060038CA5D /* SignController.swift */; };
+		6FE0FAC02A66523A0038CA5D /* SharedPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FABF2A66523A0038CA5D /* SharedPreference.swift */; };
+		6FE0FAC32A6760FF0038CA5D /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAC22A6760FF0038CA5D /* UserRepository.swift */; };
+		6FE0FAC62A6761250038CA5D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAC52A6761250038CA5D /* User.swift */; };
+		6FE0FAC82A67BC8F0038CA5D /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAC72A67BC8F0038CA5D /* Crypto.swift */; };
+		6FE0FACA2A67D3610038CA5D /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAC92A67D3610038CA5D /* SettingController.swift */; };
+		6FE0FAD62A6900780038CA5D /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD52A6900780038CA5D /* ProfileTableViewCell.swift */; };
+		6FE0FAD82A69008C0038CA5D /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */; };
+		6FE0FADA2A69022B0038CA5D /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD92A69022B0038CA5D /* ContactController.swift */; };
+		6FFD550B2A6E0FEE00C35268 /* MoveTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */; };
+		6FFD550D2A6F58E800C35268 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550C2A6F58E800C35268 /* Relation.swift */; };
+		6FFD550F2A6F5BA200C35268 /* RelationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550E2A6F5BA200C35268 /* RelationRepository.swift */; };
+		6FFD55112A7244D500C35268 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD55102A7244D500C35268 /* ProfileController.swift */; };
+		6FFD55132A725B1F00C35268 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD55122A725B1F00C35268 /* Space.swift */; };
+		6FFD55152A725E9F00C35268 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6FFD55142A725E9F00C35268 /* GoogleService-Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		24855B697B0EF127504DC185 /* Pods-FireRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireRTC.release.xcconfig"; path = "Target Support Files/Pods-FireRTC/Pods-FireRTC.release.xcconfig"; sourceTree = "<group>"; };
+		6FE0FA9E2A64E1BB0038CA5D /* FireRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		6FE0FAA52A64E1BB0038CA5D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6FE0FAA82A64E1BB0038CA5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6FE0FAAA2A64E1BD0038CA5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6FE0FAAD2A64E1BD0038CA5D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6FE0FAAF2A64E1BD0038CA5D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6FE0FAB62A661D510038CA5D /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		6FE0FAB82A661E740038CA5D /* AddContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactController.swift; sourceTree = "<group>"; };
+		6FE0FABA2A661F060038CA5D /* SignController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignController.swift; sourceTree = "<group>"; };
+		6FE0FABF2A66523A0038CA5D /* SharedPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreference.swift; sourceTree = "<group>"; };
+		6FE0FAC22A6760FF0038CA5D /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		6FE0FAC52A6761250038CA5D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6FE0FAC72A67BC8F0038CA5D /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		6FE0FAC92A67D3610038CA5D /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
+		6FE0FAD52A6900780038CA5D /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		6FE0FAD92A69022B0038CA5D /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
+		6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveTo.swift; sourceTree = "<group>"; };
+		6FFD550C2A6F58E800C35268 /* Relation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
+		6FFD550E2A6F5BA200C35268 /* RelationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationRepository.swift; sourceTree = "<group>"; };
+		6FFD55102A7244D500C35268 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		6FFD55122A725B1F00C35268 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
+		6FFD55142A725E9F00C35268 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6FFD55162A73401E00C35268 /* FireRTC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FireRTC.entitlements; sourceTree = "<group>"; };
+		7AFFD489454FF917112C2545 /* Pods-FireRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireRTC.debug.xcconfig"; path = "Target Support Files/Pods-FireRTC/Pods-FireRTC.debug.xcconfig"; sourceTree = "<group>"; };
+		D50CF2385D81ADD859B4AE4A /* Pods_FireRTC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FireRTC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6FE0FA9B2A64E1BB0038CA5D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59CBEDDA5FCD2FAE3A6A467F /* Pods_FireRTC.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36431DAF8A72E6671021BE60 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7AFFD489454FF917112C2545 /* Pods-FireRTC.debug.xcconfig */,
+				24855B697B0EF127504DC185 /* Pods-FireRTC.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		3EEB853D99A7537839BC97E3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D50CF2385D81ADD859B4AE4A /* Pods_FireRTC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6FE0FA952A64E1BB0038CA5D = {
+			isa = PBXGroup;
+			children = (
+				6FE0FAA02A64E1BB0038CA5D /* FireRTC */,
+				6FE0FA9F2A64E1BB0038CA5D /* Products */,
+				36431DAF8A72E6671021BE60 /* Pods */,
+				3EEB853D99A7537839BC97E3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6FE0FA9F2A64E1BB0038CA5D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FA9E2A64E1BB0038CA5D /* FireRTC.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6FE0FAA02A64E1BB0038CA5D /* FireRTC */ = {
+			isa = PBXGroup;
+			children = (
+				6FFD55162A73401E00C35268 /* FireRTC.entitlements */,
+				6FE0FAD42A6900520038CA5D /* cell */,
+				6FE0FAC42A6761060038CA5D /* model */,
+				6FE0FAC12A6760E00038CA5D /* repo */,
+				6FE0FABE2A6652260038CA5D /* util */,
+				6FE0FAB52A661D2A0038CA5D /* controller */,
+				6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */,
+				6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */,
+				6FE0FAA52A64E1BB0038CA5D /* ViewController.swift */,
+				6FE0FAA72A64E1BB0038CA5D /* Main.storyboard */,
+				6FE0FAAA2A64E1BD0038CA5D /* Assets.xcassets */,
+				6FE0FAAC2A64E1BD0038CA5D /* LaunchScreen.storyboard */,
+				6FFD55142A725E9F00C35268 /* GoogleService-Info.plist */,
+				6FE0FAAF2A64E1BD0038CA5D /* Info.plist */,
+			);
+			path = FireRTC;
+			sourceTree = "<group>";
+		};
+		6FE0FAB52A661D2A0038CA5D /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FAB62A661D510038CA5D /* HomeController.swift */,
+				6FE0FAB82A661E740038CA5D /* AddContactController.swift */,
+				6FE0FABA2A661F060038CA5D /* SignController.swift */,
+				6FE0FAC92A67D3610038CA5D /* SettingController.swift */,
+				6FE0FAD92A69022B0038CA5D /* ContactController.swift */,
+				6FFD55102A7244D500C35268 /* ProfileController.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		6FE0FABE2A6652260038CA5D /* util */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FABF2A66523A0038CA5D /* SharedPreference.swift */,
+				6FE0FAC72A67BC8F0038CA5D /* Crypto.swift */,
+				6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		6FE0FAC12A6760E00038CA5D /* repo */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FAC22A6760FF0038CA5D /* UserRepository.swift */,
+				6FFD550E2A6F5BA200C35268 /* RelationRepository.swift */,
+			);
+			path = repo;
+			sourceTree = "<group>";
+		};
+		6FE0FAC42A6761060038CA5D /* model */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FAC52A6761250038CA5D /* User.swift */,
+				6FFD550C2A6F58E800C35268 /* Relation.swift */,
+				6FFD55122A725B1F00C35268 /* Space.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		6FE0FAD42A6900520038CA5D /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				6FE0FAD52A6900780038CA5D /* ProfileTableViewCell.swift */,
+				6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6FE0FA9D2A64E1BB0038CA5D /* FireRTC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6FE0FAB22A64E1BD0038CA5D /* Build configuration list for PBXNativeTarget "FireRTC" */;
+			buildPhases = (
+				DC878489F5110C3F4E1ABFD1 /* [CP] Check Pods Manifest.lock */,
+				6FE0FA9A2A64E1BB0038CA5D /* Sources */,
+				6FE0FA9B2A64E1BB0038CA5D /* Frameworks */,
+				6FE0FA9C2A64E1BB0038CA5D /* Resources */,
+				CC5CF3A6319A134EB4AA9016 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FireRTC;
+			productName = FireRTC;
+			productReference = 6FE0FA9E2A64E1BB0038CA5D /* FireRTC.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6FE0FA962A64E1BB0038CA5D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					6FE0FA9D2A64E1BB0038CA5D = {
+						CreatedOnToolsVersion = 14.3;
+					};
+				};
+			};
+			buildConfigurationList = 6FE0FA992A64E1BB0038CA5D /* Build configuration list for PBXProject "FireRTC" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6FE0FA952A64E1BB0038CA5D;
+			productRefGroup = 6FE0FA9F2A64E1BB0038CA5D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6FE0FA9D2A64E1BB0038CA5D /* FireRTC */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6FE0FA9C2A64E1BB0038CA5D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6FE0FAAE2A64E1BD0038CA5D /* LaunchScreen.storyboard in Resources */,
+				6FFD55152A725E9F00C35268 /* GoogleService-Info.plist in Resources */,
+				6FE0FAAB2A64E1BD0038CA5D /* Assets.xcassets in Resources */,
+				6FE0FAA92A64E1BB0038CA5D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CC5CF3A6319A134EB4AA9016 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FireRTC/Pods-FireRTC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FireRTC/Pods-FireRTC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FireRTC/Pods-FireRTC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DC878489F5110C3F4E1ABFD1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FireRTC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6FE0FA9A2A64E1BB0038CA5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6FE0FAB92A661E740038CA5D /* AddContactController.swift in Sources */,
+				6FE0FAD62A6900780038CA5D /* ProfileTableViewCell.swift in Sources */,
+				6FE0FAC02A66523A0038CA5D /* SharedPreference.swift in Sources */,
+				6FE0FAC82A67BC8F0038CA5D /* Crypto.swift in Sources */,
+				6FFD550F2A6F5BA200C35268 /* RelationRepository.swift in Sources */,
+				6FFD55112A7244D500C35268 /* ProfileController.swift in Sources */,
+				6FE0FAB72A661D510038CA5D /* HomeController.swift in Sources */,
+				6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */,
+				6FE0FAD82A69008C0038CA5D /* SettingTableViewCell.swift in Sources */,
+				6FFD550D2A6F58E800C35268 /* Relation.swift in Sources */,
+				6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */,
+				6FE0FAC62A6761250038CA5D /* User.swift in Sources */,
+				6FE0FABB2A661F060038CA5D /* SignController.swift in Sources */,
+				6FE0FADA2A69022B0038CA5D /* ContactController.swift in Sources */,
+				6FE0FACA2A67D3610038CA5D /* SettingController.swift in Sources */,
+				6FE0FAC32A6760FF0038CA5D /* UserRepository.swift in Sources */,
+				6FFD55132A725B1F00C35268 /* Space.swift in Sources */,
+				6FE0FAA42A64E1BB0038CA5D /* SceneDelegate.swift in Sources */,
+				6FFD550B2A6E0FEE00C35268 /* MoveTo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6FE0FAA72A64E1BB0038CA5D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6FE0FAA82A64E1BB0038CA5D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6FE0FAAC2A64E1BD0038CA5D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6FE0FAAD2A64E1BD0038CA5D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6FE0FAB02A64E1BD0038CA5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		6FE0FAB12A64E1BD0038CA5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6FE0FAB32A64E1BD0038CA5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AFFD489454FF917112C2545 /* Pods-FireRTC.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FireRTC/FireRTC.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4CT53W9W9R;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FireRTC/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peoplev.FireRTC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6FE0FAB42A64E1BD0038CA5D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24855B697B0EF127504DC185 /* Pods-FireRTC.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FireRTC/FireRTC.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4CT53W9W9R;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FireRTC/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peoplev.FireRTC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6FE0FA992A64E1BB0038CA5D /* Build configuration list for PBXProject "FireRTC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6FE0FAB02A64E1BD0038CA5D /* Debug */,
+				6FE0FAB12A64E1BD0038CA5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6FE0FAB22A64E1BD0038CA5D /* Build configuration list for PBXNativeTarget "FireRTC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6FE0FAB32A64E1BD0038CA5D /* Debug */,
+				6FE0FAB42A64E1BD0038CA5D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6FE0FA962A64E1BB0038CA5D /* Project object */;
+}
