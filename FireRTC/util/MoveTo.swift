@@ -12,6 +12,7 @@ class MoveTo {
     static let signIdentifier = "signVC"
     static let addContactIdentifier = "addContactVC"
     static let profileIdentifier = "profileVC"
+    static let audioCallIdentifier = "audioCallVC"
     
     static func modal(ui: UIViewController, identifier: String) -> UIViewController {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

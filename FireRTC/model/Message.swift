@@ -32,11 +32,7 @@ class Message: Decodable {
         map[FROM] = self.from
         map[CHAT_ID] = self.chatId
         map[BODY] = self.body
-        if createdAt == nil {
-            map[CREATED_AT] = FieldValue.serverTimestamp()
-        } else {
-            map[CREATED_AT] = self.createdAt!
-        }
+        map[CREATED_AT] = self.createdAt ?? FieldValue.serverTimestamp()
         return map
     }
     

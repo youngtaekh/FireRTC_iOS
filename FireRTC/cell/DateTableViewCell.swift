@@ -1,15 +1,15 @@
 //
-//  ProfileTableViewCell.swift
+//  DateTableViewCell.swift
 //  FireRTC
 //
-//  Created by young on 2023/07/20.
+//  Created by young on 2023/08/04.
 //
 
 import UIKit
 
-class ProfileTableViewCell: UITableViewCell {
-    @IBOutlet weak var ivProfile: UIImageView!
-    @IBOutlet weak var tvName: UILabel!
+class DateTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var tvDate: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

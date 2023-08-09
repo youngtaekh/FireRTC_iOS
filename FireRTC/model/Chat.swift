@@ -40,16 +40,8 @@ class Chat: Decodable {
         map[PARTICIPANTS] = self.participants
         map[LAST_MESSAGE] = self.lastMessage
         map[IS_GROUP] = self.isGroup
-        if self.createdAt == nil {
-            map[CREATED_AT] = FieldValue.serverTimestamp()
-        } else {
-            map[CREATED_AT] = self.createdAt
-        }
-        if self.modifiedAt == nil {
-            map[MODIFIED_AT] = FieldValue.serverTimestamp()
-        } else {
-            map[MODIFIED_AT] = self.modifiedAt
-        }
+        map[CREATED_AT] = self.createdAt ?? FieldValue.serverTimestamp()
+        map[MODIFIED_AT] = self.modifiedAt ?? FieldValue.serverTimestamp()
         return map
     }
     

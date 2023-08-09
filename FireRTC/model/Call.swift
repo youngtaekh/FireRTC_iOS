@@ -25,23 +25,66 @@ class Call: Decodable {
     var terminatedAt: Date? = nil
     
     let counterpartName: String
-    let category: Category
+    let type: Category
     let direction: Direction
-    var connected = false
-    var terminated = false
+    var connected: Bool
+    var terminated: Bool
     
-    var sdp: String? = nil
-    var candidates = [String]()
-    var isHeader = false
+    var sdp: String?
+    var candidates: [String]?
+    var isHeader: Bool?
     
-    init(spaceId: String, category: Category, direction: Direction, counterpartName: String) {
-        self.userId = SharedPreference.instance.getID()
+    static func fromMap(map: [String: Any]) -> Call {
+        return Call(
+            id: (map[ID] as! String),
+            userId: map[USER_ID] as! String,
+            spaceId: map[SPACE_ID] as! String,
+            fcmToken: map[FCM_TOKEN] as! String,
+            createdAt: (map[CREATED_AT] as! Timestamp).dateValue(),
+            terminatedAt: (map[TERMINATED_AT] as? Timestamp)?.dateValue(),
+            counterpartName: map[COUNTERPART_NAME] as! String,
+            type: Category(rawValue: map[CATEGORY] as? String ?? Category.AUDIO.rawValue) ?? .AUDIO,
+            direction: Direction(rawValue: map[DIRECTION] as! String)!,
+            connected: map[CONNECTED] as! Bool,
+            terminated: map[TERMINATED] as! Bool,
+            sdp: map[SDP] as? String,
+            candidates: map[CANDIDATES] as? [String] ?? [String](),
+            isHeader: false
+        )
+    }
+    
+    init(
+        id: String? = nil,
+        userId: String = SharedPreference.instance.getID(),
+        spaceId: String,
+        fcmToken: String = SharedPreference.instance.getFcmToken(),
+        createdAt: Date? = nil,
+        terminatedAt: Date? = nil,
+        counterpartName: String,
+        type: Category = .AUDIO,
+        direction: Direction = .Offer,
+        connected: Bool = false,
+        terminated: Bool = false,
+        sdp: String? = nil,
+        candidates: [String] = [String](),
+        isHeader: Bool = false
+    ) {
+        self.userId = userId
         self.spaceId = spaceId
-        self.id = "\(userId)\(spaceId)\(Date().timeIntervalSince1970)".sha256()
-        self.fcmToken = SharedPreference.instance.getFcmToken()
-        self.category = category
+        self.id = id ?? "\(userId)\(spaceId)\(Date().timeIntervalSince1970)".sha256()
+        self.fcmToken = fcmToken
+        self.createdAt = createdAt
+        self.terminatedAt = terminatedAt
+        
+        self.type = type
         self.direction = direction
         self.counterpartName = counterpartName
+        self.connected = connected
+        self.terminated = terminated
+        
+        self.sdp = sdp
+        self.candidates = candidates
+        self.isHeader = isHeader
     }
     
     func toMap() -> [String: Any] {
@@ -52,36 +95,32 @@ class Call: Decodable {
         map[FCM_TOKEN] = self.fcmToken
         
         map[COUNTERPART_NAME] = self.counterpartName
-        map[CATEGORY] = self.category
-        map[DIRECTION] = self.direction
+        map[CATEGORY] = self.type.rawValue
+        map[DIRECTION] = self.direction.rawValue
         map[CONNECTED] = self.connected
         map[TERMINATED] = self.terminated
         
-        map[CANDIDATES] = self.candidates
-        if self.createdAt == nil {
-            map[CREATED_AT] = FieldValue.serverTimestamp()
-        } else {
-            map[CREATED_AT] = self.createdAt!
-        }
+        if self.candidates != nil { map[CANDIDATES] = self.candidates }
+        map[CREATED_AT] = self.createdAt ?? FieldValue.serverTimestamp()
         if self.sdp != nil { map[SDP] = self.sdp! }
         return map
     }
     
-    func toString() {
-        var str = "Call(userId \(userId), counterpartName \(counterpartName), category \(category), direction \(direction), connected \(connected), terminated \(terminated), candidates \(candidates.count)"
+    func toString() -> String {
+        var str = "Call(userId \(userId), counterpartName \(counterpartName), type \(type), direction \(direction), connected \(connected), terminated \(terminated), candidates \(candidates?.count ?? 0)"
         if (createdAt != nil) {
             str += ", createAt \(createdAt!)"
         }
 //        str += ", id \(id)"
         str += ")"
-        print(str)
+        return str
     }
     
-    enum Category: Decodable {
+    enum Category: String, Decodable {
         case AUDIO, VIDEO, SCREEN, MESSAGE, CONFERENCE
     }
     
-    enum Direction: Decodable {
+    enum Direction: String, Decodable {
         case Offer, Answer
     }
 }

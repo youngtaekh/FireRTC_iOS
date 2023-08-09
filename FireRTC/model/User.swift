@@ -37,11 +37,7 @@ class User: Decodable {
         if (fcmToken != nil) {
             map[FCM_TOKEN] = fcmToken!
         }
-        if (createdAt != nil) {
-            map[CREATED_AT] = createdAt!
-        } else {
-            map[CREATED_AT] = FieldValue.serverTimestamp()
-        }
+        map[CREATED_AT] = self.createdAt ?? FieldValue.serverTimestamp()
         return map
     }
     

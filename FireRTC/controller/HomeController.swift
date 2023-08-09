@@ -19,6 +19,18 @@ class HomeController: UITabBarController {
         print("\(TAG) \(#function)")
 //        ivAddContact.frame = CGRectMake(-100, -100, 0, 0)
 //        navigationBar.title = "Title"
+        let tabIndex = SharedPreference.instance.getTabIndex()
+        selectedIndex = tabIndex
+        if (tabIndex == 0) {
+            ivAddContact.isHidden = false
+            navigationBar.title = "Contacts"
+        } else if (tabIndex == 1) {
+            ivAddContact.isHidden = true
+            navigationBar.title = "History"
+        } else {
+            ivAddContact.isHidden = true
+            navigationBar.title = "Settings"
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

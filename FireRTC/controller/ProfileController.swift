@@ -15,13 +15,15 @@ class ProfileController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print("\(TAG) \(#function)")
-        print("selected user \(String(describing: user?.toString()))")
         
         tvName.text = user?.name
-
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("\(TAG) viewWillAppear")
+        navigationController?.isNavigationBarHidden = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     @IBAction func finish(_ sender: Any) {
@@ -30,20 +32,14 @@ class ProfileController: UIViewController {
     
     @IBAction func startCall(_ sender: Any) {
         print("startCall")
+        guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.audioCallIdentifier) as? AudioCallController else {
+            print("controller cast failure")
+            return
+        }
+        controller.user = self.user
     }
     
     @IBAction func test(_ sender: Any) {
-        print("selected user \(String(describing: user?.toString()))")
+        print("\(TAG) test")
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
