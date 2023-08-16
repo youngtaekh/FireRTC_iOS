@@ -15,6 +15,8 @@ class AudioCallController: UIViewController {
     var space: Space?
     var call: Call?
     
+    let rtpManager = RTPManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,11 +24,14 @@ class AudioCallController: UIViewController {
         // Do any additional setup after loading the view.
         
         tvName.text = user?.name
+        
+        rtpManager.initialize()
+        rtpManager.startRTP(isOffer: true, remoteSDP: nil)
     }
     
     @IBAction func end(_ sender: Any) {
         print("\(TAG) end")
-        
+        rtpManager.release()
         MoveTo.popController(ui: self, action: true)
     }
     
