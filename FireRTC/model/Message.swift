@@ -9,7 +9,9 @@ import Foundation
 import FirebaseFirestore
 
 let CHAT_ID = "chatId"
+let MESSAGE_ID = "messageId"
 let BODY = "body"
+let MESSAGE = "message"
 
 class Message: Decodable {
     let id: String

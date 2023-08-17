@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 let USER_ID = "userId"
 let SPACE_ID = "spaceId"
+let CALL_ID = "callId"
 let COUNTERPART_NAME = "counterpartName"
 let CATEGORY = "type"
 let DIRECTION = "direction"

@@ -75,6 +75,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print("didReceiveRemoteNotification")
     }
     
+    // Receive FCM Message
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 //        print("didReceiveRemoteNotification222 \(userInfo)")
         print("didReceiveRemoteNotification222 \(userInfo["userId"])")

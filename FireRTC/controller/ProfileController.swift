@@ -41,5 +41,6 @@ class ProfileController: UIViewController {
     
     @IBAction func test(_ sender: Any) {
         print("\(TAG) test")
+        SendFCM.sendMessage(payload: SendFCM.getPayload(to: user!.fcmToken!, type: .Offer, callType: .AUDIO))
     }
 }

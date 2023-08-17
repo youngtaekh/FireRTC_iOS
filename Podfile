@@ -21,5 +21,6 @@ target 'FireRTC' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
+  pod 'Alamofire'
 
 end
