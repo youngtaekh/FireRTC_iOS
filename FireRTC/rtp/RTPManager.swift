@@ -28,20 +28,29 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     private var enableStat = true
     private var recordAudio = true
     
-    var factory: RTCPeerConnectionFactory?
-    var pc: RTCPeerConnection?
+    var factory: RTCPeerConnectionFactory!
+    var pc: RTCPeerConnection!
     var iceServers = [RTCIceServer]()
     
-    var localStream: RTCMediaStream?
+//    var localStream: RTCMediaStream?
     var localSDP: RTCSessionDescription?
+    var remoteSessionDescription: RTCSessionDescription?
+    var remoteICE = [String]()
+    var defaultAudioSender: RTCRtpSender!
+    var defaultAudioTrack: RTCMediaStreamTrack!
     
-    func initialize(
+    var rtpListener: RTPListener?
+    
+    func start(
         isAudio: Bool = DefaultValues.isAudio,
         isVideo: Bool = DefaultValues.isVideo,
         isScreen: Bool = DefaultValues.isScreen,
         isDataChannel: Bool = DefaultValues.isDataChannel,
         enableStat: Bool = DefaultValues.enableStat,
-        recordAudio: Bool = DefaultValues.recordAudio
+        recordAudio: Bool = DefaultValues.recordAudio,
+        isOffer: Bool,
+        remoteSDP: String? = nil,
+        rtpListener: RTPListener
     ) {
         self.isInit = true
         self.isAudio = isAudio
@@ -52,35 +61,63 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
         self.recordAudio = recordAudio
         
         self.factory = RTCPeerConnectionFactory.init()
-    }
-    
-    func release() {
-        print("\(TAG) \(#function)")
-        self.pc!.close()
-        self.pc = nil
-//        self.localStream.
-    }
-    
-    func startRTP(isOffer: Bool, remoteSDP: RTCSessionDescription?) {
-        print("\(TAG) \(#function)")
+        
         self.isOffer = isOffer
         self.iceServers.append(defaultSTUNServer())
         
-        if factory == nil {
-            print("\(TAG) startRTP factory is nil")
-            return
-        }
+        self.rtpListener = rtpListener
+        
         self.pc = factory!.peerConnection(with: defaultPCConfiguration(), constraints: defaultPCConstraints(), delegate: self)
-        localStream = self.factory!.mediaStream(withStreamId: "ARDAMS")
         if (self.isAudio) {
-            localStream!.addAudioTrack(AudioMedia().createAudioTrack(factory: self.factory!))
+            pc.add(RTPMedia().createAudioTrack(factory: self.factory!), streamIds: ["ARDAMS"])
         }
-        //TODO: if (self.isVideo) { //addVideoTrack }
+        if (self.isVideo) {
+            pc?.add(RTPMedia().createVideoTrack(factory: self.factory!), streamIds: ["ARDAMS"])
+        }
         
         if isOffer {
             createOffer()
         } else if remoteSDP != nil {
-            
+            for ice in remoteICE {
+                addRemoteCandidate(sdp: ice)
+            }
+            setRemoteDescription(isOffer: true, sdp: remoteSDP!)
+        }
+    }
+    
+    func release() {
+        print("\(TAG) \(#function)")
+        self.pc?.close()
+        self.pc = nil
+    }
+    
+    func setRemoteDescription(isOffer: Bool, sdp: String) {
+        let type: RTCSdpType = isOffer ? .offer : .answer
+        let remoteDescription = RTCSessionDescription(type: type, sdp: sdp)
+        pc!.setRemoteDescription(remoteDescription) { err in
+            if let err = err {
+                print("\(self.TAG) setRemoteDescription Error \(err)")
+            } else {
+                print("\(self.TAG) setRemoteDescription success size \(self.remoteICE.count)")
+                if !self.isOffer {
+                    self.createAnswer()
+                }
+                self.drainRemoteCandidate()
+            }
+        }
+    }
+    
+    func addRemoteCandidate(sdp: String) {
+        self.remoteICE.append(sdp)
+        let candidate = RTCIceCandidate(sdp: sdp, sdpMLineIndex: 0, sdpMid: "0")
+        pc?.add(candidate)
+    }
+    
+    func drainRemoteCandidate() {
+        for ice in self.remoteICE {
+            print("drainRemoteCandidate \(ice)")
+            let candidate = RTCIceCandidate(sdp: ice, sdpMLineIndex: 0, sdpMid: "0")
+            self.pc!.add(candidate)
         }
     }
     
@@ -151,16 +188,51 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
             if let error = err {
                 print("\(self.TAG) createOffer Error!!!!!!!!!!!!! \(error)")
             } else {
-                print("\(self.TAG) sdp is \(sdp!.sdp))")
-                self.pc!.setLocalDescription(sdp!) { err in
-                    if let err = err {
-                        print("\(self.TAG) setLocalDescription failed \(err)")
-                    } else {
-                        print("\(self.TAG) setLocalDescription success")
-                    }
-                }
+                self.onCreateSuccess(sdp: sdp!)
             }
         }
+    }
+    
+    private func createAnswer() {
+        if pc == nil {
+            print("\(TAG) createAnswer pc is nil")
+            return
+        }
+        
+        var mandatory = [String: String]()
+        mandatory["OfferToReceiveAudio"] = String(self.isAudio)
+        mandatory["OfferToReceiveVideo"] = String(self.isVideo)
+        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: nil)
+        self.pc?.answer(for: constraints) { sdp, err in
+            if let error = err {
+                print("\(self.TAG) createAnswer Error!!!! \(error)")
+            } else {
+                self.onCreateSuccess(sdp: sdp)
+            }
+        }
+    }
+    
+    private func onCreateSuccess(sdp: RTCSessionDescription?) {
+        self.rtpListener?.onDescriptionSuccess(type: sdp!.type.rawValue, sdp: sdp!.sdp)
+        self.pc.setLocalDescription(sdp!)
+    }
+    
+    func muteAudio() {
+//        self.defaultAudioTrack = localStream!.audioTracks[0]
+//        localStream?.removeAudioTrack((localStream?.audioTracks[0])!)
+        for sender in pc!.senders {
+            print("\(sender.streamIds) \(sender.senderId) \(sender.track == nil)")
+            if (sender.senderId == "ARDAMSa0") {
+                self.defaultAudioSender = sender
+                self.defaultAudioTrack = sender.track!
+                pc?.removeTrack(sender)
+            }
+        }
+    }
+    
+    func unmuteAudio() {
+        print("\(defaultAudioTrack == nil)")
+        pc?.add(defaultAudioTrack ?? RTPMedia().createAudioTrack(factory: self.factory!), streamIds: defaultAudioSender.streamIds)
     }
     
     // PeerConnection Delegate
@@ -184,11 +256,11 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
-        print("\(TAG) \(#function) didAdd")
+        print("\(TAG) \(#function)")
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {
-        print("\(TAG) \(#function) didRemove")
+        print("\(TAG) \(#function)")
     }
     
     func peerConnectionShouldNegotiate(_ peerConnection: RTCPeerConnection) {
@@ -203,14 +275,18 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
                 print("\(TAG) IceConnectionState checking")
             case .connected:
                 print("\(TAG) IceConnectionState connected")
+                rtpListener?.onPCConnected()
             case .completed:
                 print("\(TAG) IceConnectionState completed")
             case .failed:
                 print("\(TAG) IceConnectionState failed")
+                rtpListener?.onPCFailed()
             case .disconnected:
                 print("\(TAG) IceConnectionState disconnected")
+                rtpListener?.onPCDisconnected()
             case .closed:
                 print("\(TAG) IceConnectionState closed")
+                rtpListener?.onPCClosed()
             case .count:
                 print("\(TAG) IceConnectionState count")
             @unknown default:
@@ -232,7 +308,8 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        print("\(TAG) \(#function) IceCandidate \(candidate.sdp)")
+        print("\(TAG) \(#function) IceCandidate")
+        rtpListener?.onIceCandidate(candidate: candidate.sdp)
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {

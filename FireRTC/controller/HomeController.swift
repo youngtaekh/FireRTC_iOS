@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVFAudio
+import AVFoundation
 
 class HomeController: UITabBarController {
     private let TAG = "HomeController"
@@ -31,6 +33,8 @@ class HomeController: UITabBarController {
             ivAddContact.isHidden = true
             navigationBar.title = "Settings"
         }
+        requestMicrophonePermission()
+        requestCameraPermission()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,11 +84,23 @@ class HomeController: UITabBarController {
         let _ = MoveTo.controller(ui: self, identifier: MoveTo.addContactIdentifier, action: true)
     }
     
-    func add() {
-        guard let controller = self.selectedViewController as? ContactController else {
-            return
-        }
-        UserRepository.contacts.append(User(id: "TestID", password: "aaa"))
-        controller.tableView.reloadData()
+    func requestMicrophonePermission(){
+        AVAudioSession.sharedInstance().requestRecordPermission({(granted: Bool)-> Void in
+            if granted {
+                print("Mic: 권한 허용")
+            } else {
+                print("Mic: 권한 거부")
+            }
+        })
+    }
+    
+    func requestCameraPermission(){
+        AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+            if granted {
+                print("Camera: 권한 허용")
+            } else {
+                print("Camera: 권한 거부")
+            }
+        })
     }
 }

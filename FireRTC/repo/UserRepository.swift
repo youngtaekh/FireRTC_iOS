@@ -44,6 +44,8 @@ class UserRepository {
                 let user = User(
                     id: document.data()[ID] as! String,
                     password: document.data()[PASSWORD] as! String,
+                    name: document.data()[NAME] as? String,
+                    os: document.data()[OS] as! String,
                     fcmToken: document.data()[FCM_TOKEN] as? String,
                     createdAt: document.data()[CREATED_AT] as? Date)
                 print("\(document.documentID) => \(user.toString())")

@@ -74,7 +74,7 @@ class CallRepository {
     static func updateCandidate(
         id: String,
         candidate: String,
-        completion: @escaping (Error?) -> Void
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(id)
@@ -83,7 +83,7 @@ class CallRepository {
     
     static func updateSDP(
         call: Call,
-        completion: @escaping (Error?) -> Void
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(call.id)
@@ -92,7 +92,7 @@ class CallRepository {
     
     static func updateTerminatedAt(
         id: String,
-        completion: @escaping (Error?) -> Void
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(id)

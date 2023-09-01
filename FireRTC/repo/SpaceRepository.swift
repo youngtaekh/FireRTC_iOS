@@ -44,7 +44,7 @@ class SpaceRepository {
     static func update(
         id: String,
         map: [String: Any],
-        completion: @escaping (Error?) -> Void
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(id)
@@ -53,7 +53,7 @@ class SpaceRepository {
     
     static func updateStatus(
         space: Space,
-        reason: String = "Bye",
+        reason: String = "Decline",
         completion: @escaping (Error?) -> Void
     ) {
         if space.terminated {
@@ -76,7 +76,7 @@ class SpaceRepository {
     static func addCallList(
         spaceId: String,
         callId: String,
-        completion: @escaping (Error?) -> Void
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(spaceId)
@@ -88,8 +88,8 @@ class SpaceRepository {
     
     static func addParticipantList(
         spaceId: String,
-        participantId: String,
-        completion: @escaping (Error?) -> Void
+        participantId: String = SharedPreference.instance.getID(),
+        completion: ((Error?) -> Void)? = nil
     ) {
         Firestore.firestore().collection(COLLECTION)
             .document(spaceId)

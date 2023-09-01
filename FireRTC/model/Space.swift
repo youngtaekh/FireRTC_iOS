@@ -47,7 +47,7 @@ class Space: Decodable {
         self.callType = callType
         self.maximum = 2
         self.calls = []
-        self.participants = []
+        self.participants = [SharedPreference.instance.getID()]
         self.leaves = []
     }
     

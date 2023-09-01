@@ -12,8 +12,11 @@
 		6F0444882A846D6F00429CD1 /* RTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0444872A846D6F00429CD1 /* RTPManager.swift */; };
 		6F04448A2A847F3100429CD1 /* DefaultValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0444892A847F3100429CD1 /* DefaultValues.swift */; };
 		6F04448C2A85B3BD00429CD1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04448B2A85B3BD00429CD1 /* Utils.swift */; };
-		6F04448E2A86137A00429CD1 /* AudioMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04448D2A86137A00429CD1 /* AudioMedia.swift */; };
+		6F04448E2A86137A00429CD1 /* RTPMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04448D2A86137A00429CD1 /* RTPMedia.swift */; };
+		6F04BCA12A943410006FF64F /* IncomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04BCA02A943410006FF64F /* IncomingController.swift */; };
 		6F0D63282A8DABE800BFE216 /* SendFCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D63272A8DABE800BFE216 /* SendFCM.swift */; };
+		6F0D632B2A8E071F00BFE216 /* CallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D632A2A8E071F00BFE216 /* CallViewModel.swift */; };
+		6F0D632F2A8F456900BFE216 /* RTPListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0D632E2A8F456900BFE216 /* RTPListener.swift */; };
 		6F13DF372A7885A600417063 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF362A7885A600417063 /* Call.swift */; };
 		6F13DF392A7896D900417063 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF382A7896D900417063 /* Chat.swift */; };
 		6F13DF3B2A78D36F00417063 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF3A2A78D36F00417063 /* Message.swift */; };
@@ -55,8 +58,11 @@
 		6F0444872A846D6F00429CD1 /* RTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTPManager.swift; sourceTree = "<group>"; };
 		6F0444892A847F3100429CD1 /* DefaultValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValues.swift; sourceTree = "<group>"; };
 		6F04448B2A85B3BD00429CD1 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		6F04448D2A86137A00429CD1 /* AudioMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMedia.swift; sourceTree = "<group>"; };
+		6F04448D2A86137A00429CD1 /* RTPMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTPMedia.swift; sourceTree = "<group>"; };
+		6F04BCA02A943410006FF64F /* IncomingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingController.swift; sourceTree = "<group>"; };
 		6F0D63272A8DABE800BFE216 /* SendFCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendFCM.swift; sourceTree = "<group>"; };
+		6F0D632A2A8E071F00BFE216 /* CallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.swift; sourceTree = "<group>"; };
+		6F0D632E2A8F456900BFE216 /* RTPListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTPListener.swift; sourceTree = "<group>"; };
 		6F13DF362A7885A600417063 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		6F13DF382A7896D900417063 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		6F13DF3A2A78D36F00417063 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -131,7 +137,8 @@
 			children = (
 				6F0444872A846D6F00429CD1 /* RTPManager.swift */,
 				6F0444892A847F3100429CD1 /* DefaultValues.swift */,
-				6F04448D2A86137A00429CD1 /* AudioMedia.swift */,
+				6F04448D2A86137A00429CD1 /* RTPMedia.swift */,
+				6F0D632E2A8F456900BFE216 /* RTPListener.swift */,
 			);
 			path = rtp;
 			sourceTree = "<group>";
@@ -142,6 +149,14 @@
 				6F0D63272A8DABE800BFE216 /* SendFCM.swift */,
 			);
 			path = fcm;
+			sourceTree = "<group>";
+		};
+		6F0D63292A8E06E100BFE216 /* vm */ = {
+			isa = PBXGroup;
+			children = (
+				6F0D632A2A8E071F00BFE216 /* CallViewModel.swift */,
+			);
+			path = vm;
 			sourceTree = "<group>";
 		};
 		6FE0FA952A64E1BB0038CA5D = {
@@ -165,10 +180,11 @@
 		6FE0FAA02A64E1BB0038CA5D /* FireRTC */ = {
 			isa = PBXGroup;
 			children = (
+				6FE0FAC42A6761060038CA5D /* model */,
+				6F0D63292A8E06E100BFE216 /* vm */,
 				6F0D63262A8DABCD00BFE216 /* fcm */,
 				6F0444862A846D5600429CD1 /* rtp */,
 				6FE0FAD42A6900520038CA5D /* cell */,
-				6FE0FAC42A6761060038CA5D /* model */,
 				6FE0FAC12A6760E00038CA5D /* repo */,
 				6FE0FABE2A6652260038CA5D /* util */,
 				6FE0FAB52A661D2A0038CA5D /* controller */,
@@ -196,6 +212,7 @@
 				6FFD55102A7244D500C35268 /* ProfileController.swift */,
 				6FE0FAC92A67D3610038CA5D /* SettingController.swift */,
 				6FE0FABA2A661F060038CA5D /* SignController.swift */,
+				6F04BCA02A943410006FF64F /* IncomingController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -375,6 +392,7 @@
 				6F0444852A83109A00429CD1 /* AudioCallController.swift in Sources */,
 				6F13DF432A78E08F00417063 /* MessageRepository.swift in Sources */,
 				6FFD55112A7244D500C35268 /* ProfileController.swift in Sources */,
+				6F0D632F2A8F456900BFE216 /* RTPListener.swift in Sources */,
 				6F13DF492A7C931500417063 /* DateTableViewCell.swift in Sources */,
 				6FE0FAB72A661D510038CA5D /* HomeController.swift in Sources */,
 				6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */,
@@ -391,9 +409,11 @@
 				6F13DF392A7896D900417063 /* Chat.swift in Sources */,
 				6F13DF3B2A78D36F00417063 /* Message.swift in Sources */,
 				6F13DF3D2A78DEA100417063 /* ChatRepository.swift in Sources */,
-				6F04448E2A86137A00429CD1 /* AudioMedia.swift in Sources */,
+				6F04448E2A86137A00429CD1 /* RTPMedia.swift in Sources */,
+				6F04BCA12A943410006FF64F /* IncomingController.swift in Sources */,
 				6F13DF452A7A141300417063 /* HistoryController.swift in Sources */,
 				6FFD55132A725B1F00C35268 /* Space.swift in Sources */,
+				6F0D632B2A8E071F00BFE216 /* CallViewModel.swift in Sources */,
 				6F04448C2A85B3BD00429CD1 /* Utils.swift in Sources */,
 				6F13DF372A7885A600417063 /* Call.swift in Sources */,
 				6F0D63282A8DABE800BFE216 /* SendFCM.swift in Sources */,

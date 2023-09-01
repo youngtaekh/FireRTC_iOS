@@ -25,7 +25,7 @@ class Call: Decodable {
     var createdAt: Date? = nil
     var terminatedAt: Date? = nil
     
-    let counterpartName: String
+    let counterpartName: String?
     let type: Category
     let direction: Direction
     var connected: Bool
@@ -43,7 +43,7 @@ class Call: Decodable {
             fcmToken: map[FCM_TOKEN] as! String,
             createdAt: (map[CREATED_AT] as! Timestamp).dateValue(),
             terminatedAt: (map[TERMINATED_AT] as? Timestamp)?.dateValue(),
-            counterpartName: map[COUNTERPART_NAME] as! String,
+            counterpartName: map[COUNTERPART_NAME] as? String,
             type: Category(rawValue: map[CATEGORY] as? String ?? Category.AUDIO.rawValue) ?? .AUDIO,
             direction: Direction(rawValue: map[DIRECTION] as! String)!,
             connected: map[CONNECTED] as! Bool,
@@ -61,7 +61,7 @@ class Call: Decodable {
         fcmToken: String = SharedPreference.instance.getFcmToken(),
         createdAt: Date? = nil,
         terminatedAt: Date? = nil,
-        counterpartName: String,
+        counterpartName: String? = nil,
         type: Category = .AUDIO,
         direction: Direction = .Offer,
         connected: Bool = false,
@@ -108,7 +108,10 @@ class Call: Decodable {
     }
     
     func toString() -> String {
-        var str = "Call(userId \(userId), counterpartName \(counterpartName), type \(type), direction \(direction), connected \(connected), terminated \(terminated), candidates \(candidates?.count ?? 0)"
+        var str = "Call(userId \(userId), type \(type), direction \(direction), connected \(connected), terminated \(terminated), candidates \(candidates?.count ?? 0)"
+        if (counterpartName != nil) {
+            str += ", counterpartName \(counterpartName!)"
+        }
         if (createdAt != nil) {
             str += ", createAt \(createdAt!)"
         }

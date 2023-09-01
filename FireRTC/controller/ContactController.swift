@@ -26,7 +26,7 @@ class ContactController: UIViewController {
 //        tableView.estimatedRowHeight = 200.0 // Adjust Primary table height
         tableView.rowHeight = 70.0
         
-        getContacts(source: .cache)
+//        getContacts(source: .cache)
         getContacts(source: .server)
         
     }

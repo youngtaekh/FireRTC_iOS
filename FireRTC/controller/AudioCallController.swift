@@ -9,90 +9,63 @@ import UIKit
 
 class AudioCallController: UIViewController {
     private let TAG = "AudioCallController"
+    
+    let callVM = CallViewModel.instance
+    var isOffer: Bool = true
+    var isMute = false
 
     @IBOutlet weak var tvName: UILabel!
-    var user: User?
-    var space: Space?
-    var call: Call?
+    @IBOutlet weak var tvMute: UIButton!
+    
+    var user: User!
     
     let rtpManager = RTPManager()
     
+    var terminated: Bool? {
+        didSet {
+            print("terminated didSet")
+            MoveTo.popController(ui: self, action: true)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         print("\(TAG) viewDidLoad")
-        // Do any additional setup after loading the view.
+        
+        callVM.controllerEvent = self
+        if (isOffer) {
+            callVM.counterpart = user
+            callVM.startCall(callType: .AUDIO, counterpart: user!)
+        } else {
+            user = callVM.counterpart
+            callVM.answerCall()
+        }
         
         tvName.text = user?.name
-        
-        rtpManager.initialize()
-        rtpManager.startRTP(isOffer: true, remoteSDP: nil)
+    }
+    
+    @IBAction func mute(_ sender: Any) {
+        if (isMute) {
+            callVM.unmute()
+        } else {
+            callVM.mute()
+        }
+        isMute = !isMute
     }
     
     @IBAction func end(_ sender: Any) {
         print("\(TAG) end")
-        rtpManager.release()
+        callVM.endCall()
+    }
+}
+
+extension AudioCallController: ControllerEvent {
+    func onTerminatedCall() {
+        print("\(TAG) onTerminatedCall")
         MoveTo.popController(ui: self, action: true)
     }
     
-    private func createSpace() {
-        space = Space(callType: .AUDIO)
-        SpaceRepository.post(space: space!) { err in
-            if let err = err {
-                print("\(self.TAG) space post \(err)")
-            } else {
-                self.createCall(spaceId: self.space!.id)
-            }
-        }
+    func onPCConnected() {
+        print("\(TAG) onPCConnected")
     }
-    
-    private func createCall(spaceId: String) {
-        call = Call(spaceId: spaceId, counterpartName: user!.name)
-        CallRepository.post(call: call!) { err in
-            if let err = err {
-                print("\(self.TAG) createCall error \(err)")
-            }
-        }
-    }
-    
-    private func endCall() {
-        space!.terminated = true
-        SpaceRepository.updateStatus(space: space!) { err in
-            if let err = err {
-                print("\(self.TAG) updateStatus error \(err)")
-            }
-        }
-        // TODO: send fcm
-        onTerminatedCall()
-    }
-    
-    func onTerminatedCall() {
-        if (space != nil) {
-            space!.leaves.append(SharedPreference.instance.getID())
-            SpaceRepository.addLeaveList(spaceId: space!.id, participantId: SharedPreference.instance.getID()) { err in
-                if let err = err {
-                    print("\(self.TAG) addLeaveList error \(err)")
-                }
-            }
-        }
-        if call != nil {
-            call!.terminated = true
-            CallRepository.updateTerminatedAt(id: call!.id) { err in
-                if let err = err {
-                    print("\(self.TAG) call updateTerminatedAt \(err)")
-                }
-            }
-        }
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

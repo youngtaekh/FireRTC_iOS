@@ -41,4 +41,40 @@ class MoveTo {
         let vcToPresent = ui.storyboard!.instantiateViewController(withIdentifier: identifier) as! SignController
         ui.present(vcToPresent, animated: true, completion: nil)
     }
+    
+    static func topMostController() -> UIViewController {
+//        var topController: UIViewController
+        let allScenes = UIApplication.shared.connectedScenes
+        let scene = allScenes.first { $0.activationState == .foregroundActive }
+        let windowScene = scene as! UIWindowScene
+        var topController: UIViewController = windowScene.keyWindow!.rootViewController!
+        
+        while (topController.presentedViewController != nil) {
+            topController = topController.presentedViewController!
+        }
+        return topController
+    }
+    
+    static func toIncomingCallVC(spaceId: String, callType: Call.Category) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "viewController")
+        
+        let allScenes = UIApplication.shared.connectedScenes
+        let scene = allScenes.first { $0.activationState == .foregroundActive }
+        if let windowScene = scene as? UIWindowScene {
+            let navigationController = windowScene.keyWindow?.rootViewController as! UINavigationController
+            let incomingController = storyboard.instantiateViewController(withIdentifier: "incomingVC") as! IncomingController
+            incomingController.spaceId = spaceId
+            incomingController.callType = callType
+            navigationController.interactivePopGestureRecognizer?.isEnabled = false
+            navigationController.isNavigationBarHidden = true
+            navigationController.pushViewController(incomingController, animated: true)
+        }
+        
+//        let topVC = topMostController()
+//        let incomingController = storyboard.instantiateViewController(withIdentifier: "incomingVC") as! IncomingController
+//        incomingController.spaceId = spaceId
+//        incomingController.callType = callType
+//        topVC.present(incomingController, animated: true, completion: nil)
+    }
 }

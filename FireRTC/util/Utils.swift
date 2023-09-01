@@ -46,4 +46,26 @@ class Utils {
         }
         return servers
     }
+    
+    static func addIceCandidate(remoteSDP: String, remoteICE: [String]) -> String {
+        var find = false
+        let lines = remoteSDP.components(separatedBy: ["\r", "\n"])
+        var str = ""
+        for line in lines {
+            if (line.isEmpty) { continue }
+            if (line.starts(with: "a=ice")) {
+                find = true
+                str += line + "\r\n"
+                continue
+            }
+            if (find && !line.starts(with: "a=ice")) {
+                find = false
+                for ice in remoteICE {
+                    str += "a=" + ice + "\r\n"
+                }
+            }
+            str += line + "\r\n"
+        }
+        return str
+    }
 }

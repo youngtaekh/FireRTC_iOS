@@ -63,7 +63,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification) async
     -> UNNotificationPresentationOptions {
         print("asdf")
-        return [[.alert, .sound]]
+//        return [[.list, .sound]]
+        return [[.banner, .list, .sound]]
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -77,8 +78,72 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     // Receive FCM Message
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        print("didReceiveRemoteNotification222 \(userInfo)")
-        print("didReceiveRemoteNotification222 \(userInfo["userId"])")
+        let userId = userInfo[USER_ID] as? String
+        let type = userInfo[TYPE] as? String
+        let spaceId = userInfo[SPACE_ID] as? String
+        let callId = userInfo[CALL_ID] as? String
+        let chatId = userInfo[CHAT_ID] as? String
+        let callType = userInfo[CALL_TYPE] as? String
+        let sdp = userInfo[SDP] as? String
+        let fcmToken = userInfo[FCM_TOKEN] as? String
+        print("didReceiveRemoteNotification(\(userId!) \(type!) \(callType!)")
+        
+        if (type != nil) {
+            let callVM = CallViewModel.instance
+            switch (SendFCM.FCMType(rawValue: type!)) {
+                case .Offer:
+                    receiveOffer(spaceId: spaceId!, callId: callId!, callType: callType!, userId: userId!, fcmToken: fcmToken!)
+                case .Answer:
+                    //get sdp from firertc
+                    if (callId != nil) {
+                        receiveAnswer(callId: callId!)
+                    }
+                case .Cancel, .Decline, .Bye, .Busy:
+                    callVM.onTerminatedCall()
+                case .Ice:
+                    callVM.addRemoteCandidate(sdp: sdp!)
+                case .Message:
+                    print("type is Message")
+                case .New:
+                    print("type is New")
+                case .Leave:
+                    print("type is Leave")
+                case .Sdp:
+                    print("type is Sdp")
+                case .none:
+                    print("type is none")
+                case .Else:
+                    print("type is Else")
+            }
+        }
+    }
+    
+    func receiveOffer(spaceId: String, callId: String, callType: String, userId: String, fcmToken: String) {
+        let callVM = CallViewModel.instance
+        CallRepository.getCall(id: callId) { result in
+            switch (result) {
+                case .success(let call):
+                    if call.sdp != nil {
+                        callVM.onIncomingCall(spaceId: spaceId, type: callType, counterpartId: userId, fcmToken: fcmToken, remoteSDP: call.sdp!)
+                    }
+                case .failure(let err):
+                    print("failure \(err)")
+            }
+        }
+    }
+    
+    func receiveAnswer(callId: String) {
+        let callVM = CallViewModel.instance
+        CallRepository.getCall(id: callId) { result in
+            switch (result) {
+                case .success(let call):
+                    if call.sdp != nil {
+                        callVM.onAnswerCall(isOffer: false, sdp: call.sdp!)
+                    }
+                case .failure(let err):
+                    print("failure \(err)")
+            }
+        }
     }
     
 }

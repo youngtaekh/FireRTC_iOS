@@ -58,7 +58,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="round_mobile_screen_share_black_24pt" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-5B-gBU">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="round_mobile_screen_share" translatesAutoresizingMaskIntoConstraints="NO" id="ddU-5B-gBU">
                                                     <rect key="frame" x="20" y="23" width="24" height="24"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
@@ -74,7 +74,7 @@
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="round_call_missed_black_24pt" translatesAutoresizingMaskIntoConstraints="NO" id="wUi-dP-g2H">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="round_call_missed" translatesAutoresizingMaskIntoConstraints="NO" id="wUi-dP-g2H">
                                                     <rect key="frame" x="36" y="11" width="16" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -125,7 +125,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iam-wf-DL0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="773.28244274809163" y="-440.14084507042259"/>
+            <point key="canvasLocation" x="734" y="-480"/>
         </scene>
         <!--Contact Controller-->
         <scene sceneID="WCt-n7-Dq9">
@@ -209,7 +209,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="euJ-MV-1lg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16.030534351145036" y="-440.14084507042259"/>
+            <point key="canvasLocation" x="-16" y="-480"/>
         </scene>
         <!--Add Contact Controller-->
         <scene sceneID="FdH-x7-ZBM">
@@ -293,7 +293,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dPo-5v-P9B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="773.28244274809163" y="-1861.267605633803"/>
+            <point key="canvasLocation" x="734" y="-1896"/>
         </scene>
         <!--Home Controller-->
         <scene sceneID="KEz-yz-cdb">
@@ -329,7 +329,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mHm-uo-nMH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="778" y="-1174"/>
+            <point key="canvasLocation" x="735" y="-1213"/>
         </scene>
         <!--Sign Controller-->
         <scene sceneID="jBi-RQ-3pB">
@@ -379,7 +379,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="88V-Ha-1KL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1572" y="-1175"/>
+            <point key="canvasLocation" x="1500" y="-1213"/>
         </scene>
         <!--Setting Controller-->
         <scene sceneID="0tI-gP-OcP">
@@ -443,12 +443,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aob-01-MCN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1571.7557251908397" y="-440.14084507042259"/>
+            <point key="canvasLocation" x="1500" y="-480"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jSF-hu-nz4">
             <objects>
-                <navigationController id="ObV-tr-8AA" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigation" id="ObV-tr-8AA" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JyY-tX-K86">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -459,7 +459,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SwF-N4-UZE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16" y="-1175"/>
+            <point key="canvasLocation" x="-16" y="-1213"/>
         </scene>
         <!--Profile Controller-->
         <scene sceneID="C9A-Z8-tZM">
@@ -518,7 +518,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHG-09-Lxf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16.030534351145036" y="212.67605633802819"/>
+            <point key="canvasLocation" x="-16" y="180"/>
         </scene>
         <!--Audio Call Controller-->
         <scene sceneID="GKm-FE-ANF">
@@ -549,6 +549,15 @@
                                     <action selector="end:" destination="5VT-NF-hh1" eventType="touchUpInside" id="WWE-fN-QYm"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uc2-4e-65J">
+                                <rect key="frame" x="66" y="496" width="63" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Mute"/>
+                                <connections>
+                                    <action selector="mute:" destination="5VT-NF-hh1" eventType="touchUpInside" id="blx-Gl-LhQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9q0-N7-DYT"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -560,12 +569,64 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tvMute" destination="Uc2-4e-65J" id="JqJ-xR-9eV"/>
                         <outlet property="tvName" destination="y3Q-hT-hPt" id="Sif-O5-YDg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6p-1o-XIc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16.030534351145036" y="891.54929577464793"/>
+            <point key="canvasLocation" x="-16" y="852"/>
+        </scene>
+        <!--Incoming Controller-->
+        <scene sceneID="kVT-Lb-AWZ">
+            <objects>
+                <viewController storyboardIdentifier="incomingVC" id="Hwr-zK-KwZ" customClass="IncomingController" customModule="FireRTC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="g6h-Qb-fIX">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pEd-t0-7Nb">
+                                <rect key="frame" x="262" y="733" width="81" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Decline"/>
+                                <connections>
+                                    <action selector="decline:" destination="Hwr-zK-KwZ" eventType="touchUpInside" id="kee-qX-Jyj"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incoming" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="31B-UN-Jdf">
+                                <rect key="frame" x="20" y="159" width="353" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94a-3v-c7F">
+                                <rect key="frame" x="50" y="733" width="81" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Answer"/>
+                                <connections>
+                                    <action selector="answer:" destination="Hwr-zK-KwZ" eventType="touchUpInside" id="Tw6-ze-W5B"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Y8f-cV-a7d"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Y8f-cV-a7d" firstAttribute="bottom" secondItem="94a-3v-c7F" secondAttribute="bottom" constant="50" id="8Qv-JI-JWy"/>
+                            <constraint firstItem="Y8f-cV-a7d" firstAttribute="trailing" secondItem="pEd-t0-7Nb" secondAttribute="trailing" constant="50" id="QAB-JR-4Gb"/>
+                            <constraint firstItem="31B-UN-Jdf" firstAttribute="top" secondItem="Y8f-cV-a7d" secondAttribute="top" constant="100" id="Sw0-HB-BaD"/>
+                            <constraint firstItem="31B-UN-Jdf" firstAttribute="leading" secondItem="Y8f-cV-a7d" secondAttribute="leading" constant="20" id="cYH-t2-Mbp"/>
+                            <constraint firstItem="94a-3v-c7F" firstAttribute="leading" secondItem="Y8f-cV-a7d" secondAttribute="leading" constant="50" id="frF-FJ-deb"/>
+                            <constraint firstItem="Y8f-cV-a7d" firstAttribute="trailing" secondItem="31B-UN-Jdf" secondAttribute="trailing" constant="20" id="hKx-DF-5FP"/>
+                            <constraint firstItem="Y8f-cV-a7d" firstAttribute="bottom" secondItem="pEd-t0-7Nb" secondAttribute="bottom" constant="50" id="k5G-uk-LNs"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tvLabel" destination="31B-UN-Jdf" id="5a9-cs-ja4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mja-wG-Pc1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="733.58778625954199" y="850.70422535211276"/>
         </scene>
     </scenes>
     <resources>
@@ -576,8 +637,8 @@
         <image name="person.badge.plus" catalog="system" width="128" height="125"/>
         <image name="person.circle" catalog="system" width="128" height="123"/>
         <image name="round_call_end" width="24" height="24"/>
-        <image name="round_call_missed_black_24pt" width="24" height="24"/>
-        <image name="round_mobile_screen_share_black_24pt" width="24" height="24"/>
+        <image name="round_call_missed" width="24" height="24"/>
+        <image name="round_mobile_screen_share" width="24" height="24"/>
         <image name="round_person_24pt" width="24" height="24"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
