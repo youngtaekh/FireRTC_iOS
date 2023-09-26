@@ -86,22 +86,28 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let callType = userInfo[CALL_TYPE] as? String
         let sdp = userInfo[SDP] as? String
         let fcmToken = userInfo[FCM_TOKEN] as? String
+        let message = userInfo[MESSAGE] as? String
         print("didReceiveRemoteNotification(\(userId!) \(type!) \(callType!)")
         
         if (type != nil) {
             let callVM = CallViewModel.instance
             switch (SendFCM.FCMType(rawValue: type!)) {
                 case .Offer:
-                    receiveOffer(spaceId: spaceId!, callId: callId!, callType: callType!, userId: userId!, fcmToken: fcmToken!)
+                    receiveOffer(spaceId: spaceId, callId: callId, chatId: chatId, callType: callType!, userId: userId!, sdp: sdp, fcmToken: fcmToken!)
                 case .Answer:
-                    //get sdp from firertc
-                    if (callId != nil) {
-                        receiveAnswer(callId: callId!)
-                    }
+                    receiveAnswer(callId: callId, callType: callType!, sdp: sdp)
                 case .Cancel, .Decline, .Bye, .Busy:
-                    callVM.onTerminatedCall()
+                    if callType == Call.Category.MESSAGE.rawValue {
+                        MessageViewModel.instance.onTerminatedCall()
+                    } else {
+                        callVM.onTerminatedCall()
+                    }
                 case .Ice:
-                    callVM.addRemoteCandidate(sdp: sdp!)
+                    if callType == Call.Category.MESSAGE.rawValue {
+                        MessageViewModel.instance.addRemoteCandidate(sdp: sdp!)
+                    } else {
+                        callVM.addRemoteCandidate(sdp: sdp!)
+                    }
                 case .Message:
                     print("type is Message")
                 case .New:
@@ -118,30 +124,57 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
     
-    func receiveOffer(spaceId: String, callId: String, callType: String, userId: String, fcmToken: String) {
-        let callVM = CallViewModel.instance
-        CallRepository.getCall(id: callId) { result in
-            switch (result) {
-                case .success(let call):
-                    if call.sdp != nil {
-                        callVM.onIncomingCall(spaceId: spaceId, type: callType, counterpartId: userId, fcmToken: fcmToken, remoteSDP: call.sdp!)
-                    }
-                case .failure(let err):
-                    print("failure \(err)")
+    func receiveOffer(spaceId: String?, callId: String?, chatId: String?, callType: String, userId: String, sdp: String?, fcmToken: String) {
+        if (CallViewModel.instance.space != nil) {
+            let category = Call.Category(rawValue: callType) ?? .AUDIO
+            SendFCM.sendMessage(payload: SendFCM.getPayload(to: fcmToken, type: .Busy, callType: category))
+            SpaceRepository.getSpace(id: spaceId!) { result in
+                switch (result) {
+                    case .success(let space):
+                        print("getSpace success \(space)")
+                        CallViewModel.instance.busy()
+                    case .failure(let err):
+                        print("getSpace failure \(err)")
+                }
+            }
+            let call = Call(spaceId: spaceId!, type: category, direction: .Answer, terminated: true)
+            SpaceRepository.addCallList(spaceId: spaceId!, callId: call.id)
+            CallRepository.post(call: call) { err in
+                if err != nil {
+                    print("post call failure \(err!)")
+                }
+            }
+        } else if (callType == Call.Category.MESSAGE.rawValue) {
+            MessageViewModel.instance.onIncomingCall(userId: userId, chatId: chatId, message: nil, sdp: sdp, fcmToken: fcmToken)
+        } else {
+            let callVM = CallViewModel.instance
+            CallRepository.getCall(id: callId!) { result in
+                switch (result) {
+                    case .success(let call):
+                        if call.sdp != nil {
+                            callVM.onIncomingCall(spaceId: spaceId!, type: callType, counterpartId: userId, fcmToken: fcmToken, remoteSDP: call.sdp!)
+                        }
+                    case .failure(let err):
+                        print("failure \(err)")
+                }
             }
         }
     }
     
-    func receiveAnswer(callId: String) {
-        let callVM = CallViewModel.instance
-        CallRepository.getCall(id: callId) { result in
-            switch (result) {
-                case .success(let call):
-                    if call.sdp != nil {
-                        callVM.onAnswerCall(isOffer: false, sdp: call.sdp!)
-                    }
-                case .failure(let err):
-                    print("failure \(err)")
+    func receiveAnswer(callId: String?, callType: String, sdp: String?) {
+        if (callType == Call.Category.MESSAGE.rawValue) {
+            MessageViewModel.instance.onAnswerCall(sdp: sdp)
+        } else {
+            let callVM = CallViewModel.instance
+            CallRepository.getCall(id: callId!) { result in
+                switch (result) {
+                    case .success(let call):
+                        if call.sdp != nil {
+                            callVM.onAnswerCall(isOffer: false, sdp: call.sdp!)
+                        }
+                    case .failure(let err):
+                        print("failure \(err)")
+                }
             }
         }
     }
@@ -156,5 +189,15 @@ extension AppDelegate: MessagingDelegate {
             SharedPreference.instance.setFcmToken(token: fcmToken!)
         }
     }
+}
 
+extension UIViewController {
+    func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                 action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

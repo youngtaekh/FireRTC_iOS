@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		59CBEDDA5FCD2FAE3A6A467F /* Pods_FireRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D50CF2385D81ADD859B4AE4A /* Pods_FireRTC.framework */; };
+		6F042BA42AA1AB7F00F62AB7 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F042BA32AA1AB7F00F62AB7 /* MessageController.swift */; };
+		6F042BA62AA1BEE000F62AB7 /* SendMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F042BA52AA1BEE000F62AB7 /* SendMessageCell.swift */; };
+		6F042BA82AA1BEF100F62AB7 /* RecvMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F042BA72AA1BEF100F62AB7 /* RecvMessageCell.swift */; };
+		6F042BAA2AA1C2FE00F62AB7 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F042BA92AA1C2FE00F62AB7 /* MessageViewModel.swift */; };
 		6F0444852A83109A00429CD1 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0444842A83109A00429CD1 /* AudioCallController.swift */; };
 		6F0444882A846D6F00429CD1 /* RTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0444872A846D6F00429CD1 /* RTPManager.swift */; };
 		6F04448A2A847F3100429CD1 /* DefaultValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0444892A847F3100429CD1 /* DefaultValues.swift */; };
@@ -27,6 +31,7 @@
 		6F13DF452A7A141300417063 /* HistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF442A7A141300417063 /* HistoryController.swift */; };
 		6F13DF472A7B6CAF00417063 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF462A7B6CAF00417063 /* HistoryTableViewCell.swift */; };
 		6F13DF492A7C931500417063 /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF482A7C931500417063 /* DateTableViewCell.swift */; };
+		6F19CF4A2ABC0D3E0010998E /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19CF492ABC0D3E0010998E /* TestController.swift */; };
 		6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */; };
 		6FE0FAA42A64E1BB0038CA5D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */; };
 		6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA52A64E1BB0038CA5D /* ViewController.swift */; };
@@ -54,6 +59,10 @@
 
 /* Begin PBXFileReference section */
 		24855B697B0EF127504DC185 /* Pods-FireRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FireRTC.release.xcconfig"; path = "Target Support Files/Pods-FireRTC/Pods-FireRTC.release.xcconfig"; sourceTree = "<group>"; };
+		6F042BA32AA1AB7F00F62AB7 /* MessageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
+		6F042BA52AA1BEE000F62AB7 /* SendMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageCell.swift; sourceTree = "<group>"; };
+		6F042BA72AA1BEF100F62AB7 /* RecvMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecvMessageCell.swift; sourceTree = "<group>"; };
+		6F042BA92AA1C2FE00F62AB7 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		6F0444842A83109A00429CD1 /* AudioCallController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCallController.swift; sourceTree = "<group>"; };
 		6F0444872A846D6F00429CD1 /* RTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTPManager.swift; sourceTree = "<group>"; };
 		6F0444892A847F3100429CD1 /* DefaultValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValues.swift; sourceTree = "<group>"; };
@@ -73,6 +82,7 @@
 		6F13DF442A7A141300417063 /* HistoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryController.swift; sourceTree = "<group>"; };
 		6F13DF462A7B6CAF00417063 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		6F13DF482A7C931500417063 /* DateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
+		6F19CF492ABC0D3E0010998E /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		6FE0FA9E2A64E1BB0038CA5D /* FireRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				6F0D632A2A8E071F00BFE216 /* CallViewModel.swift */,
+				6F042BA92AA1C2FE00F62AB7 /* MessageViewModel.swift */,
 			);
 			path = vm;
 			sourceTree = "<group>";
@@ -213,6 +224,8 @@
 				6FE0FAC92A67D3610038CA5D /* SettingController.swift */,
 				6FE0FABA2A661F060038CA5D /* SignController.swift */,
 				6F04BCA02A943410006FF64F /* IncomingController.swift */,
+				6F042BA32AA1AB7F00F62AB7 /* MessageController.swift */,
+				6F19CF492ABC0D3E0010998E /* TestController.swift */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -261,6 +274,8 @@
 				6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */,
 				6F13DF462A7B6CAF00417063 /* HistoryTableViewCell.swift */,
 				6F13DF482A7C931500417063 /* DateTableViewCell.swift */,
+				6F042BA52AA1BEE000F62AB7 /* SendMessageCell.swift */,
+				6F042BA72AA1BEF100F62AB7 /* RecvMessageCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -385,6 +400,7 @@
 				6FE0FAD62A6900780038CA5D /* ContactTableViewCell.swift in Sources */,
 				6F13DF472A7B6CAF00417063 /* HistoryTableViewCell.swift in Sources */,
 				6F04448A2A847F3100429CD1 /* DefaultValues.swift in Sources */,
+				6F042BAA2AA1C2FE00F62AB7 /* MessageViewModel.swift in Sources */,
 				6F0444882A846D6F00429CD1 /* RTPManager.swift in Sources */,
 				6FE0FAC02A66523A0038CA5D /* SharedPreference.swift in Sources */,
 				6FE0FAC82A67BC8F0038CA5D /* Crypto.swift in Sources */,
@@ -397,10 +413,12 @@
 				6FE0FAB72A661D510038CA5D /* HomeController.swift in Sources */,
 				6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */,
 				6F13DF412A78E07A00417063 /* SpaceRepository.swift in Sources */,
+				6F19CF4A2ABC0D3E0010998E /* TestController.swift in Sources */,
 				6FE0FAD82A69008C0038CA5D /* SettingTableViewCell.swift in Sources */,
 				6FFD550D2A6F58E800C35268 /* Relation.swift in Sources */,
 				6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */,
 				6F13DF3F2A78DEAD00417063 /* CallRepository.swift in Sources */,
+				6F042BA82AA1BEF100F62AB7 /* RecvMessageCell.swift in Sources */,
 				6FE0FAC62A6761250038CA5D /* User.swift in Sources */,
 				6FE0FABB2A661F060038CA5D /* SignController.swift in Sources */,
 				6FE0FADA2A69022B0038CA5D /* ContactController.swift in Sources */,
@@ -412,12 +430,14 @@
 				6F04448E2A86137A00429CD1 /* RTPMedia.swift in Sources */,
 				6F04BCA12A943410006FF64F /* IncomingController.swift in Sources */,
 				6F13DF452A7A141300417063 /* HistoryController.swift in Sources */,
+				6F042BA62AA1BEE000F62AB7 /* SendMessageCell.swift in Sources */,
 				6FFD55132A725B1F00C35268 /* Space.swift in Sources */,
 				6F0D632B2A8E071F00BFE216 /* CallViewModel.swift in Sources */,
 				6F04448C2A85B3BD00429CD1 /* Utils.swift in Sources */,
 				6F13DF372A7885A600417063 /* Call.swift in Sources */,
 				6F0D63282A8DABE800BFE216 /* SendFCM.swift in Sources */,
 				6FE0FAA42A64E1BB0038CA5D /* SceneDelegate.swift in Sources */,
+				6F042BA42AA1AB7F00F62AB7 /* MessageController.swift in Sources */,
 				6FFD550B2A6E0FEE00C35268 /* MoveTo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

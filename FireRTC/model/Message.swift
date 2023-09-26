@@ -21,8 +21,8 @@ class Message: Decodable {
     var timeFlag = true
     var createdAt: Date? = nil
     
-    init(chatId: String, body: String) {
-        self.from = SharedPreference.instance.getID()
+    init(from: String = SharedPreference.instance.getID(), chatId: String, body: String) {
+        self.from = from
         self.chatId = chatId
         self.id = "\(from)\(chatId)\(Date().timeIntervalSince1970)"
         self.body = body

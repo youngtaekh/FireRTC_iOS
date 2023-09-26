@@ -27,6 +27,12 @@ class HistoryController: UIViewController {
         getCalls()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("\(TAG) \(#function)")
+        
+        getCalls()
+    }
+    
     private func getCalls() {
         CallRepository.getByUserId(
             userId: SharedPreference.instance.getID()
@@ -47,9 +53,6 @@ class HistoryController: UIViewController {
                     self.calls.append(call)
                     prevDate = call.createdAt
                     print("\(self.TAG) getCallByUserId call \(call.toString())")
-                    if call.terminatedAt == nil {
-                        print("ter at nil")
-                    }
                 }
             }
             self.reload()
@@ -106,6 +109,7 @@ extension HistoryController: UITableViewDelegate, UITableViewDataSource {
             if (calls.isEmpty) {
                 cell.tvTitle.text = "Empty!"
             } else {
+                print("\(TAG) counterpartName \(call.counterpartName)")
                 cell.tvTitle.text = call.counterpartName
                 switch (call.type) {
                     case .AUDIO:

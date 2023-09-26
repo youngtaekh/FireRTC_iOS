@@ -39,8 +39,13 @@ class ProfileController: UIViewController {
         controller.user = self.user
     }
     
+    @IBAction func startMessage(_ sender: Any) {
+        MessageViewModel.instance.participant = self.user
+        let _ = MoveTo.controller(ui: self, identifier: MoveTo.messageIdentifier)
+    }
+    
     @IBAction func test(_ sender: Any) {
         print("\(TAG) test")
-        SendFCM.sendMessage(payload: SendFCM.getPayload(to: user!.fcmToken!, type: .Offer, callType: .AUDIO))
+        MoveTo.controller(ui: self, identifier: MoveTo.testIdentifier)
     }
 }

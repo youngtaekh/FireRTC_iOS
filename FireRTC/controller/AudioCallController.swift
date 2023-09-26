@@ -19,8 +19,6 @@ class AudioCallController: UIViewController {
     
     var user: User!
     
-    let rtpManager = RTPManager()
-    
     var terminated: Bool? {
         didSet {
             print("terminated didSet")

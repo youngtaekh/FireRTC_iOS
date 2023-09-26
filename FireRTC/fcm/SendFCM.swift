@@ -46,11 +46,12 @@ class SendFCM {
         callId: String? = nil,
         chatId: String? = nil,
         messageId: String? = nil,
+        targetOS: String? = nil,
         sdp: String? = nil,
         message: String? = nil
     ) -> Payload {
         let notification = Notification(title: "Notification Title", body: "Notification Body")
-        let data = Data(content_available: true, userId: SharedPreference.instance.getID(), name: SharedPreference.instance.getName(), type: type.rawValue, callType: callType.rawValue, fcmToken: SharedPreference.instance.getFcmToken(), callId: callId, spaceId: spaceId, chatId: chatId, messageId: messageId, sdp: sdp, message: message)
+        let data = Data(content_available: true, userId: SharedPreference.instance.getID(), name: SharedPreference.instance.getName(), type: type.rawValue, callType: callType.rawValue, fcmToken: SharedPreference.instance.getFcmToken(), callId: callId, spaceId: spaceId, chatId: chatId, messageId: messageId, targetOS: targetOS, sdp: sdp, message: message)
         let payload = Payload(to: to, data: data, notification: notification)
         return payload
     }
@@ -66,6 +67,7 @@ class SendFCM {
         let spaceId: String?
         let chatId: String?
         let messageId: String?
+        let targetOS: String?
         let sdp: String?
         let message: String?
     }

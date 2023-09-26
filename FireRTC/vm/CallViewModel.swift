@@ -18,7 +18,6 @@ class CallViewModel {
     var rtpManager = RTPManager()
     var isOffer = true
     var remoteSDP: String? = nil
-    var remoteICE = [String]()
     
     var controllerEvent: ControllerEvent!
     
@@ -33,29 +32,27 @@ extension CallViewModel {
         rtpManager = RTPManager()
         
         self.remoteSDP = nil
-        self.remoteICE = [String]()
     }
     
     func startCall(callType: Call.Category, counterpart: User) {
         self.isOffer = true
         self.space = Space(callType: callType)
-        self.call = Call(spaceId: self.space!.id, type: callType, direction: .Offer)
+        self.call = Call(spaceId: self.space!.id, counterpartName: counterpart.name, type: callType, direction: .Offer)
         self.counterpart = counterpart
         self.space?.calls.append(self.call.id)
         postSpace()
-        postCall() {
-            self.rtpManager.start(
-                isAudio: callType == .AUDIO,
-                isVideo: callType == .VIDEO || callType == .SCREEN,
-                isScreen: callType == .SCREEN,
-                isOffer: true,
-                rtpListener: self
-            )
-        }
+        postCall()
+        rtpManager.start(
+            isAudio: callType == .AUDIO,
+            isVideo: callType == .VIDEO || callType == .SCREEN,
+            isScreen: callType == .SCREEN,
+            isDataChannel: callType == .MESSAGE,
+            isOffer: true,
+            rtpListener: self
+        )
     }
     
     func addRemoteCandidate(sdp: String) {
-        remoteICE.append(sdp)
         rtpManager.addRemoteCandidate(sdp: sdp)
     }
     
@@ -64,9 +61,14 @@ extension CallViewModel {
             isAudio: self.call.type == .AUDIO,
             isVideo: self.call.type == .VIDEO || self.call.type == .SCREEN,
             isScreen: self.call.type == .SCREEN,
+            isDataChannel: self.call.type == .MESSAGE,
             isOffer: false,
             remoteSDP: self.remoteSDP,
             rtpListener: self)
+    }
+    
+    func busy() {
+        endCall(type: .Busy)
     }
     
     func endCall(type: SendFCM.FCMType = .Bye) {
@@ -87,7 +89,6 @@ extension CallViewModel {
     func onIncomingCall(spaceId: String, type: String, counterpartId: String, fcmToken: String, remoteSDP: String) {
         self.isOffer = false
         self.remoteSDP = remoteSDP
-        let isBusy = self.space != nil
         self.call = Call(
             spaceId: spaceId,
             type: Call.Category.init(rawValue: type)!,
@@ -97,13 +98,10 @@ extension CallViewModel {
             self.updateCallList()
             self.updateParticipantList()
         }
-        postCall() {
-            if (isBusy) {
-                self.endCall(type: .Busy)
-            } else {
-                self.getUser(id: counterpartId) {
-                    MoveTo.toIncomingCallVC(spaceId: spaceId, callType: self.call.type)
-                }
+        getUser(id: counterpartId) {
+            self.call!.counterpartName = self.counterpart!.name
+            self.postCall() {
+                MoveTo.toIncomingCallVC(spaceId: spaceId, callType: self.call.type)
             }
         }
     }
@@ -176,40 +174,34 @@ extension CallViewModel {
         }
     }
     
-    private func postCall(handler: @escaping () -> Void) {
+    private func postCall(handler: (() -> Void)? = nil) {
         CallRepository.post(call: call!) { err in
             if let err = err {
                 print("\(self.TAG) call post error \(err)")
             } else {
-                handler()
+                if (handler != nil) {
+                    handler!()
+                }
             }
         }
     }
     
     private func updateCallList() {
-        SpaceRepository.addCallList(spaceId: space!.id, callId: call!.id) { err in
-            if let err = err {
-                print("\(self.TAG) addCallList Error \(err)")
-            }
-        }
+        SpaceRepository.addCallList(spaceId: space!.id, callId: call!.id)
     }
     
     private func updateParticipantList() {
-        SpaceRepository.addParticipantList(spaceId: space!.id) { err in
-            if let err = err {
-                print("\(self.TAG) addParticipant Error \(err)")
-            }
-        }
+        SpaceRepository.addParticipantList(spaceId: space!.id)
     }
     
     private func getUser(id: String, handler: @escaping () -> Void) {
         UserRepository.getUser(id: id) { result in
-            switch (result) {
-                case .success(let counterpart):
-                    self.counterpart = counterpart
+            switch result {
+                case .success(let user):
+                    self.counterpart = user
                     handler()
                 case .failure(let err):
-                    print("getUser failure \(err)")
+                    print("\(self.TAG) getUser Failure \(err)")
             }
         }
     }

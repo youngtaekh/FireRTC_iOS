@@ -25,7 +25,7 @@ class Call: Decodable {
     var createdAt: Date? = nil
     var terminatedAt: Date? = nil
     
-    let counterpartName: String?
+    var counterpartName: String?
     let type: Category
     let direction: Direction
     var connected: Bool

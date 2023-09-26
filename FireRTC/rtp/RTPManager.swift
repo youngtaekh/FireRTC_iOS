@@ -8,7 +8,7 @@
 import Foundation
 import WebRTC
 
-class RTPManager: NSObject, RTCPeerConnectionDelegate {
+class RTPManager: NSObject {
     private let TAG = "RTPManager"
     
     private let defaultSTUNServerUrl = "stun:stun.l.google.com:19302"
@@ -38,6 +38,9 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     var remoteICE = [String]()
     var defaultAudioSender: RTCRtpSender!
     var defaultAudioTrack: RTCMediaStreamTrack!
+    
+    var dc: RTCDataChannel!
+    var sendDataChannel: RTCDataChannel!
     
     var rtpListener: RTPListener?
     
@@ -73,6 +76,18 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
         }
         if (self.isVideo) {
             pc?.add(RTPMedia().createVideoTrack(factory: self.factory!), streamIds: ["ARDAMS"])
+        }
+        
+        if (self.isDataChannel) {
+            let config = RTCDataChannelConfiguration()
+            config.isOrdered = DefaultValues.isOrdered
+            config.isNegotiated = DefaultValues.isNegotiated
+            config.maxRetransmits = DefaultValues.maxRetransmitPreference
+            config.maxPacketLifeTime = DefaultValues.maxRetransmitTimeMs
+            config.channelId = DefaultValues.dataId
+            config.protocol = DefaultValues.subProtocol
+            self.sendDataChannel = pc.dataChannel(forLabel: "message data", configuration: config)!
+//            self.sendDataChannel.delegate = self
         }
         
         if isOffer {
@@ -183,7 +198,10 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
         var mandatory = [String: String]()
         mandatory["OfferToReceiveAudio"] = String(self.isAudio)
         mandatory["OfferToReceiveVideo"] = String(self.isVideo)
-        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: nil)
+        var optional = [String: String]()
+        optional["DtlsSrtpKeyAgreement"] = kRTCMediaConstraintsValueTrue
+        optional["RtpDataChannels"] = String(self.isDataChannel)
+        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: optional)
         self.pc!.offer(for: constraints) { sdp, err in
             if let error = err {
                 print("\(self.TAG) createOffer Error!!!!!!!!!!!!! \(error)")
@@ -202,7 +220,10 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
         var mandatory = [String: String]()
         mandatory["OfferToReceiveAudio"] = String(self.isAudio)
         mandatory["OfferToReceiveVideo"] = String(self.isVideo)
-        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: nil)
+        var optional = [String: String]()
+        optional["DtlsSrtpKeyAgreement"] = kRTCMediaConstraintsValueTrue
+        optional["RtpDataChannels"] = String(self.isDataChannel)
+        let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: optional)
         self.pc?.answer(for: constraints) { sdp, err in
             if let error = err {
                 print("\(self.TAG) createAnswer Error!!!! \(error)")
@@ -214,7 +235,13 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     
     private func onCreateSuccess(sdp: RTCSessionDescription?) {
         self.rtpListener?.onDescriptionSuccess(type: sdp!.type.rawValue, sdp: sdp!.sdp)
-        self.pc.setLocalDescription(sdp!)
+        self.pc.setLocalDescription(sdp!) { err in
+            if err == nil {
+                print("setLocalDescription success")
+            } else {
+                print("setLocalDescription failure \(err!)")
+            }
+        }
     }
     
     func muteAudio() {
@@ -235,7 +262,16 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
         pc?.add(defaultAudioTrack ?? RTPMedia().createAudioTrack(factory: self.factory!), streamIds: defaultAudioSender.streamIds)
     }
     
-    // PeerConnection Delegate
+    func sendData(msg: String) {
+        print("\(TAG) sendData msg \(msg)")
+        let buffer = RTCDataBuffer(data: msg.data(using: .utf8)!, isBinary: false)
+        
+        self.sendDataChannel.sendData(buffer)
+    }
+}
+
+extension RTPManager: RTCPeerConnectionDelegate {
+
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
         switch (stateChanged) {
             case .stable:
@@ -318,5 +354,25 @@ class RTPManager: NSObject, RTCPeerConnectionDelegate {
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
         print("\(TAG) \(#function) dataChannel")
+        self.dc = dataChannel
+        self.dc.delegate = self
+    }
+}
+
+extension RTPManager: RTCDataChannelDelegate {
+    func dataChannelDidChangeState(_ dataChannel: RTCDataChannel) {
+        print("\(TAG) \(#function) label \(dataChannel.label), state \(dataChannel.readyState)")
+    }
+    
+    func dataChannel(_ dataChannel: RTCDataChannel, didReceiveMessageWith buffer: RTCDataBuffer) {
+        print("\(TAG) \(#function) label \(dataChannel.label), state \(dataChannel.readyState)")
+        if (buffer.isBinary) {
+            print("Received binary msg over \(dataChannel)")
+            return
+        }
+        let data = buffer.data
+        let message = String(decoding: data, as: UTF8.self)
+        print("data \(message)")
+        rtpListener?.onMessage(message: message)
     }
 }

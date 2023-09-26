@@ -8,10 +8,17 @@
 import Foundation
 
 class DefaultValues {
-    static let isAudio: Bool = true
-    static let isVideo: Bool = true
-    static let isScreen: Bool = true
-    static let isDataChannel: Bool = true
-    static let enableStat: Bool = true
-    static let recordAudio: Bool = true
+    static let isAudio: Bool = false
+    static let isVideo: Bool = false
+    static let isScreen: Bool = false
+    static let isDataChannel: Bool = false
+    static let enableStat: Bool = false
+    static let recordAudio: Bool = false
+    
+    static let isOrdered = true
+    static let isNegotiated = false
+    static let maxRetransmitTimeMs: Int32 = -1
+    static let maxRetransmitPreference: Int32 = -1
+    static let dataId: Int32 = -1
+    static let subProtocol = ""
 }

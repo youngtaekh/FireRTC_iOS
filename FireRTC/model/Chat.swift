@@ -24,7 +24,7 @@ class Chat: Decodable {
     
     init(title: String, participants: [String]) {
         if (participants.count > 1) {
-            self.id = "\(participants[0])\(participants[1])"
+            self.id = "\(participants[0])\(participants[1])".sha256()
         } else {
             self.id = ""
         }

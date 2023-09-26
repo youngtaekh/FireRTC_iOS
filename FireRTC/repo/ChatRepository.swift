@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class ChatRepository {
     private static let TAG = "ChatRepository"
@@ -18,10 +19,10 @@ class ChatRepository {
             .setData(chat.toMap(), completion: completion)
     }
     
-    static func getChat(id: String, completion: @escaping (DocumentSnapshot?, Error?) -> Void) {
+    static func getChat(id: String, completion: @escaping (Result<Chat, Error>) -> Void) {
         Firestore.firestore().collection(COLLECTION)
             .document(id)
-            .getDocument(completion: completion)
+            .getDocument(as: Chat.self, completion: completion)
     }
     
     static func getChats(participantId: String, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
