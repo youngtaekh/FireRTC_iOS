@@ -1,14 +1,15 @@
 //
-//  SendMessageCell.swift
+//  Recv2TableViewCell.swift
 //  FireRTC
 //
-//  Created by young on 2023/09/01.
+//  Created by young on 2023/10/10.
 //
 
 import UIKit
 
-class SendMessageCell: UITableViewCell {
-    @IBOutlet weak var tvMessage: UILabel!
+class Recv2TableViewCell: UITableViewCell {
+
+    @IBOutlet weak var tvMessage: PaddingLabel!
     @IBOutlet weak var tvTime: UILabel!
     
     override func awakeFromNib() {

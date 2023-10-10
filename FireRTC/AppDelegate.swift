@@ -109,7 +109,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                         callVM.addRemoteCandidate(sdp: sdp!)
                     }
                 case .Message:
-                    print("type is Message")
+                    print("type is Message \(String(describing: message))")
                 case .New:
                     print("type is New")
                 case .Leave:

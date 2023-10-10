@@ -39,19 +39,14 @@ extension MessageViewModel {
     }
     
     func start(completion: @escaping () -> Void) {
+        self.isOffer = true
         var ids = [String]()
         ids.append(participant.id)
         ids.append(SharedPreference.instance.getID())
-        for id in ids {
-            print("id \(id)")
-        }
         ids.sort()
-        for id in ids {
-            print("id \(id)")
-        }
         self.chat = Chat(title: participant.name, participants: ids)
         getChat(id: self.chat!.id) {
-            self.rtpManager.start(isDataChannel: true, isOffer: true, rtpListener: self)
+            self.rtpManager.start(isDataChannel: true, isOffer: self.isOffer, rtpListener: self)
             completion()
         }
     }
@@ -72,6 +67,8 @@ extension MessageViewModel {
     
     func sendData(msg: String) {
         let message = Message(chatId: self.chat!.id, body: msg)
+        message.createdAt = Date.now
+        print("\(TAG) chatId \(self.chat!.id)")
         self.messageMap[self.chat!.id]?.append(message)
         if (!isTerminated && isConnected) {
             rtpManager.sendData(msg: msg)
@@ -198,6 +195,8 @@ extension MessageViewModel: RTPListener {
     func onMessage(message: String) {
         print("\(TAG) \(#function)")
         let msg = Message(from: participant.id, chatId: self.chat!.id, body: message)
+        msg.createdAt = Date.now
+        print("\(TAG) chatId \(self.chat!.id)")
         self.messageMap[self.chat!.id]?.append(msg)
         messageEvent?.onMessageReceived(msg: message)
     }

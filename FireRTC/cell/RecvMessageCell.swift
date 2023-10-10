@@ -9,10 +9,14 @@ import UIKit
 
 class RecvMessageCell: UITableViewCell {
     @IBOutlet weak var tvMessage: UILabel!
+    @IBOutlet weak var tvName: UILabel!
+    @IBOutlet weak var tvTime: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.tvMessage.clipsToBounds = true
+        self.tvMessage.layer.cornerRadius = 15
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

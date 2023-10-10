@@ -49,6 +49,8 @@
 		6FE0FAD62A6900780038CA5D /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD52A6900780038CA5D /* ContactTableViewCell.swift */; };
 		6FE0FAD82A69008C0038CA5D /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */; };
 		6FE0FADA2A69022B0038CA5D /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAD92A69022B0038CA5D /* ContactController.swift */; };
+		6FFA408E2AD5188C00612F45 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA408D2AD5188C00612F45 /* PaddingLabel.swift */; };
+		6FFA40902AD51EB000612F45 /* Recv2TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA408F2AD51EB000612F45 /* Recv2TableViewCell.swift */; };
 		6FFD550B2A6E0FEE00C35268 /* MoveTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */; };
 		6FFD550D2A6F58E800C35268 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550C2A6F58E800C35268 /* Relation.swift */; };
 		6FFD550F2A6F5BA200C35268 /* RelationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD550E2A6F5BA200C35268 /* RelationRepository.swift */; };
@@ -102,6 +104,8 @@
 		6FE0FAD52A6900780038CA5D /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		6FE0FAD72A69008C0038CA5D /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		6FE0FAD92A69022B0038CA5D /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
+		6FFA408D2AD5188C00612F45 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		6FFA408F2AD51EB000612F45 /* Recv2TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recv2TableViewCell.swift; sourceTree = "<group>"; };
 		6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveTo.swift; sourceTree = "<group>"; };
 		6FFD550C2A6F58E800C35268 /* Relation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
 		6FFD550E2A6F5BA200C35268 /* RelationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationRepository.swift; sourceTree = "<group>"; };
@@ -237,6 +241,7 @@
 				6FE0FAC72A67BC8F0038CA5D /* Crypto.swift */,
 				6FFD550A2A6E0FEE00C35268 /* MoveTo.swift */,
 				6F04448B2A85B3BD00429CD1 /* Utils.swift */,
+				6FFA408D2AD5188C00612F45 /* PaddingLabel.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 				6F13DF482A7C931500417063 /* DateTableViewCell.swift */,
 				6F042BA52AA1BEE000F62AB7 /* SendMessageCell.swift */,
 				6F042BA72AA1BEF100F62AB7 /* RecvMessageCell.swift */,
+				6FFA408F2AD51EB000612F45 /* Recv2TableViewCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -423,11 +429,13 @@
 				6FE0FABB2A661F060038CA5D /* SignController.swift in Sources */,
 				6FE0FADA2A69022B0038CA5D /* ContactController.swift in Sources */,
 				6FE0FACA2A67D3610038CA5D /* SettingController.swift in Sources */,
+				6FFA40902AD51EB000612F45 /* Recv2TableViewCell.swift in Sources */,
 				6FE0FAC32A6760FF0038CA5D /* UserRepository.swift in Sources */,
 				6F13DF392A7896D900417063 /* Chat.swift in Sources */,
 				6F13DF3B2A78D36F00417063 /* Message.swift in Sources */,
 				6F13DF3D2A78DEA100417063 /* ChatRepository.swift in Sources */,
 				6F04448E2A86137A00429CD1 /* RTPMedia.swift in Sources */,
+				6FFA408E2AD5188C00612F45 /* PaddingLabel.swift in Sources */,
 				6F04BCA12A943410006FF64F /* IncomingController.swift in Sources */,
 				6F13DF452A7A141300417063 /* HistoryController.swift in Sources */,
 				6F042BA62AA1BEE000F62AB7 /* SendMessageCell.swift in Sources */,

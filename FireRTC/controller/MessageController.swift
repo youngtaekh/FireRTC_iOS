@@ -47,18 +47,14 @@ class MessageController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 70.0
+//        tableView.rowHeight = 70.0
 //        tableView.keyboardDismissMode = .onDrag
 //        addTapGesture()
 
         messageVM.controllerEvent = self
         messageVM.messageEvent = self
-        if messageVM.isOffer {
-            messageVM.start() {
-                self.addInitData()
-            }
-        } else {
-            messageVM.answerCall()
+        messageVM.start() {
+            self.addInitData()
         }
 
         tvTitle.text = messageVM.participant.name
@@ -134,12 +130,15 @@ class MessageController: UIViewController {
     
     private func addInitData() {
         print("\(TAG) \(#function)")
+        print("\(TAG) chatId \(MessageViewModel.instance.chat!.id)")
         for i in 0..<100 {
             if i % 3 == 0 {
                 let message = Message(from: SharedPreference.instance.getID(), chatId: MessageViewModel.instance.chat!.id, body: "sample \(i)")
+                message.createdAt = Date.now
                 MessageViewModel.instance.messageMap[MessageViewModel.instance.chat!.id]?.append(message)
             } else {
                 let message = Message(from: MessageViewModel.instance.participant.id, chatId: MessageViewModel.instance.chat!.id, body: "sample \(i)")
+                message.createdAt = Date.now
                 MessageViewModel.instance.messageMap[MessageViewModel.instance.chat!.id]?.append(message)
             }
         }
@@ -230,14 +229,32 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        print("\(TAG) \(#function)")
         let message = self.messageVM.messageList[indexPath.row]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "aa hh:mm"
         if (message.from == SharedPreference.instance.getID()) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendMessageCell", for: indexPath) as! SendMessageCell
             cell.tvMessage.text = "\(message.body) \(indexPath.row)"
+            if message.createdAt != nil {
+                cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
+            }
             return cell
         }
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RecvMessageCell", for: indexPath) as! RecvMessageCell
-        cell.tvMessage.text = "\(message.body) \(indexPath.row)"
-        return cell
+        if (indexPath.row == 0 || self.messageVM.messageList[indexPath.row - 1].from == SharedPreference.instance.getID()) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecvMessageCell", for: indexPath) as! RecvMessageCell
+            cell.tvName.text = messageVM.participant.name
+            cell.tvMessage.text = "\(message.body) \(indexPath.row)"
+            if message.createdAt != nil {
+                cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
+            }
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Recv2MessageCell", for: indexPath) as! Recv2TableViewCell
+            cell.tvMessage.text = "\(message.body) \(indexPath.row)"
+            if message.createdAt != nil {
+                cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
+            }
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -264,15 +281,15 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        print("\(TAG) \(#function)")
-        if (indexPath.row > 100) {
-            totalHeight += 100.0
-            return 100.0
-        }
-        totalHeight += 70.0
-        return 70.0
-    }
+//        if (indexPath.row > 100) {
+//            totalHeight += 100.0
+//            return 100.0
+//        }
+//        totalHeight += 70.0
+//        return 70.0
+//    }
 }
 
 extension MessageController: ControllerEvent {

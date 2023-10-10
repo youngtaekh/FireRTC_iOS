@@ -84,7 +84,7 @@ class HomeController: UITabBarController {
         let _ = MoveTo.controller(ui: self, identifier: MoveTo.addContactIdentifier, action: true)
     }
     
-    func requestMicrophonePermission(){
+    func requestMicrophonePermission() {
         AVAudioSession.sharedInstance().requestRecordPermission({(granted: Bool)-> Void in
             if granted {
                 print("Mic: 권한 허용")
@@ -94,7 +94,7 @@ class HomeController: UITabBarController {
         })
     }
     
-    func requestCameraPermission(){
+    func requestCameraPermission() {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
             if granted {
                 print("Camera: 권한 허용")
