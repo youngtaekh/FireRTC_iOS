@@ -31,6 +31,7 @@ class RTPManager: NSObject {
     var factory: RTCPeerConnectionFactory!
     var pc: RTCPeerConnection!
     var iceServers = [RTCIceServer]()
+    let rtpMedia = RTPMedia()
     
 //    var localStream: RTCMediaStream?
     var localSDP: RTCSessionDescription?
@@ -71,12 +72,20 @@ class RTPManager: NSObject {
         self.rtpListener = rtpListener
         
         self.pc = factory!.peerConnection(with: defaultPCConfiguration(), constraints: defaultPCConstraints(), delegate: self)
+//        let localStream = self.factory!.mediaStream(withStreamId: "ARDAMS")
         if (self.isAudio) {
-            pc.add(RTPMedia().createAudioTrack(factory: self.factory!), streamIds: ["ARDAMS"])
+            let track = rtpMedia.createAudioTrack(factory: self.factory!)
+//            localStream.addAudioTrack(track)
+            pc.add(track, streamIds: ["ARDAMS"])
         }
         if (self.isVideo) {
-            pc?.add(RTPMedia().createVideoTrack(factory: self.factory!), streamIds: ["ARDAMS"])
+            let track = rtpMedia.createVideoTrack(factory: self.factory!)
+//            localStream.addVideoTrack(track)
+            pc?.add(track, streamIds: ["ARDAMS"])
+            self.startCapture()
+            self.rtpListener?.onLocalVideoTrack(track: track)
         }
+//        self.pc?.add(localStream)
         
         if (self.isDataChannel) {
             let config = RTCDataChannelConfiguration()
@@ -134,6 +143,20 @@ class RTPManager: NSObject {
             let candidate = RTCIceCandidate(sdp: ice, sdpMLineIndex: 0, sdpMid: "0")
             self.pc!.add(candidate)
         }
+    }
+    
+    func startCapture(isBack: Bool = false) {
+        print("\(TAG) \(#function)")
+        if isBack {
+            rtpMedia.startCaptureLocalVideo(cameraPositon: .back)
+        } else {
+            rtpMedia.startCaptureLocalVideo()
+        }
+    }
+    
+    func stopCapture() {
+        print("\(TAG) \(#function)")
+        rtpMedia.stopCapture()
     }
     
     private func defaultPCConfiguration() -> RTCConfiguration {
@@ -293,6 +316,12 @@ extension RTPManager: RTCPeerConnectionDelegate {
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didAdd stream: RTCMediaStream) {
         print("\(TAG) \(#function)")
+        print("\(TAG) \(#function) videoTrack.count \(stream.videoTracks.count)")
+        if stream.videoTracks.count > 0 {
+            DispatchQueue.main.async {
+                self.rtpListener?.onRemoteVideoTrack(track: stream.videoTracks[0])
+            }
+        }
     }
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove stream: RTCMediaStream) {

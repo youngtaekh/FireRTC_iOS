@@ -11,6 +11,7 @@ import FirebaseFirestore
 let USER_ID = "userId"
 let SPACE_ID = "spaceId"
 let CALL_ID = "callId"
+let CONNECTED_AT = "connectedAt"
 let COUNTERPART_NAME = "counterpartName"
 let CATEGORY = "type"
 let DIRECTION = "direction"
@@ -23,6 +24,7 @@ class Call: Decodable {
     let spaceId: String
     let fcmToken: String
     var createdAt: Date? = nil
+    var connectedAt: Date? = nil
     var terminatedAt: Date? = nil
     
     var counterpartName: String?
@@ -42,6 +44,7 @@ class Call: Decodable {
             spaceId: map[SPACE_ID] as! String,
             fcmToken: map[FCM_TOKEN] as! String,
             createdAt: (map[CREATED_AT] as! Timestamp).dateValue(),
+            connectedAt: (map[CONNECTED_AT] as? Timestamp)?.dateValue(),
             terminatedAt: (map[TERMINATED_AT] as? Timestamp)?.dateValue(),
             counterpartName: map[COUNTERPART_NAME] as? String,
             type: Category(rawValue: map[CATEGORY] as? String ?? Category.AUDIO.rawValue) ?? .AUDIO,
@@ -60,6 +63,7 @@ class Call: Decodable {
         spaceId: String,
         fcmToken: String = SharedPreference.instance.getFcmToken(),
         createdAt: Date? = nil,
+        connectedAt: Date? = nil,
         terminatedAt: Date? = nil,
         counterpartName: String? = nil,
         type: Category = .AUDIO,
@@ -75,6 +79,7 @@ class Call: Decodable {
         self.id = id ?? "\(userId)\(spaceId)\(Date().timeIntervalSince1970)".sha256()
         self.fcmToken = fcmToken
         self.createdAt = createdAt
+        self.connectedAt = connectedAt
         self.terminatedAt = terminatedAt
         
         self.type = type

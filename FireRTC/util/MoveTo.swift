@@ -13,6 +13,7 @@ class MoveTo {
     static let addContactIdentifier = "addContactVC"
     static let profileIdentifier = "profileVC"
     static let audioCallIdentifier = "audioCallVC"
+    static let videoCallIdentifier = "videoCallVC"
     static let messageIdentifier = "messageVC"
     static let testIdentifier = "testVC"
     

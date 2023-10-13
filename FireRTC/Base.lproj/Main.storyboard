@@ -511,6 +511,15 @@
                                     <action selector="startMessage:" destination="gfx-AU-kvx" eventType="touchUpInside" id="L4x-C0-zZA"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oKh-f9-K4s">
+                                <rect key="frame" x="35" y="309" width="68" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Video"/>
+                                <connections>
+                                    <action selector="startVideo:" destination="gfx-AU-kvx" eventType="touchUpInside" id="NFN-bK-qhh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ki2-JL-OcP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -746,14 +755,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SendMessageCell" id="dgb-dc-7UO" customClass="SendMessageCell" customModule="FireRTC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="98.333332061767578" width="393" height="47.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="98.333332061767578" width="393" height="27.666666030883789"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dgb-dc-7UO" id="hLL-Qx-4dg">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="27.666666030883789"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfN-OM-pbc" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
-                                                    <rect key="frame" x="311.66666666666669" y="5" width="61.333333333333314" height="40.666666666666664"/>
+                                                    <rect key="frame" x="331.66666666666669" y="5" width="41.333333333333314" height="20.666666666666668"/>
                                                     <color key="backgroundColor" red="0.50672974878427934" green="0.97874845128481081" blue="0.97322258981717691" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="263" id="RCQ-KS-jd7"/>
@@ -777,7 +786,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAs-Qo-juw">
-                                                    <rect key="frame" x="282" y="31.333333333333332" width="24.666666666666686" height="14.333333333333332"/>
+                                                    <rect key="frame" x="302" y="11.333333333333332" width="24.666666666666686" height="14.333333333333332"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -799,7 +808,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Recv2MessageCell" id="AKV-jb-QT6" customClass="Recv2TableViewCell" customModule="FireRTC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="146" width="393" height="27.666666030883789"/>
+                                        <rect key="frame" x="0.0" y="125.99999809265137" width="393" height="27.666666030883789"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AKV-jb-QT6" id="w1p-5Y-aax">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="27.666666030883789"/>
@@ -960,23 +969,290 @@
             </objects>
             <point key="canvasLocation" x="1500" y="850.70422535211276"/>
         </scene>
+        <!--Video Call Controller-->
+        <scene sceneID="has-dE-gDN">
+            <objects>
+                <viewController storyboardIdentifier="videoCallVC" id="FOP-xN-0vO" customClass="VideoCallController" customModule="FireRTC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="K4f-5X-HO8">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RbW-WB-IOj" customClass="RTCEAGLVideoView">
+                                <rect key="frame" x="0.0" y="179.66666666666663" width="393" height="493"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="493" id="15j-wS-2GO"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBe-0u-ra0" customClass="RTCEAGLVideoView">
+                                <rect key="frame" x="273" y="698" width="120" height="120"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="7ay-Ua-gzK"/>
+                                    <constraint firstAttribute="width" constant="120" id="i2k-oI-irS"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BYn-pa-ckD">
+                                <rect key="frame" x="0.0" y="59" width="393" height="70"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pan-Rw-Lb8">
+                                        <rect key="frame" x="0.0" y="0.0" width="98" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="98" id="gul-5j-Krk"/>
+                                            <constraint firstAttribute="height" constant="70" id="i5u-bw-KL0"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="mic.slash.fill" catalog="system">
+                                            <backgroundConfiguration key="background"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rightPadding">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="mute:" destination="FOP-xN-0vO" eventType="touchUpInside" id="6LX-wa-Ert"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifL-u0-Dew">
+                                        <rect key="frame" x="98" y="0.0" width="98" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="98" id="R0D-TW-IcY"/>
+                                            <constraint firstAttribute="height" constant="70" id="pLX-sE-9Ut"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="video.slash.fill" catalog="system">
+                                            <backgroundConfiguration key="background"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rightPadding">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="cameraMute:" destination="FOP-xN-0vO" eventType="touchUpInside" id="qCa-lY-MuR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m9Q-cL-hPa">
+                                        <rect key="frame" x="196" y="0.0" width="98" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="tjE-G9-29P"/>
+                                            <constraint firstAttribute="width" constant="98" id="y5l-Jg-6N5"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="camera.rotate.fill" catalog="system">
+                                            <backgroundConfiguration key="background"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rightPadding">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="cameraSwitch:" destination="FOP-xN-0vO" eventType="touchUpInside" id="1wR-se-Txl"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HDY-Rb-JSs">
+                                        <rect key="frame" x="294" y="0.0" width="99" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="KXX-9m-7p9"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="pip.fill" catalog="system">
+                                            <backgroundConfiguration key="background"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="rightPadding">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="changeScalingType:" destination="FOP-xN-0vO" eventType="touchUpInside" id="y2c-ZQ-KkK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.097960819471750823" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="m9Q-cL-hPa" firstAttribute="leading" secondItem="ifL-u0-Dew" secondAttribute="trailing" id="4me-Ga-8gd"/>
+                                    <constraint firstItem="m9Q-cL-hPa" firstAttribute="top" secondItem="BYn-pa-ckD" secondAttribute="top" id="5Z9-WX-tZD"/>
+                                    <constraint firstItem="pan-Rw-Lb8" firstAttribute="top" secondItem="BYn-pa-ckD" secondAttribute="top" id="Hfj-VR-TD1"/>
+                                    <constraint firstAttribute="bottom" secondItem="ifL-u0-Dew" secondAttribute="bottom" id="IWi-G0-4jo"/>
+                                    <constraint firstItem="pan-Rw-Lb8" firstAttribute="leading" secondItem="BYn-pa-ckD" secondAttribute="leading" id="Ihh-vA-uLx"/>
+                                    <constraint firstItem="ifL-u0-Dew" firstAttribute="leading" secondItem="pan-Rw-Lb8" secondAttribute="trailing" id="SJi-bc-fjK"/>
+                                    <constraint firstItem="ifL-u0-Dew" firstAttribute="top" secondItem="BYn-pa-ckD" secondAttribute="top" id="VMY-Zd-9jc"/>
+                                    <constraint firstAttribute="trailing" secondItem="HDY-Rb-JSs" secondAttribute="trailing" id="Xh1-1h-Tkg"/>
+                                    <constraint firstAttribute="bottom" secondItem="HDY-Rb-JSs" secondAttribute="bottom" id="Yur-Ob-qkP"/>
+                                    <constraint firstAttribute="bottom" secondItem="pan-Rw-Lb8" secondAttribute="bottom" id="fp7-Mm-GTR"/>
+                                    <constraint firstItem="HDY-Rb-JSs" firstAttribute="top" secondItem="BYn-pa-ckD" secondAttribute="top" id="i3m-fX-wqc"/>
+                                    <constraint firstAttribute="bottom" secondItem="m9Q-cL-hPa" secondAttribute="bottom" id="jD2-vU-Bsx"/>
+                                    <constraint firstItem="HDY-Rb-JSs" firstAttribute="leading" secondItem="m9Q-cL-hPa" secondAttribute="trailing" id="qZf-nW-2J1"/>
+                                    <constraint firstAttribute="height" constant="70" id="zsy-xj-P5H"/>
+                                </constraints>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GXN-Ax-i8y" userLabel="Name" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="129" width="393" height="27.666666666666657"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10135150429428808" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggB-9B-L7x" userLabel="Time" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="156.66666666666666" width="393" height="20.333333333333343"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.10135150429428808" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fb-2h-zEt" userLabel="End Call">
+                                <rect key="frame" x="159" y="738" width="75" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="5nR-9T-BLU"/>
+                                    <constraint firstAttribute="height" constant="50" id="shI-Q0-uyS"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <backgroundConfiguration key="background" image="round_call_end" imageContentMode="scaleAspectFit"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="endCall:" destination="FOP-xN-0vO" eventType="touchUpInside" id="v1r-IW-d8u"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vsq-Js-Fl0"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="GXN-Ax-i8y" firstAttribute="top" secondItem="BYn-pa-ckD" secondAttribute="bottom" id="5pG-J7-tgR"/>
+                            <constraint firstItem="GXN-Ax-i8y" firstAttribute="leading" secondItem="vsq-Js-Fl0" secondAttribute="leading" id="9OH-wG-p4S"/>
+                            <constraint firstItem="vsq-Js-Fl0" firstAttribute="trailing" secondItem="ggB-9B-L7x" secondAttribute="trailing" id="ElG-7H-DLB"/>
+                            <constraint firstItem="vsq-Js-Fl0" firstAttribute="bottom" secondItem="MBe-0u-ra0" secondAttribute="bottom" id="JDH-QI-CWw"/>
+                            <constraint firstItem="ggB-9B-L7x" firstAttribute="top" secondItem="GXN-Ax-i8y" secondAttribute="bottom" id="M5k-3c-grh"/>
+                            <constraint firstItem="RbW-WB-IOj" firstAttribute="trailing" secondItem="vsq-Js-Fl0" secondAttribute="trailing" id="Opg-al-rdH"/>
+                            <constraint firstItem="BYn-pa-ckD" firstAttribute="top" secondItem="vsq-Js-Fl0" secondAttribute="top" id="Xxt-Og-AXn"/>
+                            <constraint firstItem="BYn-pa-ckD" firstAttribute="trailing" secondItem="vsq-Js-Fl0" secondAttribute="trailing" id="eDe-n3-BuP"/>
+                            <constraint firstItem="vsq-Js-Fl0" firstAttribute="bottom" secondItem="3fb-2h-zEt" secondAttribute="bottom" constant="30" id="iG2-pV-406"/>
+                            <constraint firstItem="vsq-Js-Fl0" firstAttribute="trailing" secondItem="GXN-Ax-i8y" secondAttribute="trailing" id="jf9-uG-2p9"/>
+                            <constraint firstItem="RbW-WB-IOj" firstAttribute="leading" secondItem="vsq-Js-Fl0" secondAttribute="leading" id="lGM-ua-TKD"/>
+                            <constraint firstItem="3fb-2h-zEt" firstAttribute="centerX" secondItem="K4f-5X-HO8" secondAttribute="centerX" id="mHI-Hi-DFi"/>
+                            <constraint firstItem="RbW-WB-IOj" firstAttribute="centerY" secondItem="K4f-5X-HO8" secondAttribute="centerY" id="pSJ-hg-joG"/>
+                            <constraint firstItem="BYn-pa-ckD" firstAttribute="leading" secondItem="vsq-Js-Fl0" secondAttribute="leading" id="pUq-mf-he0"/>
+                            <constraint firstItem="vsq-Js-Fl0" firstAttribute="trailing" secondItem="MBe-0u-ra0" secondAttribute="trailing" id="rq9-j4-95E"/>
+                            <constraint firstItem="ggB-9B-L7x" firstAttribute="leading" secondItem="vsq-Js-Fl0" secondAttribute="leading" id="ttM-1A-Rlm"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="ivCameraMute" destination="ifL-u0-Dew" id="Bun-oc-5W3"/>
+                        <outlet property="ivChangeCamera" destination="m9Q-cL-hPa" id="eBz-hC-dxK"/>
+                        <outlet property="ivChangeScalingType" destination="HDY-Rb-JSs" id="8qA-s6-yTn"/>
+                        <outlet property="ivMute" destination="pan-Rw-Lb8" id="vbN-fL-UrN"/>
+                        <outlet property="localView" destination="MBe-0u-ra0" id="BDD-Js-bAo"/>
+                        <outlet property="localViewBottom" destination="JDH-QI-CWw" id="0Yv-dm-O14"/>
+                        <outlet property="localViewHeight" destination="7ay-Ua-gzK" id="1UK-JO-Raa"/>
+                        <outlet property="localViewRight" destination="rq9-j4-95E" id="iVE-1k-boa"/>
+                        <outlet property="localViewWidth" destination="i2k-oI-irS" id="mqH-Gz-ySe"/>
+                        <outlet property="remoteView" destination="RbW-WB-IOj" id="Ubd-ok-T4V"/>
+                        <outlet property="remoteViewHeight" destination="15j-wS-2GO" id="SKB-1f-I9E"/>
+                        <outlet property="tvName" destination="GXN-Ax-i8y" id="2YE-Ea-h8x"/>
+                        <outlet property="tvTime" destination="ggB-9B-L7x" id="kAZ-Fp-MSW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zah-XP-qcL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2241.9847328244273" y="850.70422535211276"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="FfN-OM-pbc">
-            <size key="intrinsicContentSize" width="61.333333333333336" height="40.333333333333329"/>
+            <size key="intrinsicContentSize" width="41.333333333333336" height="20.333333333333332"/>
+        </designable>
+        <designable name="GXN-Ax-i8y">
+            <size key="intrinsicContentSize" width="59" height="27.666666666666668"/>
+        </designable>
+        <designable name="NIp-aO-ZBx">
+            <size key="intrinsicContentSize" width="68.666666666666671" height="20.333333333333332"/>
+        </designable>
+        <designable name="ggB-9B-L7x">
+            <size key="intrinsicContentSize" width="37.666666666666664" height="20.333333333333332"/>
+        </designable>
+        <designable name="js2-8W-aig">
+            <size key="intrinsicContentSize" width="41.333333333333336" height="20.333333333333332"/>
         </designable>
     </designables>
     <resources>
         <image name="History_24pt" width="24" height="24"/>
         <image name="More_24pt" width="24" height="24"/>
+        <image name="camera.rotate.fill" catalog="system" width="128" height="93"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
+        <image name="mic.slash.fill" catalog="system" width="108" height="128"/>
         <image name="outline_person_24pt" width="24" height="24"/>
         <image name="person.badge.plus" catalog="system" width="128" height="125"/>
         <image name="person.circle" catalog="system" width="128" height="123"/>
+        <image name="pip.fill" catalog="system" width="128" height="98"/>
         <image name="round_call_end" width="24" height="24"/>
         <image name="round_call_missed" width="24" height="24"/>
         <image name="round_mobile_screen_share" width="24" height="24"/>
         <image name="round_person_24pt" width="24" height="24"/>
+        <image name="video.slash.fill" catalog="system" width="128" height="103"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

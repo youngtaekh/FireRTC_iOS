@@ -26,11 +26,19 @@ class IncomingController: UIViewController {
     
     @IBAction func answer(_ sender: Any) {
         MoveTo.popController(ui: self, action: true)
-        guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.audioCallIdentifier) as? AudioCallController else {
-            print("controller cast failure")
-            return
+        if callType == .VIDEO {
+            guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.videoCallIdentifier) as? VideoCallController else {
+                print("controller cast failure")
+                return
+            }
+            controller.isOffer = false
+        } else {
+            guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.audioCallIdentifier) as? AudioCallController else {
+                print("controller cast failure")
+                return
+            }
+            controller.isOffer = false
         }
-        controller.isOffer = false
     }
     
     @IBAction func decline(_ sender: Any) {

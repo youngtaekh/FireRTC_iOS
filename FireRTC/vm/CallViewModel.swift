@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import FirebaseFirestore
 import FirebaseFirestoreSwift
+import WebRTC
 
 class CallViewModel {
     private let TAG = "CallViewModel"
@@ -20,6 +22,7 @@ class CallViewModel {
     var remoteSDP: String? = nil
     
     var controllerEvent: ControllerEvent!
+    var videoEvent: VideoEvent!
     
     private init() {}
 }
@@ -43,7 +46,7 @@ extension CallViewModel {
         postSpace()
         postCall()
         rtpManager.start(
-            isAudio: callType == .AUDIO,
+            isAudio: callType != .MESSAGE,
             isVideo: callType == .VIDEO || callType == .SCREEN,
             isScreen: callType == .SCREEN,
             isDataChannel: callType == .MESSAGE,
@@ -58,7 +61,7 @@ extension CallViewModel {
     
     func answerCall() {
         rtpManager.start(
-            isAudio: self.call.type == .AUDIO,
+            isAudio: self.call.type != .MESSAGE,
             isVideo: self.call.type == .VIDEO || self.call.type == .SCREEN,
             isScreen: self.call.type == .SCREEN,
             isDataChannel: self.call.type == .MESSAGE,
@@ -145,6 +148,16 @@ extension CallViewModel {
     func unmute() {
         rtpManager.unmuteAudio()
     }
+    
+    func startCapture(isBack: Bool) {
+        print("\(TAG) \(#function)")
+        rtpManager.startCapture(isBack: isBack)
+    }
+    
+    func stopCapture() {
+        print("\(TAG) \(#function)")
+        rtpManager.stopCapture()
+    }
 }
 
 //Database
@@ -182,6 +195,14 @@ extension CallViewModel {
                 if (handler != nil) {
                     handler!()
                 }
+            }
+        }
+    }
+    
+    private func updateCall(map: [String: Any]) {
+        CallRepository.update(id: call.id, map: map) { err in
+            if let error = err {
+                print("\(self.TAG) call update error \(error)")
             }
         }
     }
@@ -229,6 +250,10 @@ extension CallViewModel: RTPListener {
     
     func onPCConnected() {
         print("\(self.TAG) onPCConnected")
+        var map = [String: Any]()
+        map[CONNECTED] = true
+        map[CONNECTED_AT] = FieldValue.serverTimestamp()
+        updateCall(map: map)
         controllerEvent.onPCConnected()
     }
     
@@ -251,9 +276,24 @@ extension CallViewModel: RTPListener {
     func onMessage(message: String) {
         print("\(self.TAG) onMessage \(message)")
     }
+    
+    func onLocalVideoTrack(track: RTCVideoTrack) {
+        print("\(TAG) onLocalVideoTrack")
+        videoEvent.onLocalVideoTrack(track: track)
+    }
+    
+    func onRemoteVideoTrack(track: RTCVideoTrack) {
+        print("\(TAG) onRemoteVideoTrack")
+        videoEvent.onRemoteVideoTrack(track: track)
+    }
 }
 
 protocol ControllerEvent {
     func onTerminatedCall()
     func onPCConnected()
+}
+
+protocol VideoEvent {
+    func onLocalVideoTrack(track: RTCVideoTrack)
+    func onRemoteVideoTrack(track: RTCVideoTrack)
 }

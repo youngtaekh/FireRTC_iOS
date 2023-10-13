@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WebRTC
 
 class MessageViewModel {
     private let TAG = "MessageViewModel"
@@ -199,6 +200,14 @@ extension MessageViewModel: RTPListener {
         print("\(TAG) chatId \(self.chat!.id)")
         self.messageMap[self.chat!.id]?.append(msg)
         messageEvent?.onMessageReceived(msg: message)
+    }
+    
+    func onLocalVideoTrack(track: RTCVideoTrack) {
+        print("\(TAG) \(#function)")
+    }
+    
+    func onRemoteVideoTrack(track: RTCVideoTrack) {
+        print("\(TAG) onRemoteVideoTrack")
     }
 }
 

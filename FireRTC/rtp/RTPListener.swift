@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WebRTC
 
 protocol RTPListener {
     func onDescriptionSuccess(type: Int, sdp: String)
@@ -17,4 +18,6 @@ protocol RTPListener {
 //    func onPCStatsReady(reports: Array<StatsReport?>?)
     func onPCError(description: String?)
     func onMessage(message: String)
+    func onLocalVideoTrack(track: RTCVideoTrack)
+    func onRemoteVideoTrack(track: RTCVideoTrack)
 }

@@ -39,6 +39,15 @@ class ProfileController: UIViewController {
         controller.user = self.user
     }
     
+    @IBAction func startVideo(_ sender: Any) {
+        print("\(TAG) startVideo")
+        guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.videoCallIdentifier) as? VideoCallController else {
+            print("controller cast failure")
+            return
+        }
+        controller.user = self.user
+    }
+    
     @IBAction func startMessage(_ sender: Any) {
         MessageViewModel.instance.participant = self.user
         let _ = MoveTo.controller(ui: self, identifier: MoveTo.messageIdentifier)
