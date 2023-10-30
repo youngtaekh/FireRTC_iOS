@@ -27,12 +27,18 @@ class SendFCM {
     
     static func sendMessage(payload: Payload) {
         let headers: HTTPHeaders = [HTTPHeader(name: "Authorization", value: "key=AAAAxajhs4s:APA91bFbKcfhRGmIK_pn5HAQZgWoCpbF_qxaRNe2hG_QZLOBuwNfF3b2AGKpA8LcGd5QVAmIDazBnJBwC26rinf4G6kkPG1yyy63hdAqQx-q68axHZ9Hz-XgzziTPiI0fm1cfDXSNOIR"), HTTPHeader(name: "Content-Type", value: "application/json")]
-        AF.request("https://fcm.googleapis.com/fcm/send", method: .post, parameters: payload, encoder: JSONParameterEncoder.default, headers: headers).responseString() { response in
+        AF.request(
+            "https://fcm.googleapis.com/fcm/send",
+            method: .post,
+            parameters: payload,
+            encoder: JSONParameterEncoder.default,
+            headers: headers
+        ).responseString() { response in
             switch response.result {
                 case .success:
-                    try! print(response.result.get())
+                    print("SendFCM Success \(payload.data.callType) \(payload.data.type)")
                 case .failure(let error):
-                    print("Error: \(error)")
+                    print("SendFCM Error \(payload.data.callType) \(payload.data.type): \(error)")
                     return
             }
         }
@@ -50,10 +56,29 @@ class SendFCM {
         sdp: String? = nil,
         message: String? = nil
     ) -> Payload {
-        let notification = Notification(title: "Notification Title", body: "Notification Body")
-        let data = Data(content_available: true, userId: SharedPreference.instance.getID(), name: SharedPreference.instance.getName(), type: type.rawValue, callType: callType.rawValue, fcmToken: SharedPreference.instance.getFcmToken(), callId: callId, spaceId: spaceId, chatId: chatId, messageId: messageId, targetOS: targetOS, sdp: sdp, message: message)
-        let payload = Payload(to: to, data: data, notification: notification)
-        return payload
+        let notification = Notification(title: SharedPreference.instance.getName(), body: "\(callType) \(type)")
+        let data = Data(
+            content_available: true,
+            userId: SharedPreference.instance.getID(),
+            name: SharedPreference.instance.getName(),
+            type: type.rawValue,
+            callType: callType.rawValue,
+            fcmToken: SharedPreference.instance.getFcmToken(),
+            callId: callId,
+            spaceId: spaceId,
+            chatId: chatId,
+            messageId: messageId,
+            targetOS: "iOS",
+            sdp: sdp,
+            message: message
+        )
+        if targetOS == nil || targetOS!.lowercased() == "ios" {
+            let payload = Payload(to: to, data: data, notification: notification)
+            return payload
+        } else {
+            let payload = Payload(to: to, data: data, notification: nil)
+            return payload
+        }
     }
     
     struct Data: Codable {
@@ -80,7 +105,7 @@ class SendFCM {
     struct Payload: Codable {
         let to: String
         let data: Data
-        let notification: Notification
+        let notification: Notification?
     }
     
     enum FCMType: String {

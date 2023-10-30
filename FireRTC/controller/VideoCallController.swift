@@ -8,19 +8,33 @@
 import UIKit
 import WebRTC
 
+//TODO: change scale type
 class VideoCallController: UIViewController {
     private let TAG = "VideoCallController"
     
     @IBOutlet weak var remoteViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var remoteViewWidth: NSLayoutConstraint!
     
     @IBOutlet weak var localViewHeight: NSLayoutConstraint!
     @IBOutlet weak var localViewWidth: NSLayoutConstraint!
     @IBOutlet weak var localViewBottom: NSLayoutConstraint!
     @IBOutlet weak var localViewRight: NSLayoutConstraint!
     
+    @IBOutlet weak var pipButtonWidth: NSLayoutConstraint!
+    @IBOutlet weak var pipButtonHeight: NSLayoutConstraint!
+    @IBOutlet weak var pipButtonBottom: NSLayoutConstraint!
+    @IBOutlet weak var pipButtonRight: NSLayoutConstraint!
+    
+    @IBOutlet weak var fullButtonHeight: NSLayoutConstraint!
+    @IBOutlet weak var fullButtonWidth: NSLayoutConstraint!
+
     @IBOutlet weak var remoteView: RTCEAGLVideoView!
     @IBOutlet weak var localView: RTCEAGLVideoView!
     
+    @IBOutlet weak var remoteViewButton: UIButton!
+    @IBOutlet weak var localViewButton: UIButton!
+    
+    @IBOutlet weak var buttons: UIStackView!
     @IBOutlet weak var ivMute: UIButton!
     @IBOutlet weak var ivCameraMute: UIButton!
     @IBOutlet weak var ivChangeCamera: UIButton!
@@ -41,6 +55,11 @@ class VideoCallController: UIViewController {
     var isCameraMute = false
     var isBackCamera = false
     var scaleType = false
+    var isScreen = false
+    var isSwap = false
+    var isHiddenButton = false
+    var startTime = Date().timeIntervalSince1970
+    var timer: Timer?
     
     var user: User!
     
@@ -59,17 +78,17 @@ class VideoCallController: UIViewController {
         callVM.videoEvent = self
         if (isOffer) {
             callVM.counterpart = user
-            callVM.startCall(callType: .VIDEO, counterpart: user!)
+            callVM.startCall(callType: isScreen ? .SCREEN : .VIDEO, counterpart: user!)
         } else {
             user = callVM.counterpart
             callVM.answerCall()
         }
         
         tvName.text = user.name
-        tvTime.text = "(00 : 00)"
+        tvTime.text = isOffer ? "Calling..." : ""
         
-        self.remoteView.delegate = self
-        self.localView.delegate = self
+        remoteView.delegate = self
+        localView.delegate = self
     }
     
     @IBAction func endCall(_ sender: Any) {
@@ -111,19 +130,103 @@ class VideoCallController: UIViewController {
         print("\(TAG) changeScalingType")
     }
     
-    private func changeViewSize(isLocal: Bool, isFull: Bool, size: CGSize? = nil) {
-        UIView.animate(withDuration: 0.4) {
-            let containerWidth = self.view.frame.size.width
-            let containerHeight = self.view.frame.size.height
-            let defaultAspectRatio = CGSizeMake(4, 3)
-            var videoRect = CGRectMake(0.0, 0.0, self.view.frame.size.width / 4.0, self.view.frame.size.height / 4.0)
-            let videoFrame = AVMakeRect(aspectRatio: self.localView.frame.size, insideRect: videoRect)
-            print("changeViewSize width \(videoFrame.size.width) height \(videoFrame.size.height)")
-            if isLocal {
-                if isFull {
-                    
-                }
-            }
+    @IBAction func swapVideoView(_ sender: Any) {
+        print("swapVideoView - \(isSwap)")
+        isSwap = !isSwap
+        
+        if isSwap {
+            remoteVideoTrack.remove(remoteView)
+            localVideoTrack.remove(localView)
+            remoteVideoTrack.add(localView)
+            localVideoTrack.add(remoteView)
+            setMirror(view: remoteView, isMirror: true)
+            setMirror(view: localView, isMirror: false)
+        } else {
+            remoteVideoTrack.remove(localView)
+            localVideoTrack.remove(remoteView)
+            remoteVideoTrack.add(remoteView)
+            localVideoTrack.add(localView)
+            setMirror(view: remoteView, isMirror: false)
+            setMirror(view: localView, isMirror: true)
+        }
+    }
+    
+    @IBAction func toggleButton(_ sender: Any) {
+        print("toggleButton isHiddenButton \(isHiddenButton)")
+        isHiddenButton = !isHiddenButton
+        
+        buttons.isHidden = isHiddenButton
+        tvName.isHidden = isHiddenButton
+        tvTime.isHidden = isHiddenButton
+    }
+    
+    private func setMirror(view: RTCEAGLVideoView, isMirror: Bool) {
+        if isMirror {
+            let transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
+            view.transform = transform.rotated(by: Double.pi)
+        } else {
+            let transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            view.transform = transform.rotated(by: 0.0)
+        }
+    }
+    
+    private func changeViewSize() {
+
+        let defaultAspectRatio = CGSizeMake(4, 3);
+        let remoteAspectRatio = remoteVideoSize == nil ? defaultAspectRatio : CGSizeEqualToSize(remoteVideoSize!, CGSizeZero) ? defaultAspectRatio : remoteVideoSize!
+        let localAspectRatio = localVideoSize == nil ? defaultAspectRatio : CGSizeEqualToSize(localVideoSize!, CGSizeZero) ? defaultAspectRatio : localVideoSize!
+        
+        let fullVideoRect = view.bounds
+        let pipVideoRect = CGRectMake(0.0, 0.0, view.frame.size.width / 4.0, view.frame.size.height / 4.0)
+        
+        if remoteVideoTrack == nil || isScreen && isOffer {
+            
+            let videoFrame = AVMakeRect(aspectRatio: localAspectRatio, insideRect: fullVideoRect)
+            localViewWidth.constant = view.frame.width
+            localViewHeight.constant = videoFrame.size.height * view.frame.width / videoFrame.size.width
+            localViewRight.constant = 0.0
+            localViewBottom.constant = (view.frame.height - localViewHeight.constant) / 2.0
+            
+        } else if remoteVideoTrack != nil && !isScreen {
+            
+            let remoteVideoFrame = AVMakeRect(aspectRatio: remoteAspectRatio, insideRect: fullVideoRect)
+            remoteViewWidth.constant = view.frame.width
+            remoteViewHeight.constant = remoteVideoFrame.size.height * view.frame.width / remoteVideoFrame.size.width
+            fullButtonWidth.constant = view.frame.width
+            fullButtonHeight.constant = remoteVideoFrame.size.height * view.frame.width / remoteVideoFrame.size.width
+            
+            let localVideoFrame = AVMakeRect(aspectRatio: localAspectRatio, insideRect: pipVideoRect)
+            localViewWidth.constant = localVideoFrame.size.width
+            localViewHeight.constant = localVideoFrame.size.height
+            localViewRight.constant = 20.0
+            localViewBottom.constant = 80.0
+            
+            pipButtonWidth.constant = localVideoFrame.size.width
+            pipButtonHeight.constant = localVideoFrame.size.height
+            pipButtonRight.constant = 20.0
+            pipButtonBottom.constant = 80.0
+
+        } else {
+
+            let remoteVideoFrame = AVMakeRect(aspectRatio: remoteAspectRatio, insideRect: fullVideoRect)
+            remoteViewHeight.constant = remoteVideoFrame.size.height
+            fullButtonHeight.constant = remoteVideoFrame.size.height
+            
+            localViewWidth.constant = 0.0
+            localViewHeight.constant = 0.0
+        }
+    }
+    
+    private func parseTime(time: Int) {
+        if time >= 3600 {
+            let hour = time / 3600
+            let min = (time % 3600) / 60
+            let sec = time % 60
+            tvTime.text = String(format: "(%02d : %02d : %02d)", hour, min, sec)
+        } else {
+            let min = time / 60
+            let sec = time % 60
+            tvTime.text = String(format: "(%02d : %02d)", min, sec)
         }
     }
 }
@@ -132,71 +235,50 @@ extension VideoCallController: ControllerEvent {
     func onTerminatedCall() {
         print("\(TAG) onTerminatedCall")
         MoveTo.popController(ui: self, action: true)
+        timer?.invalidate()
     }
     
     func onPCConnected() {
         print("\(TAG) onPCConnected")
+        startTime = Date().timeIntervalSince1970
+        print("\(TAG) \(#function) \(startTime)")
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { timer in
+                let time = Int(Date().timeIntervalSince1970 - self.startTime)
+                self.parseTime(time: time)
+            })
+        }
     }
 }
 
 extension VideoCallController: VideoEvent {
     func onLocalVideoTrack(track: RTCVideoTrack) {
         print("\(TAG) onLocalVideoTrack")
-        self.localVideoTrack = track
-        self.localVideoTrack.add(self.localView)
-//        changeViewSize(isLocal: true, isFull: true)
-        print("\(TAG) rotation \(self.localView.rotationOverride)")
+        localVideoTrack = track
+        localVideoTrack.add(localView)
+        setMirror(view: localView, isMirror: true)
     }
     
     func onRemoteVideoTrack(track: RTCVideoTrack) {
         print("\(TAG) onRemoteVideoTrack")
-        self.remoteVideoTrack = track
-        self.remoteVideoTrack.add(self.remoteView)
+        remoteVideoTrack = track
+        remoteVideoTrack.add(remoteView)
     }
 }
 
 extension VideoCallController: RTCVideoViewDelegate {
     func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
-        print("\(TAG) \(#function) size \(size)")
-        UIView.animate(withDuration: 0.4) {
-            let defaultAspectRatio = CGSizeMake(4, 3);
-            let aspectRatio = CGSizeEqualToSize(size, CGSizeZero) ? defaultAspectRatio : size
-            var videoRect = self.view.bounds
             
-            if videoView as? RTCEAGLVideoView == self.remoteView {
-                print("\(self.TAG) remoteView")
-                self.remoteVideoSize = size
-                var videoFrame = AVMakeRect(aspectRatio: aspectRatio, insideRect: videoRect)
-                print("\(self.TAG) width \(videoFrame.size.width) height \(videoFrame.size.height)")
-                self.remoteViewHeight.constant = videoFrame.size.height * self.view.frame.width / videoFrame.size.width
-                
-                videoRect = CGRectMake(0.0, 0.0, self.view.frame.size.width / 4.0, self.view.frame.size.height / 4.0)
-                videoFrame = AVMakeRect(aspectRatio: self.localVideoSize!, insideRect: videoRect)
-                print("\(self.TAG) width \(videoFrame.size.width) height \(videoFrame.size.height)")
-                self.localViewWidth.constant = videoFrame.size.width
-                self.localViewHeight.constant = videoFrame.size.height
-                self.localViewRight.constant = 20.0
-                self.localViewBottom.constant = 80.0
-            } else {
-                print("\(self.TAG) localView")
-                self.localVideoSize = size
-                if (self.remoteVideoTrack != nil) {
-                    videoRect = CGRectMake(0.0, 0.0, self.view.frame.size.width / 4.0, self.view.frame.size.height / 4.0)
-                    let videoFrame = AVMakeRect(aspectRatio: aspectRatio, insideRect: videoRect)
-                    print("\(self.TAG) width \(videoFrame.size.width) height \(videoFrame.size.height)")
-                    self.localViewWidth.constant = videoFrame.size.width
-                    self.localViewHeight.constant = videoFrame.size.height
-                    self.localViewRight.constant = 20.0
-                    self.localViewBottom.constant = 80.0
-                } else {
-                    let videoFrame = AVMakeRect(aspectRatio: aspectRatio, insideRect: videoRect)
-                    print("\(self.TAG) width \(videoFrame.size.width) height \(videoFrame.size.height)")
-                    self.localViewWidth.constant = self.view.frame.width
-                    self.localViewHeight.constant = videoFrame.size.height * self.view.frame.width / videoFrame.size.width
-                    self.localViewRight.constant = 0.0
-                    self.localViewBottom.constant = (self.view.frame.height - self.localViewHeight.constant) / 2.0
-                }
-            }
+        if videoView as? RTCEAGLVideoView == remoteView {
+            print("\(TAG) \(#function) remoteTrack size \(size)")
+            remoteVideoSize = size
+        } else {
+            print("\(TAG) \(#function) localTrack size \(size)")
+            localVideoSize = size
+        }
+        
+        UIView.animate(withDuration: 0.4) {
+            self.changeViewSize()
         }
     }
 }

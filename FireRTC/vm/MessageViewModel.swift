@@ -17,7 +17,7 @@ class MessageViewModel {
     var participant: User!
     var messageList: [Message] {
         get {
-            return (self.chat == nil || messageMap[self.chat!.id] == nil) ? [Message]() : messageMap[self.chat!.id]!
+            return (chat == nil || messageMap[chat!.id] == nil) ? [Message]() : messageMap[chat!.id]!
         }
     }
     
@@ -33,22 +33,23 @@ class MessageViewModel {
 
 extension MessageViewModel {
     func release() {
-        self.rtpManager.release()
-        self.rtpManager = RTPManager()
+        rtpManager.release()
+        rtpManager = RTPManager()
         
-        self.remoteSDP = nil
+        isConnected = false
+        isTerminated = false
+        remoteSDP = nil
     }
     
-    func start(completion: @escaping () -> Void) {
-        self.isOffer = true
+    func start(completion: (() -> Void)?) {
+        isOffer = true
         var ids = [String]()
         ids.append(participant.id)
         ids.append(SharedPreference.instance.getID())
         ids.sort()
-        self.chat = Chat(title: participant.name, participants: ids)
-        getChat(id: self.chat!.id) {
-            self.rtpManager.start(isDataChannel: true, isOffer: self.isOffer, rtpListener: self)
-            completion()
+        chat = Chat(title: participant.name, participants: ids)
+        getChat(id: chat!.id) {
+            completion?()
         }
     }
     
@@ -58,37 +59,81 @@ extension MessageViewModel {
     }
     
     func answerCall() {
-        rtpManager.start(isDataChannel: true, isOffer: false, remoteSDP: self.remoteSDP, rtpListener: self)
+        rtpManager.start(isDataChannel: true, isOffer: false, remoteSDP: remoteSDP, rtpListener: self)
     }
     
     func endCall(type: SendFCM.FCMType = .Bye) {
-        SendFCM.sendMessage(payload: SendFCM.getPayload(to: participant.fcmToken!, type: type, callType: .MESSAGE))
+        if isConnected {
+            SendFCM.sendMessage(
+                payload: SendFCM.getPayload(
+                    to: participant.fcmToken!,
+                    type: type,
+                    callType: .MESSAGE,
+                    chatId: chat!.id,
+                    targetOS: participant.os
+                )
+            )
+        }
         onTerminatedCall()
     }
     
     func sendData(msg: String) {
-        let message = Message(chatId: self.chat!.id, body: msg)
+        let message = Message(chatId: chat!.id, body: msg)
         message.createdAt = Date.now
-        print("\(TAG) chatId \(self.chat!.id)")
-        self.messageMap[self.chat!.id]?.append(message)
-        if (!isTerminated && isConnected) {
+        print("\(TAG) chatId \(chat!.id)")
+        messageMap[chat!.id]?.insert(message, at: 0)
+        if isConnected {
             rtpManager.sendData(msg: msg)
+        } else {
+            SendFCM.sendMessage(
+                payload: SendFCM.getPayload(
+                    to: participant.fcmToken!,
+                    type: .Message,
+                    callType: .MESSAGE,
+                    chatId: chat!.id,
+                    messageId: message.id,
+                    targetOS: participant.os,
+                    message: msg
+                )
+            )
         }
     }
     
-    func onIncomingCall(userId: String?, chatId: String?, message: String?, sdp: String?, fcmToken: String?) {
-        print("onIncomingCall userId \(userId!), chatId \(chatId != nil), message \(message != nil), sdp \(sdp != nil), fcmToken \(fcmToken != nil)")
-        if (chatId == nil || userId == nil) { return }
-        if (chat == nil || chat!.id != chatId) {
-            getUser(id: userId!) {
-                SendFCM.sendMessage(payload: SendFCM.getPayload(to: fcmToken!, type: .Decline, callType: .MESSAGE, targetOS: self.participant.os))
+    func onMessageReceived(firebaseMessage fm: FirebaseMessage) {
+        print("\(TAG) onMessageReceived userId \(fm.userId!), chatId \(fm.chatId != nil), message \(fm.message != nil)")
+        if (fm.chatId == nil || fm.userId == nil || fm.messageId == nil || fm.message == nil) { return }
+        let message = Message(id: fm.messageId!, from: fm.userId!, chatId: fm.chatId!, body: fm.message!)
+        message.createdAt = Date.now
+        if messageMap[fm.chatId!] == nil {
+            messageMap[fm.chatId!] = [Message]()
+        }
+        messageMap[fm.chatId!]!.insert(message, at: 0)
+        if (chat != nil && chat!.id == fm.chatId) {
+            isOffer = true
+            rtpManager.start(isDataChannel: true, isOffer: true, rtpListener: self)
+        }
+    }
+    
+    func onIncomingCall(firebaseMessage fm: FirebaseMessage) {
+        print("\(TAG) onIncomingCall userId \(fm.userId!), chatId \(fm.chatId != nil), sdp \(fm.sdp != nil), fcmToken \(fm.fcmToken != nil)")
+        if (fm.chatId == nil || fm.userId == nil) { return }
+        if (chat == nil || chat!.id != fm.chatId) {
+            getUser(id: fm.userId!) {
+                SendFCM.sendMessage(
+                    payload: SendFCM.getPayload(
+                        to: fm.fcmToken!,
+                        type: .Decline,
+                        callType: .MESSAGE,
+                        targetOS: self.participant.os
+                    )
+                )
             }
             return
         }
         
-        self.isOffer = false
-        self.remoteSDP = sdp
-        getChat(id: chatId!) {
+        isOffer = false
+        remoteSDP = fm.sdp
+        getChat(id: fm.chatId!) {
             self.rtpManager.start(isDataChannel: true, isOffer: false, remoteSDP: self.remoteSDP, rtpListener: self)
         }
     }
@@ -117,7 +162,9 @@ extension MessageViewModel {
                 case .success(let chat):
                     print("getChat success \(chat)")
                     self.chat = chat
-                    self.messageMap[chat.id] = [Message]()
+                    if self.messageMap[chat.id] == nil {
+                        self.messageMap[chat.id] = [Message]()
+                    }
                     if handler != nil {
                         handler!()
                     }
@@ -130,7 +177,7 @@ extension MessageViewModel {
     }
     
     private func postChat(handler: (() -> Void)? = nil) {
-        ChatRepository.post(chat: self.chat!) { err in
+        ChatRepository.post(chat: chat!) { err in
             if let err = err {
                 print("\(self.TAG) chat post error \(err)")
             } else {
@@ -161,12 +208,30 @@ extension MessageViewModel: RTPListener {
     func onDescriptionSuccess(type: Int, sdp: String) {
         print("\(TAG) \(#function)")
         let fcmType: SendFCM.FCMType = isOffer ? .Offer : .Answer
-        SendFCM.sendMessage(payload: SendFCM.getPayload(to: participant.fcmToken!, type: fcmType, callType: .MESSAGE, chatId: self.chat!.id, sdp: sdp))
+        SendFCM.sendMessage(
+            payload: SendFCM.getPayload(
+                to: participant.fcmToken!,
+                type: fcmType,
+                callType: .MESSAGE,
+                chatId: chat!.id,
+                targetOS: participant.os,
+                sdp: sdp
+            )
+        )
     }
     
     func onIceCandidate(candidate: String) {
         print("\(TAG) \(#function)")
-        SendFCM.sendMessage(payload: SendFCM.getPayload(to: participant.fcmToken!, type: .Ice, callType: .MESSAGE, chatId: chat!.id, sdp: candidate))
+        SendFCM.sendMessage(
+            payload: SendFCM.getPayload(
+                to: participant.fcmToken!,
+                type: .Ice,
+                callType: .MESSAGE,
+                chatId: chat!.id,
+                targetOS: participant.os,
+                sdp: candidate
+            )
+        )
     }
     
     func onPCConnected() {
@@ -195,10 +260,10 @@ extension MessageViewModel: RTPListener {
     
     func onMessage(message: String) {
         print("\(TAG) \(#function)")
-        let msg = Message(from: participant.id, chatId: self.chat!.id, body: message)
+        let msg = Message(from: participant.id, chatId: chat!.id, body: message)
         msg.createdAt = Date.now
-        print("\(TAG) chatId \(self.chat!.id)")
-        self.messageMap[self.chat!.id]?.append(msg)
+        print("\(TAG) chatId \(chat!.id)")
+        messageMap[chat!.id]?.insert(msg, at: 0)
         messageEvent?.onMessageReceived(msg: message)
     }
     

@@ -33,7 +33,6 @@ class RTPManager: NSObject {
     var iceServers = [RTCIceServer]()
     let rtpMedia = RTPMedia()
     
-//    var localStream: RTCMediaStream?
     var localSDP: RTCSessionDescription?
     var remoteSessionDescription: RTCSessionDescription?
     var remoteICE = [String]()
@@ -56,7 +55,7 @@ class RTPManager: NSObject {
         remoteSDP: String? = nil,
         rtpListener: RTPListener
     ) {
-        self.isInit = true
+        isInit = true
         self.isAudio = isAudio
         self.isVideo = isVideo
         self.isScreen = isScreen
@@ -64,30 +63,30 @@ class RTPManager: NSObject {
         self.enableStat = enableStat
         self.recordAudio = recordAudio
         
-        self.factory = RTCPeerConnectionFactory.init()
+        factory = RTCPeerConnectionFactory.init()
         
         self.isOffer = isOffer
-        self.iceServers.append(defaultSTUNServer())
+        iceServers.append(defaultSTUNServer())
         
         self.rtpListener = rtpListener
         
-        self.pc = factory!.peerConnection(with: defaultPCConfiguration(), constraints: defaultPCConstraints(), delegate: self)
-//        let localStream = self.factory!.mediaStream(withStreamId: "ARDAMS")
-        if (self.isAudio) {
-            let track = rtpMedia.createAudioTrack(factory: self.factory!)
-//            localStream.addAudioTrack(track)
+        pc = factory!.peerConnection(with: defaultPCConfiguration(), constraints: defaultPCConstraints(), delegate: self)
+        if (isAudio) {
+            let track = rtpMedia.createAudioTrack(factory: factory!)
             pc.add(track, streamIds: ["ARDAMS"])
         }
-        if (self.isVideo) {
-            let track = rtpMedia.createVideoTrack(factory: self.factory!)
-//            localStream.addVideoTrack(track)
+        if (isVideo && (!isScreen || isOffer)) {
+            let track = rtpMedia.createVideoTrack(factory: factory!, isScreen: isScreen)
             pc?.add(track, streamIds: ["ARDAMS"])
-            self.startCapture()
+            if (isScreen) {
+                rtpMedia.startScreenShare()
+            } else {
+                startCapture()
+            }
             self.rtpListener?.onLocalVideoTrack(track: track)
         }
-//        self.pc?.add(localStream)
         
-        if (self.isDataChannel) {
+        if (isDataChannel) {
             let config = RTCDataChannelConfiguration()
             config.isOrdered = DefaultValues.isOrdered
             config.isNegotiated = DefaultValues.isNegotiated
@@ -95,8 +94,7 @@ class RTPManager: NSObject {
             config.maxPacketLifeTime = DefaultValues.maxRetransmitTimeMs
             config.channelId = DefaultValues.dataId
             config.protocol = DefaultValues.subProtocol
-            self.sendDataChannel = pc.dataChannel(forLabel: "message data", configuration: config)!
-//            self.sendDataChannel.delegate = self
+            sendDataChannel = pc.dataChannel(forLabel: "message data", configuration: config)!
         }
         
         if isOffer {
@@ -111,8 +109,11 @@ class RTPManager: NSObject {
     
     func release() {
         print("\(TAG) \(#function)")
-        self.pc?.close()
-        self.pc = nil
+        if isScreen && isOffer {
+            rtpMedia.stopScreenShare()
+        }
+        pc?.close()
+        pc = nil
     }
     
     func setRemoteDescription(isOffer: Bool, sdp: String) {
@@ -132,16 +133,16 @@ class RTPManager: NSObject {
     }
     
     func addRemoteCandidate(sdp: String) {
-        self.remoteICE.append(sdp)
+        remoteICE.append(sdp)
         let candidate = RTCIceCandidate(sdp: sdp, sdpMLineIndex: 0, sdpMid: "0")
         pc?.add(candidate)
     }
     
     func drainRemoteCandidate() {
-        for ice in self.remoteICE {
+        for ice in remoteICE {
             print("drainRemoteCandidate \(ice)")
             let candidate = RTCIceCandidate(sdp: ice, sdpMLineIndex: 0, sdpMid: "0")
-            self.pc!.add(candidate)
+            pc!.add(candidate)
         }
     }
     
@@ -219,13 +220,13 @@ class RTPManager: NSObject {
         }
         
         var mandatory = [String: String]()
-        mandatory["OfferToReceiveAudio"] = String(self.isAudio)
-        mandatory["OfferToReceiveVideo"] = String(self.isVideo)
+        mandatory["OfferToReceiveAudio"] = String(isAudio)
+        mandatory["OfferToReceiveVideo"] = String(isVideo)
         var optional = [String: String]()
         optional["DtlsSrtpKeyAgreement"] = kRTCMediaConstraintsValueTrue
-        optional["RtpDataChannels"] = String(self.isDataChannel)
+        optional["RtpDataChannels"] = String(isDataChannel)
         let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: optional)
-        self.pc!.offer(for: constraints) { sdp, err in
+        pc!.offer(for: constraints) { sdp, err in
             if let error = err {
                 print("\(self.TAG) createOffer Error!!!!!!!!!!!!! \(error)")
             } else {
@@ -241,13 +242,13 @@ class RTPManager: NSObject {
         }
         
         var mandatory = [String: String]()
-        mandatory["OfferToReceiveAudio"] = String(self.isAudio)
-        mandatory["OfferToReceiveVideo"] = String(self.isVideo)
+        mandatory["OfferToReceiveAudio"] = String(isAudio)
+        mandatory["OfferToReceiveVideo"] = String(isVideo)
         var optional = [String: String]()
         optional["DtlsSrtpKeyAgreement"] = kRTCMediaConstraintsValueTrue
-        optional["RtpDataChannels"] = String(self.isDataChannel)
+        optional["RtpDataChannels"] = String(isDataChannel)
         let constraints = RTCMediaConstraints(mandatoryConstraints: mandatory, optionalConstraints: optional)
-        self.pc?.answer(for: constraints) { sdp, err in
+        pc?.answer(for: constraints) { sdp, err in
             if let error = err {
                 print("\(self.TAG) createAnswer Error!!!! \(error)")
             } else {
@@ -257,8 +258,8 @@ class RTPManager: NSObject {
     }
     
     private func onCreateSuccess(sdp: RTCSessionDescription?) {
-        self.rtpListener?.onDescriptionSuccess(type: sdp!.type.rawValue, sdp: sdp!.sdp)
-        self.pc.setLocalDescription(sdp!) { err in
+        rtpListener?.onDescriptionSuccess(type: sdp!.type.rawValue, sdp: sdp!.sdp)
+        pc.setLocalDescription(sdp!) { err in
             if err == nil {
                 print("setLocalDescription success")
             } else {
@@ -268,13 +269,11 @@ class RTPManager: NSObject {
     }
     
     func muteAudio() {
-//        self.defaultAudioTrack = localStream!.audioTracks[0]
-//        localStream?.removeAudioTrack((localStream?.audioTracks[0])!)
         for sender in pc!.senders {
             print("\(sender.streamIds) \(sender.senderId) \(sender.track == nil)")
             if (sender.senderId == "ARDAMSa0") {
-                self.defaultAudioSender = sender
-                self.defaultAudioTrack = sender.track!
+                defaultAudioSender = sender
+                defaultAudioTrack = sender.track!
                 pc?.removeTrack(sender)
             }
         }
@@ -282,14 +281,14 @@ class RTPManager: NSObject {
     
     func unmuteAudio() {
         print("\(defaultAudioTrack == nil)")
-        pc?.add(defaultAudioTrack ?? RTPMedia().createAudioTrack(factory: self.factory!), streamIds: defaultAudioSender.streamIds)
+        pc?.add(defaultAudioTrack ?? RTPMedia().createAudioTrack(factory: factory!), streamIds: defaultAudioSender.streamIds)
     }
     
     func sendData(msg: String) {
         print("\(TAG) sendData msg \(msg)")
         let buffer = RTCDataBuffer(data: msg.data(using: .utf8)!, isBinary: false)
         
-        self.sendDataChannel.sendData(buffer)
+        sendDataChannel.sendData(buffer)
     }
 }
 
@@ -383,8 +382,8 @@ extension RTPManager: RTCPeerConnectionDelegate {
     
     func peerConnection(_ peerConnection: RTCPeerConnection, didOpen dataChannel: RTCDataChannel) {
         print("\(TAG) \(#function) dataChannel")
-        self.dc = dataChannel
-        self.dc.delegate = self
+        dc = dataChannel
+        dc.delegate = self
     }
 }
 

@@ -46,7 +46,7 @@ extension CallViewModel {
         postSpace()
         postCall()
         rtpManager.start(
-            isAudio: callType != .MESSAGE,
+            isAudio: callType == .AUDIO,
             isVideo: callType == .VIDEO || callType == .SCREEN,
             isScreen: callType == .SCREEN,
             isDataChannel: callType == .MESSAGE,
@@ -61,7 +61,7 @@ extension CallViewModel {
     
     func answerCall() {
         rtpManager.start(
-            isAudio: self.call.type != .MESSAGE,
+            isAudio: self.call.type == .AUDIO,
             isVideo: self.call.type == .VIDEO || self.call.type == .SCREEN,
             isScreen: self.call.type == .SCREEN,
             isDataChannel: self.call.type == .MESSAGE,
@@ -81,30 +81,39 @@ extension CallViewModel {
                 print("\(self.TAG) space update status error \(err)")
             }
         }
-        // TODO: send fcm
+
         if (counterpart != nil && counterpart!.fcmToken != nil) {
-            SendFCM.sendMessage(payload: SendFCM.getPayload(to: counterpart!.fcmToken!, type: type, callType: call!.type, spaceId: space!.id, callId: call!.id))
+            SendFCM.sendMessage(
+                payload: SendFCM.getPayload(
+                    to: counterpart!.fcmToken!,
+                    type: type,
+                    callType: call!.type,
+                    spaceId: space!.id,
+                    callId: call!.id,
+                    targetOS: counterpart!.os
+                )
+            )
         }
         
         onTerminatedCall()
     }
     
-    func onIncomingCall(spaceId: String, type: String, counterpartId: String, fcmToken: String, remoteSDP: String) {
+    func onIncomingCall(firebaseMessage fm: FirebaseMessage, remoteSDP: String) {
         self.isOffer = false
         self.remoteSDP = remoteSDP
         self.call = Call(
-            spaceId: spaceId,
-            type: Call.Category.init(rawValue: type)!,
+            spaceId: fm.spaceId!,
+            type: Call.Category.init(rawValue: fm.callType!)!,
             direction: .Answer
         )
-        getSpace(id: spaceId) {
+        getSpace(id: fm.spaceId!) {
             self.updateCallList()
             self.updateParticipantList()
         }
-        getUser(id: counterpartId) {
+        getUser(id: fm.userId!) {
             self.call!.counterpartName = self.counterpart!.name
             self.postCall() {
-                MoveTo.toIncomingCallVC(spaceId: spaceId, callType: self.call.type)
+                MoveTo.toIncomingCallVC(spaceId: fm.spaceId!, callType: self.call.type)
             }
         }
     }
@@ -236,7 +245,16 @@ extension CallViewModel: RTPListener {
             self.call.sdp = sdp
             CallRepository.updateSDP(call: self.call)
             let fcmType: SendFCM.FCMType = isOffer ? .Offer : .Answer
-            SendFCM.sendMessage(payload: SendFCM.getPayload(to: counterpart!.fcmToken!, type: fcmType, callType: call!.type, spaceId: space!.id, callId: call!.id, sdp: sdp))
+            SendFCM.sendMessage(
+                payload: SendFCM.getPayload(
+                    to: counterpart!.fcmToken!,
+                    type: fcmType,
+                    callType: call!.type,
+                    spaceId: space!.id,
+                    callId: call!.id,
+                    targetOS: counterpart!.os
+                )
+            )
         }
     }
     
@@ -244,7 +262,17 @@ extension CallViewModel: RTPListener {
         print("\(self.TAG) onIceCandidate \(candidate)")
         if (counterpart != nil && counterpart!.fcmToken != nil) {
             CallRepository.updateCandidate(id: self.call.id, candidate: candidate)
-            SendFCM.sendMessage(payload: SendFCM.getPayload(to: counterpart!.fcmToken!, type: .Ice, callType: call!.type, spaceId: space!.id, callId: call!.id, sdp: candidate))
+            SendFCM.sendMessage(
+                payload: SendFCM.getPayload(
+                    to: counterpart!.fcmToken!,
+                    type: .Ice,
+                    callType: call!.type,
+                    spaceId: space!.id,
+                    callId: call!.id,
+                    targetOS: counterpart!.os,
+                    sdp: candidate
+                )
+            )
         }
     }
     

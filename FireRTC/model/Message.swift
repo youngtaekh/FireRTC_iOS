@@ -21,10 +21,19 @@ class Message: Decodable {
     var timeFlag = true
     var createdAt: Date? = nil
     
-    init(from: String = SharedPreference.instance.getID(), chatId: String, body: String) {
+    convenience init(from: String = SharedPreference.instance.getID(), chatId: String, body: String) {
+        self.init(
+            id: "\(from)\(chatId)\(Date().timeIntervalSince1970)".sha256(),
+            from: from,
+            chatId: chatId,
+            body: body
+        )
+    }
+    
+    init(id: String, from: String, chatId: String, body: String) {
+        self.id = id
         self.from = from
         self.chatId = chatId
-        self.id = "\(from)\(chatId)\(Date().timeIntervalSince1970)"
         self.body = body
     }
     

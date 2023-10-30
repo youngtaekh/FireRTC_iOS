@@ -11,6 +11,7 @@ import FirebaseFirestore
 let CREATED_BY = "createdBy"
 let SPACE_STATUS = "status"
 let CALL_TYPE = "callType"
+let TARGET_OS = "targetOS"
 let CONNECTED = "connected"
 let TERMINATED = "terminated"
 let TERMINATED_REASON = "terminatedReason"

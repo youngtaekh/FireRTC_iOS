@@ -36,7 +36,7 @@ class ProfileController: UIViewController {
             print("controller cast failure")
             return
         }
-        controller.user = self.user
+        controller.user = user
     }
     
     @IBAction func startVideo(_ sender: Any) {
@@ -45,16 +45,26 @@ class ProfileController: UIViewController {
             print("controller cast failure")
             return
         }
-        controller.user = self.user
+        controller.user = user
+    }
+    
+    @IBAction func startScreen(_ sender: Any) {
+        print("\(TAG) startScreen")
+        guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.videoCallIdentifier) as? VideoCallController else {
+            print("controller cast failure")
+            return
+        }
+        controller.user = user
+        controller.isScreen = true
     }
     
     @IBAction func startMessage(_ sender: Any) {
-        MessageViewModel.instance.participant = self.user
+        MessageViewModel.instance.participant = user
         let _ = MoveTo.controller(ui: self, identifier: MoveTo.messageIdentifier)
     }
     
     @IBAction func test(_ sender: Any) {
         print("\(TAG) test")
-        MoveTo.controller(ui: self, identifier: MoveTo.testIdentifier)
+        let _ = MoveTo.controller(ui: self, identifier: MoveTo.testIdentifier)
     }
 }

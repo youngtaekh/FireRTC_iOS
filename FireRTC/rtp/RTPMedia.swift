@@ -8,31 +8,62 @@
 import Foundation
 import WebRTC
 import AVFoundation
+import ReplayKit
 
 class RTPMedia: NSObject {
     var videoCapturer: RTCVideoCapturer?
+    var source: RTCVideoSource?
     
     func createAudioTrack(factory: RTCPeerConnectionFactory) -> RTCAudioTrack {
         let track = factory.audioTrack(withTrackId: "ARDAMSa0")
         return track
     }
     
-    func createVideoTrack(factory: RTCPeerConnectionFactory) -> RTCVideoTrack {
-        let source: RTCVideoSource = factory.videoSource()
-        self.videoCapturer = RTCCameraVideoCapturer(delegate: source)
+    func createVideoTrack(factory: RTCPeerConnectionFactory, isScreen: Bool) -> RTCVideoTrack {
+        source = factory.videoSource()
+        if isScreen {
+            videoCapturer = RTCVideoCapturer(delegate: source!)
+        } else {
+            videoCapturer = RTCCameraVideoCapturer(delegate: source!)
+        }
         
-        let track = factory.videoTrack(with: source, trackId: "ARDAMSv0")
+        let track = factory.videoTrack(with: source!, trackId: "ARDAMSv0")
         return track
     }
     
-    func stopCapture() {
-        if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
-            capturer.stopCapture()
+    func startScreenShare() {
+        RPScreenRecorder.shared().startCapture() { sampleBuffer, type, err in
+            self.handleSampleBuffer(sampleBuffer: sampleBuffer, type: type)
+            if let error = err {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func stopScreenShare() {
+        RPScreenRecorder.shared().stopCapture()
+    }
+    
+    func handleSampleBuffer(sampleBuffer: CMSampleBuffer, type: RPSampleBufferType) {
+        if type == .video {
+            guard let videoSource = source,
+                  let videoCapturer = videoCapturer,
+                  let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+            
+            let width = CVPixelBufferGetWidth(pixelBuffer)
+            let height = CVPixelBufferGetHeight(pixelBuffer)
+            videoSource.adaptOutputFormat(toWidth: Int32(width), height: Int32(height), fps: 24)
+            
+            let rtcPixelBuffer = RTCCVPixelBuffer(pixelBuffer: pixelBuffer)
+            let timestamp = NSDate().timeIntervalSince1970 * 1000 * 1000
+            
+            let videoFrame = RTCVideoFrame(buffer: rtcPixelBuffer, rotation: ._0, timeStampNs: Int64(timestamp))
+            videoSource.capturer(videoCapturer, didCapture: videoFrame)
         }
     }
     
     func startCaptureLocalVideo(cameraPositon: AVCaptureDevice.Position = .front, videoWidth: Int = 640, videoHeight: Int = 640 * 16 / 9, videoFps: Int = 30) {
-        if let capturer = self.videoCapturer as? RTCCameraVideoCapturer {
+        if let capturer = videoCapturer as? RTCCameraVideoCapturer {
             print("RTPMedia startCameraVideoCapturer")
             var targetDevice: AVCaptureDevice?
             var targetFormat: AVCaptureDevice.Format?
@@ -63,7 +94,7 @@ class RTPMedia: NSObject {
             capturer.startCapture(with: targetDevice!,
                                   format: targetFormat!,
                                   fps: videoFps)
-        } else if let capturer = self.videoCapturer as? RTCFileVideoCapturer{
+        } else if let capturer = videoCapturer as? RTCFileVideoCapturer{
             print("setup file video capturer")
             if let _ = Bundle.main.path( forResource: "sample.mp4", ofType: nil ) {
                 capturer.startCapturing(fromFileNamed: "sample.mp4") { (err) in
@@ -72,6 +103,12 @@ class RTPMedia: NSObject {
             }else{
                 print("file did not faund")
             }
+        }
+    }
+    
+    func stopCapture() {
+        if let capturer = videoCapturer as? RTCCameraVideoCapturer {
+            capturer.stopCapture()
         }
     }
 }
