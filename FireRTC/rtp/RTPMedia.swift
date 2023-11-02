@@ -83,7 +83,7 @@ class RTPMedia: NSObject {
                     let description = format.formatDescription as CMFormatDescription
                     let dimensions = CMVideoFormatDescriptionGetDimensions(description)
                     
-                    if dimensions.width == videoWidth && dimensions.height == videoHeight ?? 0{
+                    if dimensions.width == videoWidth && dimensions.height == videoHeight {
                         targetFormat = format
                     } else if dimensions.width == videoWidth {
                         targetFormat = format

@@ -34,6 +34,7 @@
 		6F13DF492A7C931500417063 /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F13DF482A7C931500417063 /* DateTableViewCell.swift */; };
 		6F19CF4A2ABC0D3E0010998E /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F19CF492ABC0D3E0010998E /* TestController.swift */; };
 		6F2220FD2AEF7D2000CC2773 /* FirebaseMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2220FC2AEF7D2000CC2773 /* FirebaseMessage.swift */; };
+		6F2221012AF0C87600CC2773 /* DateMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2221002AF0C87500CC2773 /* DateMessageCell.swift */; };
 		6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */; };
 		6FE0FAA42A64E1BB0038CA5D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */; };
 		6FE0FAA62A64E1BB0038CA5D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE0FAA52A64E1BB0038CA5D /* ViewController.swift */; };
@@ -90,6 +91,7 @@
 		6F13DF482A7C931500417063 /* DateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTableViewCell.swift; sourceTree = "<group>"; };
 		6F19CF492ABC0D3E0010998E /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		6F2220FC2AEF7D2000CC2773 /* FirebaseMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessage.swift; sourceTree = "<group>"; };
+		6F2221002AF0C87500CC2773 /* DateMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMessageCell.swift; sourceTree = "<group>"; };
 		6FE0FA9E2A64E1BB0038CA5D /* FireRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FireRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FE0FAA12A64E1BB0038CA5D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FE0FAA32A64E1BB0038CA5D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				6F042BA52AA1BEE000F62AB7 /* SendMessageCell.swift */,
 				6F042BA72AA1BEF100F62AB7 /* RecvMessageCell.swift */,
 				6FFA408F2AD51EB000612F45 /* Recv2TableViewCell.swift */,
+				6F2221002AF0C87500CC2773 /* DateMessageCell.swift */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				6FE0FAD82A69008C0038CA5D /* SettingTableViewCell.swift in Sources */,
 				6FFD550D2A6F58E800C35268 /* Relation.swift in Sources */,
 				6FE0FAA22A64E1BB0038CA5D /* AppDelegate.swift in Sources */,
+				6F2221012AF0C87600CC2773 /* DateMessageCell.swift in Sources */,
 				6FFA40922AD5468900612F45 /* VideoCallController.swift in Sources */,
 				6F13DF3F2A78DEAD00417063 /* CallRepository.swift in Sources */,
 				6F042BA82AA1BEF100F62AB7 /* RecvMessageCell.swift in Sources */,

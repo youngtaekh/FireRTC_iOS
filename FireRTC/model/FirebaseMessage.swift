@@ -15,6 +15,7 @@ class FirebaseMessage {
     let messageId: String?
     let type: String?
     let callType: String?
+    let name: String?
     let targetOS: String?
     let sdp: String?
     let fcmToken: String?
@@ -28,6 +29,7 @@ class FirebaseMessage {
         self.messageId = data[MESSAGE_ID] as? String
         self.type = data[TYPE] as? String
         self.callType = data[CALL_TYPE] as? String
+        self.name = data[NAME] as? String
         self.targetOS = data[TARGET_OS] as? String
         self.sdp = data[SDP] as? String
         self.fcmToken = data[FCM_TOKEN] as? String

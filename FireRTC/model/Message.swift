@@ -19,6 +19,7 @@ class Message: Decodable {
     let chatId: String
     let body: String
     var timeFlag = true
+    var isDate = false
     var createdAt: Date? = nil
     
     convenience init(from: String = SharedPreference.instance.getID(), chatId: String, body: String) {

@@ -109,7 +109,7 @@ extension HistoryController: UITableViewDelegate, UITableViewDataSource {
             if (calls.isEmpty) {
                 cell.tvTitle.text = "Empty!"
             } else {
-                print("\(TAG) counterpartName \(call.counterpartName)")
+                print("\(TAG) counterpartName \(String(describing: call.counterpartName))")
                 cell.tvTitle.text = call.counterpartName
                 switch (call.type) {
                     case .AUDIO:

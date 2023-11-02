@@ -189,28 +189,28 @@ class RTPManager: NSObject {
         request.addValue("https://apprtc.appspot.com", forHTTPHeaderField: "origin")
         
         //NSURLSession dataTaskWithRequest
-        URLSession().dataTask(with: requestUrl, completionHandler: { data, urlResponse, err in
-            var turnServers = [RTCIceServer]()
-            if let err = err {
-                print("Unable to get TURN server.")
-                handler(turnServers)
-                return
-            }
-            let dict = Utils.dictionaryWithJSONData(jsonData: data)
-            turnServers = Utils.serversFromDictionary(dict: dict)
-            handler(turnServers)
-        })
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue()) { response, data, err in
-            var turnServers = [RTCIceServer]()
-            if let err = err {
-                print("Unable to get TURN server.")
-                handler(turnServers)
-                return
-            }
-            let dict = Utils.dictionaryWithJSONData(jsonData: data)
-            turnServers = Utils.serversFromDictionary(dict: dict)
-            handler(turnServers)
-        }
+//        URLSession().dataTask(with: requestUrl, completionHandler: { data, urlResponse, err in
+//            var turnServers = [RTCIceServer]()
+//            if err != nil {
+//                print("Unable to get TURN server.")
+//                handler(turnServers)
+//                return
+//            }
+//            let dict = Utils.dictionaryWithJSONData(jsonData: data)
+//            turnServers = Utils.serversFromDictionary(dict: dict)
+//            handler(turnServers)
+//        })
+//        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue()) { response, data, err in
+//            var turnServers = [RTCIceServer]()
+//            if err != nil {
+//                print("Unable to get TURN server. \(err)")
+//                handler(turnServers)
+//                return
+//            }
+//            let dict = Utils.dictionaryWithJSONData(jsonData: data)
+//            turnServers = Utils.serversFromDictionary(dict: dict)
+//            handler(turnServers)
+//        }
     }
     
     private func createOffer() {
@@ -401,6 +401,6 @@ extension RTPManager: RTCDataChannelDelegate {
         let data = buffer.data
         let message = String(decoding: data, as: UTF8.self)
         print("data \(message)")
-        rtpListener?.onMessage(message: message)
+        rtpListener?.onMessage(msg: message)
     }
 }

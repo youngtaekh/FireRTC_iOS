@@ -301,8 +301,8 @@ extension CallViewModel: RTPListener {
         print("\(self.TAG) onPCError")
     }
     
-    func onMessage(message: String) {
-        print("\(self.TAG) onMessage \(message)")
+    func onMessage(msg: String) {
+        print("\(self.TAG) onMessage \(msg)")
     }
     
     func onLocalVideoTrack(track: RTCVideoTrack) {

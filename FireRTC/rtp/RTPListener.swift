@@ -17,7 +17,7 @@ protocol RTPListener {
     func onPCClosed()
 //    func onPCStatsReady(reports: Array<StatsReport?>?)
     func onPCError(description: String?)
-    func onMessage(message: String)
+    func onMessage(msg: String)
     func onLocalVideoTrack(track: RTCVideoTrack)
     func onRemoteVideoTrack(track: RTCVideoTrack)
 }

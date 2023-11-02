@@ -56,7 +56,8 @@ class MessageController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        addTapGesture()
+        // Table cell click
+//        addTapGesture()
     }
     
     @IBAction func finish(_ sender: Any) {
@@ -66,6 +67,7 @@ class MessageController: UIViewController {
     }
     @IBAction func test(_ sender: Any) {
         print("\(TAG) \(#function)")
+        messageVM.messageMap[messageVM.chat!.id] = [Message]()
     }
     @IBAction func send(_ sender: Any) {
         print("\(TAG) \(#function) \(etMessage.text ?? "")")
@@ -136,7 +138,6 @@ class MessageController: UIViewController {
 
 extension MessageController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("\(TAG) \(#function)")
         return messageVM.messageList.count
     }
     
@@ -146,10 +147,18 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
         let message = messageVM.messageList[indexPath.row]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "aa hh:mm"
-        if (message.from == SharedPreference.instance.getID()) {
+        if message.isDate {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DateMessageCell", for: indexPath) as! DateMessageCell
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yy. MM. dd"
+            cell.tvDate.text = formatter.string(from: message.createdAt!)
+            cell.transform = CGAffineTransform(rotationAngle: (CGFloat)(Double.pi))
+            return cell
+        } else if (message.from == SharedPreference.instance.getID()) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendMessageCell", for: indexPath) as! SendMessageCell
             cell.tvMessage.text = message.body
             if message.createdAt != nil {
+                cell.tvTime.isHidden = isHiddenDate(position: indexPath.row)
                 cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
             }
             cell.transform = CGAffineTransform(rotationAngle: (CGFloat)(Double.pi))
@@ -160,6 +169,7 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
             cell.tvName.text = messageVM.participant.name
             cell.tvMessage.text = message.body
             if message.createdAt != nil {
+                cell.tvTime.isHidden = isHiddenDate(position: indexPath.row)
                 cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
             }
             cell.transform = CGAffineTransform(rotationAngle: (CGFloat)(Double.pi))
@@ -168,6 +178,7 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Recv2MessageCell", for: indexPath) as! Recv2TableViewCell
             cell.tvMessage.text = message.body
             if message.createdAt != nil {
+                cell.tvTime.isHidden = isHiddenDate(position: indexPath.row)
                 cell.tvTime.text = dateFormatter.string(from: message.createdAt!)
             }
             cell.transform = CGAffineTransform(rotationAngle: (CGFloat)(Double.pi))
@@ -197,6 +208,19 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
             tvBottom.isHidden = false
             isBottom = false
         }
+    }
+    
+    private func isHiddenDate(position: Int) -> Bool {
+        // is last message or is next message date message
+        if position == 0 || messageVM.messageList[position - 1].isDate {
+            return false
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "aa hh:mm"
+        let nextMessage = messageVM.messageList[position - 1]
+        let myMessage = messageVM.messageList[position]
+        return nextMessage.from == myMessage.from && dateFormatter.string(from: nextMessage.createdAt!) == dateFormatter.string(from: myMessage.createdAt!)
     }
 }
 

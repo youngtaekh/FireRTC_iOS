@@ -713,15 +713,41 @@
                                 <rect key="frame" x="0.0" y="109" width="393" height="650"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DateMessageCell" id="qdR-YQ-3Q5" customClass="DateMessageCell" customModule="FireRTC" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="46.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qdR-YQ-3Q5" id="6gf-s6-8G0">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="46.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5iG-Nz-HXg">
+                                                    <rect key="frame" x="120" y="13.999999999999998" width="153" height="18.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="5iG-Nz-HXg" firstAttribute="top" secondItem="6gf-s6-8G0" secondAttribute="topMargin" constant="3" id="Cy5-6K-ejE"/>
+                                                <constraint firstItem="5iG-Nz-HXg" firstAttribute="leading" secondItem="6gf-s6-8G0" secondAttribute="leadingMargin" constant="100" id="O8G-SH-baC"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5iG-Nz-HXg" secondAttribute="bottom" constant="3" id="bDw-D5-fWv"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5iG-Nz-HXg" secondAttribute="trailing" constant="100" id="y3w-Eq-25v"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="1500" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <connections>
+                                            <outlet property="tvDate" destination="5iG-Nz-HXg" id="aKQ-If-BWk"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RecvMessageCell" id="Y9i-y5-dLe" customClass="RecvMessageCell" customModule="FireRTC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="68.666664123535156"/>
+                                        <rect key="frame" x="0.0" y="96.333332061767578" width="393" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Y9i-y5-dLe" id="wgh-m5-Xrs">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="68.666664123535156"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIp-aO-ZBx" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
-                                                    <rect key="frame" x="80" y="26.333333333333332" width="98.666666666666686" height="40.333333333333343"/>
+                                                    <rect key="frame" x="80" y="26.666666666666668" width="98.666666666666686" height="40.333333333333329"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="263" id="mkd-cN-ItI"/>
@@ -753,13 +779,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r54-a4-J4E">
-                                                    <rect key="frame" x="80" y="5" width="33.333333333333343" height="16.333333333333332"/>
+                                                    <rect key="frame" x="80" y="5" width="33.333333333333343" height="16.666666666666668"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rBh-KW-mMv">
-                                                    <rect key="frame" x="183.66666666666666" y="52.333333333333336" width="24.666666666666657" height="14.333333333333321"/>
+                                                    <rect key="frame" x="183.66666666666666" y="52.666666666666664" width="24.666666666666657" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -786,7 +812,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SendMessageCell" id="dgb-dc-7UO" customClass="SendMessageCell" customModule="FireRTC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="118.66666412353516" width="393" height="47.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="165.33333206176758" width="393" height="47.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dgb-dc-7UO" id="hLL-Qx-4dg">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
@@ -839,7 +865,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Recv2MessageCell" id="AKV-jb-QT6" customClass="Recv2TableViewCell" customModule="FireRTC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="166.33333206176758" width="393" height="47.666667938232422"/>
+                                        <rect key="frame" x="0.0" y="213" width="393" height="47.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AKV-jb-QT6" id="w1p-5Y-aax">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>

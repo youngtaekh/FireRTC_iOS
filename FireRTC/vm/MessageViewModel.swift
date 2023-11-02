@@ -17,6 +17,7 @@ class MessageViewModel {
     var participant: User!
     var messageList: [Message] {
         get {
+            print("\(TAG) \(#function) isNewList \(chat == nil || messageMap[chat!.id] == nil)")
             return (chat == nil || messageMap[chat!.id] == nil) ? [Message]() : messageMap[chat!.id]!
         }
     }
@@ -76,11 +77,17 @@ extension MessageViewModel {
         }
         onTerminatedCall()
     }
-    
+
     func sendData(msg: String) {
         let message = Message(chatId: chat!.id, body: msg)
         message.createdAt = Date.now
         print("\(TAG) chatId \(chat!.id)")
+        if messageMap[chat!.id] == nil {
+            print("\(TAG) \(#function) messageList reset \(chat!.title)")
+            messageMap[chat!.id] = [Message]()
+        }
+        addDateView(message: message)
+
         messageMap[chat!.id]?.insert(message, at: 0)
         if isConnected {
             rtpManager.sendData(msg: msg)
@@ -99,15 +106,34 @@ extension MessageViewModel {
         }
     }
     
+    func addDateView(message: Message) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyMMdd"
+        var prevDate: String? = nil
+        let curDate = dateFormatter.string(from: message.createdAt!)
+        if messageMap[message.chatId]!.count != 0 {
+            prevDate = dateFormatter.string(from: messageMap[message.chatId]![0].createdAt!)
+        }
+        if prevDate == nil || prevDate != curDate {
+            let dateMessage = Message(chatId: message.chatId, body: message.body)
+            dateMessage.createdAt = message.createdAt
+            dateMessage.isDate = true
+            messageMap[message.chatId]?.insert(dateMessage, at: 0)
+        }
+    }
+    
     func onMessageReceived(firebaseMessage fm: FirebaseMessage) {
         print("\(TAG) onMessageReceived userId \(fm.userId!), chatId \(fm.chatId != nil), message \(fm.message != nil)")
         if (fm.chatId == nil || fm.userId == nil || fm.messageId == nil || fm.message == nil) { return }
         let message = Message(id: fm.messageId!, from: fm.userId!, chatId: fm.chatId!, body: fm.message!)
         message.createdAt = Date.now
         if messageMap[fm.chatId!] == nil {
+            print("\(TAG) \(#function) messageList reset \(String(describing: fm.message))")
             messageMap[fm.chatId!] = [Message]()
         }
+        addDateView(message: message)
         messageMap[fm.chatId!]!.insert(message, at: 0)
+        messageEvent?.onMessageReceived(msg: message.body)
         if (chat != nil && chat!.id == fm.chatId) {
             isOffer = true
             rtpManager.start(isDataChannel: true, isOffer: true, rtpListener: self)
@@ -163,6 +189,7 @@ extension MessageViewModel {
                     print("getChat success \(chat)")
                     self.chat = chat
                     if self.messageMap[chat.id] == nil {
+                        print("\(self.TAG) \(#function) messageList reset \(chat.title)")
                         self.messageMap[chat.id] = [Message]()
                     }
                     if handler != nil {
@@ -258,13 +285,18 @@ extension MessageViewModel: RTPListener {
         print("\(TAG) \(#function)")
     }
     
-    func onMessage(message: String) {
+    func onMessage(msg: String) {
         print("\(TAG) \(#function)")
-        let msg = Message(from: participant.id, chatId: chat!.id, body: message)
-        msg.createdAt = Date.now
+        let message = Message(from: participant.id, chatId: chat!.id, body: msg)
+        message.createdAt = Date.now
         print("\(TAG) chatId \(chat!.id)")
-        messageMap[chat!.id]?.insert(msg, at: 0)
-        messageEvent?.onMessageReceived(msg: message)
+        if messageMap[chat!.id] == nil {
+            print("\(TAG) \(#function) messageList reset \(chat!.title)")
+            messageMap[chat!.id] = [Message]()
+        }
+        addDateView(message: message)
+        messageMap[chat!.id]?.insert(message, at: 0)
+        messageEvent?.onMessageReceived(msg: msg)
     }
     
     func onLocalVideoTrack(track: RTCVideoTrack) {
