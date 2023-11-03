@@ -119,7 +119,7 @@ class RTPManager: NSObject {
     func setRemoteDescription(isOffer: Bool, sdp: String) {
         let type: RTCSdpType = isOffer ? .offer : .answer
         let remoteDescription = RTCSessionDescription(type: type, sdp: sdp)
-        pc!.setRemoteDescription(remoteDescription) { err in
+        pc?.setRemoteDescription(remoteDescription) { err in
             if let err = err {
                 print("\(self.TAG) setRemoteDescription Error \(err)")
             } else {

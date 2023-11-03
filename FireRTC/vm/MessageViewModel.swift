@@ -17,7 +17,6 @@ class MessageViewModel {
     var participant: User!
     var messageList: [Message] {
         get {
-            print("\(TAG) \(#function) isNewList \(chat == nil || messageMap[chat!.id] == nil)")
             return (chat == nil || messageMap[chat!.id] == nil) ? [Message]() : messageMap[chat!.id]!
         }
     }
@@ -57,6 +56,11 @@ extension MessageViewModel {
     func addRemoteCandidate(sdp: String) {
         print("\(TAG) \(#function)")
         rtpManager.addRemoteCandidate(sdp: sdp)
+    }
+    
+    func sendCall() {
+        isOffer = true
+        rtpManager.start(isDataChannel: true, isOffer: true, rtpListener: self)
     }
     
     func answerCall() {
@@ -133,11 +137,7 @@ extension MessageViewModel {
         }
         addDateView(message: message)
         messageMap[fm.chatId!]!.insert(message, at: 0)
-        messageEvent?.onMessageReceived(msg: message.body)
-        if (chat != nil && chat!.id == fm.chatId) {
-            isOffer = true
-            rtpManager.start(isDataChannel: true, isOffer: true, rtpListener: self)
-        }
+        messageEvent?.onMessageReceived(message: message, fm: fm)
     }
     
     func onIncomingCall(firebaseMessage fm: FirebaseMessage) {
@@ -160,7 +160,7 @@ extension MessageViewModel {
         isOffer = false
         remoteSDP = fm.sdp
         getChat(id: fm.chatId!) {
-            self.rtpManager.start(isDataChannel: true, isOffer: false, remoteSDP: self.remoteSDP, rtpListener: self)
+            self.answerCall()
         }
     }
     
@@ -296,7 +296,7 @@ extension MessageViewModel: RTPListener {
         }
         addDateView(message: message)
         messageMap[chat!.id]?.insert(message, at: 0)
-        messageEvent?.onMessageReceived(msg: msg)
+        messageEvent?.onMessageReceived(message: message, fm: nil)
     }
     
     func onLocalVideoTrack(track: RTCVideoTrack) {
@@ -309,5 +309,5 @@ extension MessageViewModel: RTPListener {
 }
 
 protocol MessageEvent {
-    func onMessageReceived(msg: String)
+    func onMessageReceived(message: Message, fm: FirebaseMessage?)
 }

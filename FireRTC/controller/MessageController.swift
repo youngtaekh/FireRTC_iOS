@@ -23,6 +23,8 @@ class MessageController: UIViewController {
     var isEmptyMessage = true
     
     let messageVM = MessageViewModel.instance
+    
+    let longPressGesture = UILongPressGestureRecognizer()
 
     @IBOutlet weak var tvTitle: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -31,6 +33,7 @@ class MessageController: UIViewController {
     @IBOutlet weak var tvBottom: UIButton!
     @IBOutlet weak var tvSend: UIButton!
     @IBOutlet weak var line2Bottom: NSLayoutConstraint!
+    @IBOutlet weak var tvToast: PaddingLabel!
     
     override func viewDidLoad() {
         print("\(TAG) \(#function)")
@@ -41,6 +44,9 @@ class MessageController: UIViewController {
         etMessage.text = messagePlaceholder
         etMessage.textColor = .lightGray
         
+        tvToast.isHidden = true
+        tvToast.clipsToBounds = true
+        tvToast.layer.cornerRadius = 15
         tvBottom.isHidden = true
         
         tableView.delegate = self
@@ -56,8 +62,50 @@ class MessageController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        longPressGesture.minimumPressDuration = 0.3
+        longPressGesture.isEnabled = true
+        longPressGesture.delegate = self
+        longPressGesture.addTarget(self, action: #selector(handleLongPress))
+        tableView.addGestureRecognizer(longPressGesture)
+        
         // Table cell click
 //        addTapGesture()
+    }
+    
+    @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+            case .began:
+                handleBegan(gesture)
+            case .changed:
+                handleChanged(gesture)
+            default:
+                // ended, canceled, failed
+                handleEnded(gesture)
+        }
+    }
+    
+    private func handleBegan(_ gesture: UILongPressGestureRecognizer) {
+        print("\(TAG) \(#function)")
+        let touchPoint = gesture.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+            if !messageVM.messageList[indexPath.row].isDate {
+                print("\(TAG) \(#function) indexPath \(indexPath.row) message \(messageVM.messageList[indexPath.row].body)")
+                UIPasteboard.general.string = messageVM.messageList[indexPath.row].body
+                tvToast.text = "Copy!!!!!!!"
+                tvToast.isHidden = false
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                    self.tvToast.isHidden = true
+                }
+            }
+        }
+    }
+    
+    private func handleChanged(_ gesture: UILongPressGestureRecognizer) {
+        print("\(TAG) \(#function)")
+    }
+    
+    private func handleEnded(_ gesture: UILongPressGestureRecognizer) {
+        print("\(TAG) \(#function)")
     }
     
     @IBAction func finish(_ sender: Any) {
@@ -70,7 +118,7 @@ class MessageController: UIViewController {
         messageVM.messageMap[messageVM.chat!.id] = [Message]()
     }
     @IBAction func send(_ sender: Any) {
-        print("\(TAG) \(#function) \(etMessage.text ?? "")")
+        print("\(TAG) \(#function)")
         if (isEmptyMessage) {
             messageVM.sendData(msg: "empty")
         } else {
@@ -136,14 +184,21 @@ class MessageController: UIViewController {
     }
 }
 
+extension MessageController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        print("\(TAG) \(#function)")
+        return true
+    }
+}
+
 extension MessageController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messageVM.messageList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("\(TAG) \(#function) list size \(messageVM.messageList.count)")
-        print("\(TAG) \(#function) row \(indexPath.row)")
+//        print("\(TAG) \(#function) list size \(messageVM.messageList.count)")
+//        print("\(TAG) \(#function) row \(indexPath.row)")
         let message = messageVM.messageList[indexPath.row]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "aa hh:mm"
@@ -229,7 +284,7 @@ extension MessageController: ControllerEvent {
         print("\(TAG) onTerminatedCall")
         isTerminated = true
         if isEnd {
-            messageVM.chat = nil
+//            messageVM.chat = nil
             MoveTo.popController(ui: self, action: true)
         }
     }
@@ -242,11 +297,14 @@ extension MessageController: ControllerEvent {
 }
 
 extension MessageController: MessageEvent {
-    func onMessageReceived(msg: String) {
-        print("\(TAG) \(msg)")
+    func onMessageReceived(message: Message, fm: FirebaseMessage?) {
+        print("\(TAG) \(message.body)")
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.scrollToBottom()
+        }
+        if fm != nil && fm!.chatId == messageVM.chat!.id {
+            messageVM.sendCall()
         }
     }
 }
