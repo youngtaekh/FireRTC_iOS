@@ -26,7 +26,7 @@ class SendFCM {
     }
     
     static func sendMessage(payload: Payload) {
-        let headers: HTTPHeaders = [HTTPHeader(name: "Authorization", value: "key=AAAAxajhs4s:APA91bFbKcfhRGmIK_pn5HAQZgWoCpbF_qxaRNe2hG_QZLOBuwNfF3b2AGKpA8LcGd5QVAmIDazBnJBwC26rinf4G6kkPG1yyy63hdAqQx-q68axHZ9Hz-XgzziTPiI0fm1cfDXSNOIR"), HTTPHeader(name: "Content-Type", value: "application/json")]
+        let headers: HTTPHeaders = [HTTPHeader(name: "Authorization", value: "key="), HTTPHeader(name: "Content-Type", value: "application/json")]
         AF.request(
             "https://fcm.googleapis.com/fcm/send",
             method: .post,
