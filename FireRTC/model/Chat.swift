@@ -11,6 +11,7 @@ import FirebaseFirestore
 let TITLE = "title"
 let IS_GROUP = "isGroup"
 let LAST_MESSAGE = "lastMessage"
+let LAST_SEQUENCE = "lastSequence"
 let MODIFIED_AT = "modifiedAt"
 
 class Chat: Decodable {
@@ -18,6 +19,7 @@ class Chat: Decodable {
     let title: String
     let participants: [String]
     var lastMessage = ""
+    var lastSequence: Int64 = -1
     let isGroup: Bool
     var createdAt: Date? = nil
     var modifiedAt: Date? = nil
@@ -39,6 +41,7 @@ class Chat: Decodable {
         map[TITLE] = self.title
         map[PARTICIPANTS] = self.participants
         map[LAST_MESSAGE] = self.lastMessage
+        map[LAST_SEQUENCE] = self.lastSequence
         map[IS_GROUP] = self.isGroup
         map[CREATED_AT] = self.createdAt ?? FieldValue.serverTimestamp()
         map[MODIFIED_AT] = self.modifiedAt ?? FieldValue.serverTimestamp()
@@ -46,9 +49,9 @@ class Chat: Decodable {
     }
     
     func toString() {
-        var str = "Chat(title \(title), lastMessage \(lastMessage), participants \(participants.count)"
+        var str = "Chat(title \(title), lastMessage \(lastSequence) \(lastMessage), participants \(participants.count)"
         if (createdAt != nil) {
-            str += ", createAt \(createdAt!)"
+            str += ", createdAt \(createdAt!)"
         }
         if modifiedAt != nil {
             str += ", modifiedAt \(modifiedAt!)"

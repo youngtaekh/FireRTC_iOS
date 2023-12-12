@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObV-tr-8AA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ObV-tr-8AA">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -785,7 +786,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rBh-KW-mMv">
-                                                    <rect key="frame" x="168.66666666666666" y="52.333333333333336" width="24.666666666666657" height="14.333333333333321"/>
+                                                    <rect key="frame" x="168.66666666666666" y="52.333333333333336" width="24.666666666666657" height="14.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -843,7 +844,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAs-Qo-juw">
-                                                    <rect key="frame" x="277" y="31.333333333333332" width="24.666666666666686" height="14.333333333333325"/>
+                                                    <rect key="frame" x="277" y="31.333333333333332" width="24.666666666666686" height="14.333333333333332"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -896,7 +897,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jIV-KV-XZ0">
-                                                    <rect key="frame" x="141.33333333333334" y="31.333333333333332" width="24.666666666666657" height="14.333333333333325"/>
+                                                    <rect key="frame" x="141.33333333333334" y="31.333333333333332" width="24.666666666666657" height="14.333333333333332"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -993,7 +994,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy!!!!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BdW-HE-CYS" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
-                                <rect key="frame" x="164.33333333333334" y="689.66666666666663" width="64.333333333333343" height="20.333333333333371"/>
+                                <rect key="frame" x="154.33333333333334" y="669.66666666666663" width="84.333333333333343" height="40.333333333333371"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1013,6 +1014,27 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OJ1-Xq-FB7" userLabel="tvMessage" customClass="PaddingLabel" customModule="FireRTC" customModuleProvider="target">
+                                <rect key="frame" x="20" y="728" width="353" height="21"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20012316166959851" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topPadding">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="bottomPadding">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rightPadding">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="E13-9x-Q3f"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1029,7 +1051,10 @@
                             <constraint firstItem="E13-9x-Q3f" firstAttribute="trailing" secondItem="chu-PH-GBJ" secondAttribute="trailing" id="K8X-Wd-o9F"/>
                             <constraint firstItem="Jbi-hQ-O2M" firstAttribute="bottom" secondItem="BL8-qZ-Ncg" secondAttribute="top" id="KpC-bT-dMH"/>
                             <constraint firstItem="Jbi-hQ-O2M" firstAttribute="leading" secondItem="E13-9x-Q3f" secondAttribute="leading" id="Pzc-N2-HQB"/>
+                            <constraint firstItem="E13-9x-Q3f" firstAttribute="trailing" secondItem="OJ1-Xq-FB7" secondAttribute="trailing" constant="20" id="QKJ-TB-fpV"/>
+                            <constraint firstItem="OJ1-Xq-FB7" firstAttribute="leading" secondItem="E13-9x-Q3f" secondAttribute="leading" constant="20" id="U31-nA-ICf"/>
                             <constraint firstItem="Jbi-hQ-O2M" firstAttribute="bottom" secondItem="3vx-CA-zTg" secondAttribute="top" constant="-10" id="VSO-E3-o2b"/>
+                            <constraint firstItem="OJ1-Xq-FB7" firstAttribute="bottom" secondItem="Jbi-hQ-O2M" secondAttribute="top" constant="-10" id="Z2R-LC-rbN"/>
                             <constraint firstItem="3vx-CA-zTg" firstAttribute="leading" secondItem="BL8-qZ-Ncg" secondAttribute="trailing" id="d0m-kl-rHV"/>
                             <constraint firstItem="BL8-qZ-Ncg" firstAttribute="leading" secondItem="E13-9x-Q3f" secondAttribute="leading" id="fLT-Pi-tre"/>
                             <constraint firstItem="chu-PH-GBJ" firstAttribute="leading" secondItem="E13-9x-Q3f" secondAttribute="leading" id="fiq-Gw-An7"/>
@@ -1052,6 +1077,7 @@
                         <outlet property="line2Bottom" destination="72c-7n-BOr" id="buh-np-vbS"/>
                         <outlet property="tableView" destination="chu-PH-GBJ" id="xtp-6Q-A5x"/>
                         <outlet property="tvBottom" destination="b69-em-f2I" id="tmd-1s-5bm"/>
+                        <outlet property="tvMessage" destination="OJ1-Xq-FB7" id="3sP-gx-K5t"/>
                         <outlet property="tvSend" destination="r0c-UD-ntT" id="5cI-lD-yNg"/>
                         <outlet property="tvTitle" destination="J1B-id-gWW" id="ZjJ-g2-aIx"/>
                         <outlet property="tvToast" destination="BdW-HE-CYS" id="Xnw-BA-YKY"/>
@@ -1355,6 +1381,9 @@
         </scene>
     </scenes>
     <designables>
+        <designable name="BdW-HE-CYS">
+            <size key="intrinsicContentSize" width="84.333333333333329" height="40.333333333333329"/>
+        </designable>
         <designable name="FfN-OM-pbc">
             <size key="intrinsicContentSize" width="71.333333333333343" height="40.333333333333329"/>
         </designable>
@@ -1379,15 +1408,15 @@
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="mic.slash.fill" catalog="system" width="108" height="128"/>
         <image name="outline_person_24pt" width="24" height="24"/>
-        <image name="person.badge.plus" catalog="system" width="128" height="125"/>
+        <image name="person.badge.plus" catalog="system" width="128" height="124"/>
         <image name="person.circle" catalog="system" width="128" height="123"/>
-        <image name="pip.fill" catalog="system" width="128" height="98"/>
+        <image name="pip.fill" catalog="system" width="128" height="99"/>
         <image name="round_call" width="24" height="24"/>
         <image name="round_call_end" width="24" height="24"/>
         <image name="round_call_missed" width="24" height="24"/>
         <image name="round_mobile_screen_share" width="24" height="24"/>
         <image name="round_person_24pt" width="24" height="24"/>
-        <image name="video.slash.fill" catalog="system" width="128" height="103"/>
+        <image name="video.slash.fill" catalog="system" width="128" height="114"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

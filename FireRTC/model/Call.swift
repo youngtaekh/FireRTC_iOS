@@ -118,7 +118,7 @@ class Call: Decodable {
             str += ", counterpartName \(counterpartName!)"
         }
         if (createdAt != nil) {
-            str += ", createAt \(createdAt!)"
+            str += ", createdAt \(createdAt!)"
         }
 //        str += ", id \(id)"
         str += ")"

@@ -107,7 +107,7 @@ class Space: Decodable {
     func toString() -> String {
         var str = "Space(name \(name), createdBy \(createdBy), callType \(callType), connected \(connected), terminated \(terminated)"
         if (createdAt != nil) {
-            str += ", createAt \(createdAt!)"
+            str += ", createdAt \(createdAt!)"
         }
 //        str += ", id \(id)"
         str += ")"

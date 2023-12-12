@@ -21,6 +21,8 @@ class MessageController: UIViewController {
     var isBottom = true
     var isEdit = false
     var isEmptyMessage = true
+    var isEndReload = false
+    var isReload = false
     
     let messageVM = MessageViewModel.instance
     
@@ -34,9 +36,9 @@ class MessageController: UIViewController {
     @IBOutlet weak var tvSend: UIButton!
     @IBOutlet weak var line2Bottom: NSLayoutConstraint!
     @IBOutlet weak var tvToast: PaddingLabel!
+    @IBOutlet weak var tvMessage: PaddingLabel!
     
     override func viewDidLoad() {
-        print("\(TAG) \(#function)")
         super.viewDidLoad()
         etMessage.delegate = self
         etMessage.layer.cornerRadius = 15
@@ -52,10 +54,14 @@ class MessageController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
+        
+        tvMessage.clipsToBounds = true
+        tvMessage.layer.cornerRadius = 15
+        tvMessage.isHidden = true
 
         messageVM.controllerEvent = self
         messageVM.messageEvent = self
-        messageVM.start(completion: nil)
+        messageVM.start(reload: reload, completion: nil)
 
         tvTitle.text = messageVM.participant.name
         
@@ -70,6 +76,11 @@ class MessageController: UIViewController {
         
         // Table cell click
 //        addTapGesture()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        ChatRepository.removeChatListener()
+        messageVM.messageEvent = nil
     }
     
     @objc private func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
@@ -180,7 +191,16 @@ class MessageController: UIViewController {
             self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: animated)
             self.tvBottom.isHidden = true
             self.isBottom = true
+            self.tvMessage.isHidden = true
         }
+    }
+    
+    func reload() {
+        tableView.reloadData()
+    }
+    
+    private func setEndReload() {
+        isEndReload = true
     }
 }
 
@@ -254,6 +274,10 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             tvBottom.isHidden = true
             isBottom = true
+            if isReload {
+                isReload = false
+                scrollToBottom()
+            }
         }
     }
     
@@ -262,6 +286,13 @@ extension MessageController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 1 {
             tvBottom.isHidden = false
             isBottom = false
+        }
+        
+        if messageVM.messageList.count - indexPath.row == 20 {
+            print("reload messages \(messageVM.messageList.count) \(indexPath.row)")
+            if !isEndReload && messageVM.messageList.last?.sequence != 0 {
+                messageVM.getMessages(chatId: messageVM.chat!.id, underOf: messageVM.messageList.last!.sequence, isAdditional: true, reload: reload, setEndReload: setEndReload)
+            }
         }
     }
     
@@ -300,8 +331,14 @@ extension MessageController: MessageEvent {
     func onMessageReceived(message: Message, fm: FirebaseMessage?) {
         print("\(TAG) \(message.body)")
         DispatchQueue.main.async {
-            self.tableView.reloadData()
-            self.scrollToBottom()
+            if (self.isBottom) {
+                self.tableView.reloadData()
+                self.scrollToBottom()
+            } else {
+                self.isReload = true
+                self.tvMessage.text = message.body
+                self.tvMessage.isHidden = false
+            }
         }
         if fm != nil && fm!.chatId == messageVM.chat!.id {
             messageVM.sendCall()

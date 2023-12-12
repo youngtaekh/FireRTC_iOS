@@ -15,13 +15,11 @@ class ProfileController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("\(TAG) \(#function)")
         
         tvName.text = user?.name
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("\(TAG) viewWillAppear")
         navigationController?.isNavigationBarHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }

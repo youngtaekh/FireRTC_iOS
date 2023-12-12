@@ -54,9 +54,13 @@ class SendFCM {
         messageId: String? = nil,
         targetOS: String? = nil,
         sdp: String? = nil,
+        sequence: Int64? = nil,
         message: String? = nil
     ) -> Payload {
-        let notification = Notification(title: SharedPreference.instance.getName(), body: "\(callType) \(type)")
+        var notification = Notification(title: SharedPreference.instance.getName(), body: "\(callType) \(type)")
+        if (type == .Message) {
+            notification = Notification(title: SharedPreference.instance.getName(), body: "\(type) \(message!)")
+        }
         let data = Data(
             content_available: true,
             userId: SharedPreference.instance.getID(),
@@ -70,6 +74,7 @@ class SendFCM {
             messageId: messageId,
             targetOS: "iOS",
             sdp: sdp,
+            sequence: sequence,
             message: message
         )
         if targetOS == nil || targetOS!.lowercased() == "ios" {
@@ -94,6 +99,7 @@ class SendFCM {
         let messageId: String?
         let targetOS: String?
         let sdp: String?
+        let sequence: Int64?
         let message: String?
     }
     

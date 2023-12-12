@@ -13,6 +13,7 @@ class MessageViewModel {
     static var instance = MessageViewModel()
     
     var chat: Chat? = nil
+    var message: Message? = nil
     var messageMap = [String: [Message]]()
     var participant: User!
     var messageList: [Message] {
@@ -20,6 +21,8 @@ class MessageViewModel {
             return (chat == nil || messageMap[chat!.id] == nil) ? [Message]() : messageMap[chat!.id]!
         }
     }
+    
+    var getMessageTime: Double? = nil
     
     var rtpManager = RTPManager()
     var isOffer = true
@@ -29,9 +32,7 @@ class MessageViewModel {
     
     var controllerEvent: ControllerEvent?
     var messageEvent: MessageEvent?
-}
 
-extension MessageViewModel {
     func release() {
         rtpManager.release()
         rtpManager = RTPManager()
@@ -41,14 +42,41 @@ extension MessageViewModel {
         remoteSDP = nil
     }
     
-    func start(completion: (() -> Void)?) {
+    func start(reload: @escaping () -> Void, completion: (() -> Void)?) {
         isOffer = true
         var ids = [String]()
         ids.append(participant.id)
         ids.append(SharedPreference.instance.getID())
         ids.sort()
         chat = Chat(title: participant.name, participants: ids)
-        getChat(id: chat!.id) {
+        ChatRepository.addChatListener(id: chat!.id) { data in
+            print("Current data: \(data[TITLE]!) \(data[LAST_SEQUENCE]!)")
+            if (self.message?.sequence ==  -1) {
+                self.message!.sequence = data[LAST_SEQUENCE] as! Int64
+                MessageRepository.post(message: self.message!) { err in
+                    if let err = err {
+                        print(err.localizedDescription)
+                    }
+                }
+                if self.isConnected {
+                    self.rtpManager.sendData(msg: self.message!.toJson())
+                } else {
+                    SendFCM.sendMessage(
+                        payload: SendFCM.getPayload(
+                            to: self.participant.fcmToken!,
+                            type: .Message,
+                            callType: .MESSAGE,
+                            chatId: self.chat!.id,
+                            messageId: self.message!.id,
+                            targetOS: self.participant.os,
+                            sequence: self.message!.sequence,
+                            message: self.message!.body
+                        )
+                    )
+                }
+            }
+        }
+        getChat(id: chat!.id, reload: reload) {
             completion?()
         }
     }
@@ -81,48 +109,36 @@ extension MessageViewModel {
         }
         onTerminatedCall()
     }
-
+    
     func sendData(msg: String) {
-        let message = Message(chatId: chat!.id, body: msg)
-        message.createdAt = Date.now
+        message = Message(chatId: chat!.id, body: msg)
+        message!.createdAt = Date.now
         print("\(TAG) chatId \(chat!.id)")
         if messageMap[chat!.id] == nil {
             print("\(TAG) \(#function) messageList reset \(chat!.title)")
             messageMap[chat!.id] = [Message]()
         }
-        addDateView(message: message)
-
-        messageMap[chat!.id]?.insert(message, at: 0)
-        if isConnected {
-            rtpManager.sendData(msg: msg)
-        } else {
-            SendFCM.sendMessage(
-                payload: SendFCM.getPayload(
-                    to: participant.fcmToken!,
-                    type: .Message,
-                    callType: .MESSAGE,
-                    chatId: chat!.id,
-                    messageId: message.id,
-                    targetOS: participant.os,
-                    message: msg
-                )
-            )
-        }
+        addDateView(message: message!)
+        
+        messageMap[chat!.id]?.insert(message!, at: 0)
+        chat!.lastMessage = msg
+        updateLastMessage()
     }
     
-    func addDateView(message: Message) {
+    func addDateView(message: Message, at: Int = 0) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyMMdd"
         var prevDate: String? = nil
         let curDate = dateFormatter.string(from: message.createdAt!)
-        if messageMap[message.chatId]!.count != 0 {
-            prevDate = dateFormatter.string(from: messageMap[message.chatId]![0].createdAt!)
+        if messageMap[message.chatId]!.count != at {
+            prevDate = dateFormatter.string(from: messageMap[message.chatId]![at].createdAt!)
         }
         if prevDate == nil || prevDate != curDate {
             let dateMessage = Message(chatId: message.chatId, body: message.body)
+            dateMessage.sequence = message.sequence
             dateMessage.createdAt = message.createdAt
             dateMessage.isDate = true
-            messageMap[message.chatId]?.insert(dateMessage, at: 0)
+            messageMap[message.chatId]?.insert(dateMessage, at: at)
         }
     }
     
@@ -159,9 +175,7 @@ extension MessageViewModel {
         
         isOffer = false
         remoteSDP = fm.sdp
-        getChat(id: fm.chatId!) {
-            self.answerCall()
-        }
+        answerCall()
     }
     
     func onAnswerCall(sdp: String?) {
@@ -176,41 +190,37 @@ extension MessageViewModel {
         controllerEvent?.onTerminatedCall()
     }
     
-//    let task = DispatchWorkItem {
-//        print("DispatchWorkItem")
-//    }
+    //    let task = DispatchWorkItem {
+    //        print("DispatchWorkItem")
+    //    }
 }
 
 extension MessageViewModel {
-    private func getChat(id: String, handler: (() -> Void)? = nil) {
+    private func getChat(id: String, reload: @escaping () -> Void, handler: (() -> Void)? = nil) {
         ChatRepository.getChat(id: id) { result in
             switch result {
                 case .success(let chat):
-                    print("getChat success \(chat)")
+                    print("getChat success")
+                    chat.toString()
                     self.chat = chat
-                    if self.messageMap[chat.id] == nil {
-                        print("\(self.TAG) \(#function) messageList reset \(chat.title)")
-                        self.messageMap[chat.id] = [Message]()
-                    }
+//                    self.getLastMessage()
+                    self.messageMap[chat.id] = [Message]()
+                    self.getMessages(chatId: chat.id, reload: reload)
                     if handler != nil {
                         handler!()
                     }
                 case.failure(let err):
                     print("getChat failure \(err)")
-                    self.postChat(handler: handler)
+                    self.postChat()
                     
             }
         }
     }
     
-    private func postChat(handler: (() -> Void)? = nil) {
+    private func postChat() {
         ChatRepository.post(chat: chat!) { err in
             if let err = err {
                 print("\(self.TAG) chat post error \(err)")
-            } else {
-                if handler != nil {
-                    handler!()
-                }
             }
         }
     }
@@ -226,6 +236,61 @@ extension MessageViewModel {
                     }
                 case .failure(let err):
                     print("\(self.TAG) getUser error \(err)")
+            }
+        }
+    }
+    
+    private func updateLastMessage(handler: (() -> Void)? = nil) {
+        ChatRepository.updateLastMessage(chat: chat!) { err in
+            if let error = err {
+                print("\(self.TAG) update last message \(error)")
+            } else {
+                handler?()
+            }
+        }
+    }
+    
+    private func getLastMessage() {
+        MessageRepository.getLastMessage(chatId: chat!.id) { query, err in
+            if let err = err {
+                print(err.localizedDescription)
+            } else {
+                for document in query!.documents {
+                    let message = Message.fromMap(map: document.data())
+                    message.toString()
+                }
+            }
+        }
+    }
+    
+    func getMessages(
+        chatId: String,
+        aboveOf: Int64 = -1,
+        underOf: Int64 = MAX_SEQUENCE,
+        isAdditional: Bool = false,
+        reload: @escaping () -> Void,
+        setEndReload: (() -> Void)? = nil
+    ) {
+        getMessageTime = Date().timeIntervalSince1970
+        MessageRepository.getMessages(
+            chatId: chatId,
+            max: underOf,
+            min: aboveOf
+        ) { query, err in
+            print("getMessages Time : \(Date().timeIntervalSince1970 - self.getMessageTime!)ms")
+            var index = 0
+            if isAdditional {
+                print("\(self.TAG) getMessage \(aboveOf) - \(underOf)")
+                index = self.messageMap[chatId]!.count
+            }
+            for document in query!.documents.reversed() {
+                let message = Message.fromMap(map: document.data())
+                self.addDateView(message: message, at: index)
+                self.messageMap[chatId]!.insert(message, at: index)
+            }
+            reload()
+            if query!.documents.isEmpty {
+                setEndReload?()
             }
         }
     }
@@ -287,16 +352,21 @@ extension MessageViewModel: RTPListener {
     
     func onMessage(msg: String) {
         print("\(TAG) \(#function)")
-        let message = Message(from: participant.id, chatId: chat!.id, body: msg)
-        message.createdAt = Date.now
-        print("\(TAG) chatId \(chat!.id)")
-        if messageMap[chat!.id] == nil {
-            print("\(TAG) \(#function) messageList reset \(chat!.title)")
-            messageMap[chat!.id] = [Message]()
+        var dic: [String: Any] = [String: Any]()
+        do {
+            dic = try JSONSerialization.jsonObject(with: Data(msg.utf8), options: []) as! [String : Any]
+            let message = Message(id: dic[ID] as! String, from: dic[FROM] as! String, chatId: dic[CHAT_ID] as! String, body: dic[BODY] as! String, sequence: dic[SEQUENCE] as! Int64, createdAt: Date(timeIntervalSince1970: dic[CREATED_AT] as! Double / 1_000))
+            print("\(TAG) chatId \(chat!.id)")
+            if messageMap[chat!.id] == nil {
+                print("\(TAG) \(#function) messageList reset \(chat!.title)")
+                messageMap[chat!.id] = [Message]()
+            }
+            addDateView(message: message)
+            messageMap[chat!.id]?.insert(message, at: 0)
+            messageEvent?.onMessageReceived(message: message, fm: nil)
+        } catch {
+            print(error.localizedDescription)
         }
-        addDateView(message: message)
-        messageMap[chat!.id]?.insert(message, at: 0)
-        messageEvent?.onMessageReceived(message: message, fm: nil)
     }
     
     func onLocalVideoTrack(track: RTCVideoTrack) {

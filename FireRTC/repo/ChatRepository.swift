@@ -13,6 +13,28 @@ class ChatRepository {
     private static let TAG = "ChatRepository"
     private static let COLLECTION = "chats"
     
+    static var listener: ListenerRegistration?
+    
+    static func addChatListener(id: String, completion: @escaping ([String: Any]) -> Void) {
+        listener = Firestore.firestore().collection(COLLECTION)
+            .document(id)
+            .addSnapshotListener { snapshot, error in
+                guard let document = snapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
+                }
+                guard let data = document.data() else {
+                    print("Document data was empty.")
+                    return
+                }
+                completion(data)
+            }
+    }
+    
+    static func removeChatListener() {
+        listener?.remove()
+    }
+    
     static func post(chat: Chat, completion: @escaping (Error?) -> Void) {
         Firestore.firestore().collection(COLLECTION)
             .document(chat.id)
@@ -43,6 +65,7 @@ class ChatRepository {
             .document(chat.id)
             .updateData([
                 MODIFIED_AT: FieldValue.serverTimestamp(),
+                LAST_SEQUENCE: FieldValue.increment(Int64(1)),
                 LAST_MESSAGE: chat.lastMessage
             ], completion: completion)
     }

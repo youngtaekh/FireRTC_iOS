@@ -41,7 +41,7 @@ class Relation: Decodable {
     func toString() {
         var str = "User(from \(from), to \(to), type \(type)"
         if (createdAt != nil) {
-            str += ", createAt \(createdAt!)"
+            str += ", createdAt \(createdAt!)"
         }
         str += ", id \(id)"
         str += ")"

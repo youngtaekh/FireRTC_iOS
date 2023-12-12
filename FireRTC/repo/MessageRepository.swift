@@ -18,11 +18,21 @@ class MessageRepository {
             .setData(message.toMap(), completion: completion)
     }
     
-    static func getMessages(chatId: String, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
+    static func getMessages(chatId: String, max: Int64, min: Int64, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
         Firestore.firestore().collection(COLLECTION)
             .whereField(CHAT_ID, isEqualTo: chatId)
-            .order(by: CREATED_AT, descending: true)
+            .whereField(SEQUENCE, isGreaterThan: min)
+            .whereField(SEQUENCE, isLessThan: max)
+            .order(by: SEQUENCE, descending: true)
             .limit(to: 100)
+            .getDocuments(completion: completion)
+    }
+
+    static func getLastMessage(chatId: String, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
+        Firestore.firestore().collection(COLLECTION)
+            .whereField(CHAT_ID, isEqualTo: chatId)
+            .order(by: SEQUENCE, descending: true)
+            .limit(to: 1)
             .getDocuments(completion: completion)
     }
 }
