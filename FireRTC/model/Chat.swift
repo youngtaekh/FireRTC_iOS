@@ -49,7 +49,7 @@ class Chat: Decodable {
     }
     
     func toString() {
-        var str = "Chat(title \(title), lastMessage \(lastSequence) \(lastMessage), participants \(participants.count)"
+        var str = "Chat(title \(title), lastSequence \(lastSequence), lastMessage \(lastMessage), participants \(participants.count)"
         if (createdAt != nil) {
             str += ", createdAt \(createdAt!)"
         }

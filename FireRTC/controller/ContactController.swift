@@ -14,8 +14,6 @@ class ContactController: UIViewController {
     @IBOutlet weak var tvEmpty: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-//    var contacts: [User] = [User(id: "Test01", password: "aaa"), User(id: "Test02", password: "aaa")]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,10 +21,7 @@ class ContactController: UIViewController {
         print("\(TAG) \(#function)")
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.estimatedRowHeight = 200.0 // Adjust Primary table height
-        tableView.rowHeight = 70.0
         
-//        getContacts(source: .cache)
         getContacts(source: .server)
         
     }
@@ -81,10 +76,10 @@ extension ContactController: UITableViewDelegate, UITableViewDataSource {
         //클릭한 셀의 이벤트 처리
         tableView.deselectRow(at: indexPath, animated: true)
         
-        print("Click Cell Number: " + String(indexPath.row))
-        print("Click Cell ID: " + UserRepository.contacts[indexPath.row].id)
+        print("\(TAG) Click Cell Number: " + String(indexPath.row))
+        print("\(TAG) Click Cell ID: " + UserRepository.contacts[indexPath.row].id)
         guard let controller = MoveTo.controller(ui: self, identifier: MoveTo.profileIdentifier) as? ProfileController else {
-            print("parse controller failure")
+            print("\(TAG) parse controller failure")
             return
         }
         controller.user = UserRepository.contacts[indexPath.row]

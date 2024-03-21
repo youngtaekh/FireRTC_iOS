@@ -30,9 +30,9 @@ class UserRepository {
     private static let getUserResult: (Result<User, Error>) -> Void = { result in
         switch result {
             case .success(let user):
-                print(user.toString())
+                print("\(TAG) \(user.toString())")
             case .failure(let error):
-                print("Error decoding user: \(error)")
+                print("\(TAG) Error decoding user: \(error)")
         }
     }
     
@@ -48,10 +48,8 @@ class UserRepository {
                     os: document.data()[OS] as! String,
                     fcmToken: document.data()[FCM_TOKEN] as? String,
                     createdAt: document.data()[CREATED_AT] as? Date)
-                print("\(document.documentID) => \(user.toString())")
                 contacts.append(user)
             }
-            print("\(contacts.count) - \(totalCount)")
             if contacts.count == totalCount {
                 UserRepository.reload!()
             }

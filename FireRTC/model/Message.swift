@@ -66,7 +66,7 @@ class Message: Decodable {
     }
     
     func toString() {
-        var str = "Message(from \(from), sequence \(sequence) body \(body)"
+        var str = "Message(from \(from), sequence \(sequence), body \(body)"
         if (createdAt != nil) {
             str += ", createdAt \(createdAt!)"
         }

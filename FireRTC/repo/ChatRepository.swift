@@ -16,6 +16,7 @@ class ChatRepository {
     static var listener: ListenerRegistration?
     
     static func addChatListener(id: String, completion: @escaping ([String: Any]) -> Void) {
+        print("\(TAG) \(#function)")
         listener = Firestore.firestore().collection(COLLECTION)
             .document(id)
             .addSnapshotListener { snapshot, error in
@@ -32,22 +33,26 @@ class ChatRepository {
     }
     
     static func removeChatListener() {
+        print("\(TAG) \(#function)")
         listener?.remove()
     }
     
     static func post(chat: Chat, completion: @escaping (Error?) -> Void) {
+        print("\(TAG) \(#function)")
         Firestore.firestore().collection(COLLECTION)
             .document(chat.id)
             .setData(chat.toMap(), completion: completion)
     }
     
     static func getChat(id: String, completion: @escaping (Result<Chat, Error>) -> Void) {
+        print("\(TAG) \(#function)")
         Firestore.firestore().collection(COLLECTION)
             .document(id)
             .getDocument(as: Chat.self, completion: completion)
     }
     
     static func getChats(participantId: String, completion: @escaping (QuerySnapshot?, Error?) -> Void) {
+        print("\(TAG) \(#function)")
         Firestore.firestore().collection(COLLECTION)
             .whereField(PARTICIPANTS, arrayContains: participantId)
             .order(by: MODIFIED_AT, descending: true)
@@ -55,12 +60,14 @@ class ChatRepository {
     }
     
     static func updateModifiedAt(id: String, completion: @escaping (Error?) -> Void) {
+        print("\(TAG) \(#function)")
         Firestore.firestore().collection(COLLECTION)
             .document(id)
             .updateData([MODIFIED_AT: FieldValue.serverTimestamp()], completion: completion)
     }
     
     static func updateLastMessage(chat: Chat, completion: @escaping (Error?) -> Void) {
+        print("\(TAG) \(#function)")
         Firestore.firestore().collection(COLLECTION)
             .document(chat.id)
             .updateData([

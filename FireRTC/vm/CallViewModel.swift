@@ -46,7 +46,7 @@ extension CallViewModel {
         postSpace()
         postCall()
         rtpManager.start(
-            isAudio: callType == .AUDIO,
+            isAudio: callType == .AUDIO || callType == .VIDEO || callType == .SCREEN,
             isVideo: callType == .VIDEO || callType == .SCREEN,
             isScreen: callType == .SCREEN,
             isDataChannel: callType == .MESSAGE,

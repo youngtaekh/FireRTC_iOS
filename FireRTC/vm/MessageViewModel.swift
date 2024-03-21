@@ -50,12 +50,14 @@ class MessageViewModel {
         ids.sort()
         chat = Chat(title: participant.name, participants: ids)
         ChatRepository.addChatListener(id: chat!.id) { data in
-            print("Current data: \(data[TITLE]!) \(data[LAST_SEQUENCE]!)")
+            print("\(self.TAG) Current data: title \(data[TITLE] ?? "null title"), sequence \(data[LAST_SEQUENCE] ?? -1)")
+            print("\(self.TAG) message == nil \(self.message == nil)")
+            print("\(self.TAG) sequence \(self.message?.sequence ?? -1)")
             if (self.message?.sequence ==  -1) {
                 self.message!.sequence = data[LAST_SEQUENCE] as! Int64
                 MessageRepository.post(message: self.message!) { err in
                     if let err = err {
-                        print(err.localizedDescription)
+                        print("\(self.TAG) \(err.localizedDescription)")
                     }
                 }
                 if self.isConnected {
@@ -200,7 +202,7 @@ extension MessageViewModel {
         ChatRepository.getChat(id: id) { result in
             switch result {
                 case .success(let chat):
-                    print("getChat success")
+                    print("\(self.TAG) getChat success")
                     chat.toString()
                     self.chat = chat
 //                    self.getLastMessage()
@@ -210,7 +212,7 @@ extension MessageViewModel {
                         handler!()
                     }
                 case.failure(let err):
-                    print("getChat failure \(err)")
+                    print("\(self.TAG) getChat failure \(err)")
                     self.postChat()
                     
             }
@@ -253,7 +255,7 @@ extension MessageViewModel {
     private func getLastMessage() {
         MessageRepository.getLastMessage(chatId: chat!.id) { query, err in
             if let err = err {
-                print(err.localizedDescription)
+                print("\(self.TAG) \(err.localizedDescription)")
             } else {
                 for document in query!.documents {
                     let message = Message.fromMap(map: document.data())
@@ -277,7 +279,7 @@ extension MessageViewModel {
             max: underOf,
             min: aboveOf
         ) { query, err in
-            print("getMessages Time : \(Date().timeIntervalSince1970 - self.getMessageTime!)ms")
+            print("\(self.TAG) getMessages Time : \(Date().timeIntervalSince1970 - self.getMessageTime!)ms")
             var index = 0
             if isAdditional {
                 print("\(self.TAG) getMessage \(aboveOf) - \(underOf)")
@@ -365,7 +367,7 @@ extension MessageViewModel: RTPListener {
             messageMap[chat!.id]?.insert(message, at: 0)
             messageEvent?.onMessageReceived(message: message, fm: nil)
         } catch {
-            print(error.localizedDescription)
+            print("\(self.TAG) \(error.localizedDescription)")
         }
     }
     
