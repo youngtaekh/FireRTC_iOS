@@ -273,7 +273,9 @@ class RTPManager: NSObject {
             print("\(sender.streamIds) \(sender.senderId) \(sender.track == nil)")
             if (sender.senderId == "ARDAMSa0") {
                 defaultAudioSender = sender
-                defaultAudioTrack = sender.track!
+                if sender.track != nil {
+                    defaultAudioTrack = sender.track!
+                }
                 pc?.removeTrack(sender)
             }
         }

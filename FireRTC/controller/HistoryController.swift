@@ -52,7 +52,7 @@ class HistoryController: UIViewController {
                     }
                     self.calls.append(call)
                     prevDate = call.createdAt
-                    print("\(self.TAG) getCallByUserId call \(call.toString())")
+//                    print("\(self.TAG) getCallByUserId call \(call.toString())")
                 }
             }
             self.reload()
@@ -109,7 +109,7 @@ extension HistoryController: UITableViewDelegate, UITableViewDataSource {
             if (calls.isEmpty) {
                 cell.tvTitle.text = "Empty!"
             } else {
-                print("\(TAG) counterpartName \(String(describing: call.counterpartName))")
+//                print("\(TAG) counterpartName \(String(describing: call.counterpartName))")
                 cell.tvTitle.text = call.counterpartName
                 switch (call.type) {
                     case .AUDIO:
@@ -150,11 +150,11 @@ extension HistoryController: UITableViewDelegate, UITableViewDataSource {
         print("\(TAG) Click name \(calls[indexPath.row].createdAt!)")
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if calls[indexPath[1]].isHeader ?? false {
-            return 30.0
-        } else {
-            return 70.0
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if calls[indexPath[1]].isHeader ?? false {
+//            return 30.0
+//        } else {
+//            return 70.0
+//        }
+//    }
 }

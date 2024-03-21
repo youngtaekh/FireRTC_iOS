@@ -30,7 +30,7 @@ class RelationRepository {
             var list: [String] = []
             for document in query!.documents {
                 list.append(document.data()[TO] as! String)
-                print("\(document.documentID) => \(document.data())")
+//                print("\(document.documentID) => \(document.data())")
             }
             if (list.isEmpty) {
                 print("relation list is empty")
